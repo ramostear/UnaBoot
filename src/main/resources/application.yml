@@ -1,0 +1,71 @@
+server:
+  servlet:
+    context-path: /
+  port: 80
+logging:
+  level:
+    com.ramostear.unaboot:  debug
+    org.springframework:  warn
+    org.spring.springboot:  info
+spring:
+  freemarker:
+    suffix: .html
+    charset: UTF-8
+    cache: false
+    template-loader-path:
+      - classpath:/templates/
+    settings:
+      classic_compatible: true
+      template_exception_handler: rethrow
+      template_update_delay:  0
+      datetime_format:  yyyy-MM-dd HH:mm
+      number_format:  0.##
+  resources:
+    static-locations:
+      - classpath:/static/
+  mvc:
+    favicon:
+      enabled: false
+  application:
+    name: UnaBoot-Pro
+  aop:
+    auto: true
+    proxy-target-class: true
+  jpa:
+    generate-ddl: false
+    show-sql: false
+    hibernate:
+      ddl-auto: none
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    open-in-view: false
+  datasource:
+    druid:
+      initialSize:  5
+      minIdle:  10
+      maxActive:  20
+      maxWait:  60000
+      timeBetweenEvictionRunsMillis:  60000
+      minEvictableIdleTimeMillis: 300000
+      maxEvictableIdleTimeMillis: 900000
+      validationQuery:  SELECT 1 FROM DUAL
+      testWhileIdle:  true
+      testOnBorrow: false
+      testOnReturn: false
+      webStatFilter:
+        enabled:  true
+      statViewServlet:
+        enabled:  true
+        allow:
+        url-pattern: /admin/druid/*
+      filter:
+        stat:
+          enabled:  true
+          log-slow-sql: true
+          slow-sql-millis:  1000
+          merge-sql:  true
+        wall:
+          config:
+            multi-statement-allow:  true
+xss:
+  enabled: false
+  urlPatterns:  /monitor/*
