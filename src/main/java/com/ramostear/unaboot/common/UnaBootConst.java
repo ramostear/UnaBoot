@@ -17,6 +17,11 @@ public class UnaBootConst {
     public static final String USER_HOME = System.getProperties().getProperty(UnaBootConst.USER_HOME_KEY);
 
     public static final String USER_HOME_KEY = "user.home";
+
+    public static final String FILE_UPLOAD_ROOT_DIR =
+            UnaBootConst.USER_HOME
+            +UnaBootConst.SEPARATOR+".una"
+            +UnaBootConst.SEPARATOR;
     /**
      * 系统版本
      */
@@ -89,4 +94,7 @@ public class UnaBootConst {
     public static final String ELLIPSIS_VALUE = "...";
 
     public static final String EMPTY_CHARACTER = "";
+
+    public static final String ALGORITHM_NAME = "MD5";
+    public static final int HASH_ITERATIONS = 1024;
 }

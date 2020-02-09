@@ -1,6 +1,8 @@
 package com.ramostear.unaboot.common.util;
 
 import com.ramostear.unaboot.common.UnaBootConst;
+import org.apache.shiro.crypto.hash.SimpleHash;
+import org.apache.shiro.util.ByteSource;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -27,18 +29,28 @@ public class EncryptUtils {
     }
 
     public static String MD5(String input,String salt){
-        return encripy(encripy(salt)+encripy(input));
+        return encrypt(encrypt(salt)+encrypt(input));
     }
 
-    private static String encripy(String input){
+    private static String encrypt(String input){
         byte[] code = null;
         try {
-            code = MessageDigest.getInstance("md5").digest(input.getBytes());
+            code = MessageDigest.getInstance(UnaBootConst.ALGORITHM_NAME)
+                    .digest(input.getBytes());
         }catch (NoSuchAlgorithmException ex){
             code = input.getBytes();
         }
         BigInteger bigInteger = new BigInteger(code);
         return bigInteger.abs().toString(8).toUpperCase();
+    }
+
+    public static String simpleHash(String source,String salt){
+        return new SimpleHash(
+                UnaBootConst.ALGORITHM_NAME,
+                source,
+                ByteSource.Util.bytes(salt),
+                UnaBootConst.HASH_ITERATIONS
+        ).toString();
     }
 
 }
