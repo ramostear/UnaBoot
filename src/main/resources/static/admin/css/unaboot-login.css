@@ -1,0 +1,49 @@
+body{overflow: hidden;
+    background: url("../img/black_dot.png") 0% 0% /14px 14px repeat;
+}
+.content{
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.pro-info{
+    position: fixed;
+    top: 320px;
+    left: 120px;
+    width: 650px;
+    height: 120px;
+    color: #fff;
+}
+.pro-info .pro-img{
+    width: 260px;
+    height: 80px;
+}
+.pro-info p{
+    font-size: 18px;
+    letter-spacing: 5px;
+}
+.login-box{
+    position: fixed;
+    top: 200px;
+    right: 120px;
+    width: 360px;
+    z-index: 9999;
+}
+.login-box .box-header{
+    width: 360px;
+    height: 120px;
+    display: table-cell;
+    vertical-align: center;
+    text-align: center;
+}
+.login-box .login-img{
+    width: 120px;
+    height: 120px;
+    margin: 1px auto;
+    display: block;
+}

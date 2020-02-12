@@ -1,0 +1,310 @@
+.badge-circle{
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: block;
+    text-align: center;
+    font-size: 12px;
+}
+.channel-left{
+    float: left;
+    border-right: 1px solid #ddd;
+    overflow: hidden;
+    width: 300px;
+    min-height: 750px;
+}
+.channel-left .header{
+    border-bottom: 1px solid #ddd;
+}
+.channel-left .channel-tree{
+    max-height: 640px;
+    overflow-x: auto;
+    overflow-y: auto;
+}
+.ztree *{
+    font-size: 14px;
+    font-weight: normal;
+}
+.ztree li{
+    letter-spacing: 1px;
+    line-height: 26px;
+    color: #343a40;
+}
+.ztree li a.curSelectedNode{
+    background-color: white;
+    color: #1ec6df!important;
+    height: 26px;
+    border: none;
+}
+.channel-right{
+    float: left;
+}
+.post-list{
+    position: relative;
+    margin-top: 5px;
+}
+.post-list .post-item{
+    padding: 28px 10px 27px;
+    line-height: 1;
+    font-size: 14px;
+    color: #666;
+    border-bottom: 1px solid #e8e8e8;
+    font-weight: 100;
+    position: relative;
+}
+.post-list .post-item:last-child{
+    border-bottom: none;
+}
+.post-item .post-info{
+    position: relative;
+    height: 130px;
+}
+.post-item .post-info .has-img{
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 0;
+}
+.post-item .has-img .post-thumb{
+    position: relative;
+    float: left;
+    width: 240px;
+    height: 130px;
+    overflow: hidden;
+    border-radius: 4px;
+}
+.post-item .has-img .post-bone{
+    margin: 0 0 20px 250px;
+}
+.post-bone .title{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 0;
+}
+.post-bone .title .title-txt{
+    font-size: 26px;
+    width: 500px;
+    overflow: hidden;
+    white-space: nowrap;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    line-height: 1.5;
+    display: block;
+}
+.post-bone .title-txt a{
+    color: #999;
+}
+.post-bone .title-txt a:hover{
+    background: rgba(244, 67, 54, .05);
+    color: #f44336;
+    padding: 4px 8px;
+    transition: all 0.5s;
+}
+.post-item ul.counter{
+    line-height: 20px;
+    margin-top: 6px;
+    list-style: none;
+    padding: 0;
+}
+.post-item ul.counter>li{
+    display: inline-block;
+    margin-right: 24px;
+    cursor: pointer;
+}
+.post-item ul.counter>li:after{
+    content: '\FF65';
+    font-size: 20px;
+    margin: 0 8px;
+    line-height: 0;
+    position: absolute;
+    top: 55px;
+    color: #fe943a;
+}
+.post-item ul.counter>li:last-child:after{
+    content: '';
+    border-left: none;
+}
+.post-item .post-bone .construct{
+    line-height: 20px;
+    margin-top: 6px;
+    height: 20px;
+}
+.construct .post-label{
+    margin-right: 8px;
+    font-size: 12px;
+    height: 20px;
+    padding: 0 6px;
+    display: inline-block;
+    color: #999;
+    background-color: hsla(0,0%,56%,.05);
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    cursor: pointer;
+}
+.construct .post-label.orange{
+    background: rgba(254,148,58,.05);
+    color: #fe943a;
+}
+.construct .post-label.blue{
+    background: rgba(56,151,240,.05);
+    color: #3897f0;
+}
+.construct .post-label.red{
+    background: rgba(244, 67, 54, .05);
+    color: #f44336;
+}
+.post-item .create-time{
+    color: #999;
+    line-height: 20px;
+    margin-top: 8px;
+    display: inline-block;
+}
+.post-item .post-tools{
+    position: absolute;
+    right: 10px;
+    width: 60px;
+    text-align: right;
+    line-height: 20px;
+    top: 10px;
+}
+.post-item .post-tools .tool{
+    display: inline-block;
+    position: relative;
+    margin-top: 20px;
+}
+.post-tools .tool:first-child{
+    margin-top: 0;
+}
+.post-tools .tool .icon-text{
+    display: inline-block;
+    color: #666;
+    cursor: pointer;
+}
+.post-tools .tool .icon-text:hover{
+    background: rgba(244, 67, 54, .05);
+    color: #f44336;
+    padding: 4px;
+    transition: all 0.5s;
+}
+.border-radius-50{
+    border-radius: 50%;
+}
+.control-sidebar,.control-sidebar:before{
+    width: 400px;
+}
+.post-title{
+    border-radius: 0px;
+    border: none;
+    outline: none;
+    background: linear-gradient(to right,#dddddd3b 50%,#ffffff 100%) ;
+    color: #999;
+    font-size: 22px;
+    font-weight: 400;
+    letter-spacing: 3px;
+    transition: all 1s;
+}
+input.post-title:focus{
+    background: linear-gradient(to right,#dddddd70 50%,#ffffff 100%);
+    transition: all 1s;
+}
+input.post-title::-webkit-input-placeholder{
+    color: #999;
+    font-size: 22px;
+    font-weight: 400;
+    letter-spacing: 3px;
+}
+.scb{
+    overflow-y: auto;
+}
+.scb::-webkit-scrollbar {/*滚动条整体样式*/
+    width: 8px; /*高宽分别对应横竖滚动条的尺寸*/
+    height: 4px;
+}
+.scb::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+    border-radius: 5px;
+    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    background: rgba(0,0,0,0.2);
+}
+.scb::-webkit-scrollbar-track {/*滚动条里面轨道*/
+    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    border-radius: 0;
+    background: rgba(0,0,0,0.1);
+}
+.label{
+    display: inline;
+    padding: .2em .6em .3em;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 2;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;
+}
+.label-info{
+    background-color: #3897f0!important;
+}
+.bootstrap-tagsinput>input{
+    display: block;
+    width: 100%;
+    padding: 5px 6px !important;
+}
+.ztree li span.button.ico_close,.ztree li span.button.ico_open,.ztree li span.button.ico_docu{
+    margin-top: 3px;
+}
+input[type="checkbox"]{
+    width: 16px;
+    height: 16px;
+}
+.with-border{
+    border: 1px solid #dee2e6;
+}
+thead>tr>th{
+    border-bottom: none!important;
+    font-weight: normal;
+}
+.checkbox-wrapper{
+    width: 16px;
+    height: 16px;
+    position: relative;
+    margin: 5px auto;
+}
+.checkbox-wrapper input[type="checkbox"]{
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    display: inline-block;
+    content: "";
+    opacity: 0;
+}
+.checkbox-wrapper label{
+    width: 16px;
+    height: 16px;
+    border:1px solid #58a8fd;
+    border-radius: 4px;
+
+}
+.checkbox-wrapper input[type="checkbox"]:checked+label{
+    background-image: url("../img/checked.png");
+    background-position: center;
+}
+a.del-opt,.del-opt{
+    color: #c3c3c3;
+}
+a.del-opt:hover,.del-opt:hover{
+    color: #f44336;
+    transition: all .5s;
+}
+.layui-layer-btn .layui-layer-btn0{
+    border-color: rgba(255,255,255,0);
+    color:#fff !important;
+}
+.edit-file-title{
+    font-size: 20px;
+    font-family: "Meiryo UI", "Microsoft YaHei", "Malgun Gothic", "Segoe UI", "Trebuchet MS", Helvetica, "Monaco", monospace, Tahoma, STXihei, "华文细黑", STHeiti, "Helvetica Neue", "Droid Sans", "wenquanyi micro hei", FreeSans, Arimo, Arial, SimSun, "宋体", Heiti, "黑体", sans-serif;
+}
+form label.error{
+    font-weight: normal!important;
+    color: #f44336;
+}

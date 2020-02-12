@@ -38,4 +38,18 @@ public interface ThemeService extends UnaBootService<Theme,Integer> {
      * @return
      */
     boolean writeContentToThemeFile(String file,String content);
+
+    /**
+     * Create new file
+     * @param fullName
+     * @return
+     */
+    boolean newFile(String fullName);
+
+    /**
+     * Create new folder
+     * @param fullName
+     * @return
+     */
+    boolean newFolder(String fullName);
 }

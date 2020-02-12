@@ -1,6 +1,7 @@
 package com.ramostear.unaboot.service.impl;
 
 import com.ramostear.unaboot.common.UnaBootConst;
+import com.ramostear.unaboot.common.util.FileSizeUtils;
 import com.ramostear.unaboot.common.util.ThemeUtils;
 import com.ramostear.unaboot.domain.entity.Theme;
 import com.ramostear.unaboot.domain.valueobject.ThemeFile;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -64,6 +66,13 @@ public class ThemeServiceImpl extends UnaBootServiceImpl<Theme,Integer> implemen
             themeFile.setName(file.getName());
             themeFile.setPid(folder);
             themeFile.setId(folder+UnaBootConst.SEPARATOR+file.getName());
+            themeFile.setSize(FileSizeUtils.autoConvert(file.length()));
+            themeFile.setLastModifyDate(new Date(file.lastModified()));
+            if(file.isDirectory()){
+                themeFile.setFolder(true);
+            }else{
+                themeFile.setFolder(false);
+            }
             themeFiles.add(themeFile);
         }
         return themeFiles;
@@ -144,5 +153,36 @@ public class ThemeServiceImpl extends UnaBootServiceImpl<Theme,Integer> implemen
             }
         }
 
+    }
+
+    @Override
+    public boolean newFile(String fullName) {
+        if(StringUtils.isBlank(fullName)){
+            return false;
+        }
+        String fullPath = UnaBootConst.FILE_UPLOAD_ROOT_DIR+"themes"+UnaBootConst.SEPARATOR+fullName;
+        File file = new File(fullPath);
+        if(!file.exists()){
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                log.error("Create new file error:[{}]",fullPath);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean newFolder(String fullName) {
+        if(StringUtils.isBlank(fullName)){
+            return false;
+        }
+        String fullPath = UnaBootConst.FILE_UPLOAD_ROOT_DIR+"themes"+UnaBootConst.SEPARATOR+fullName;
+        File file = new File(fullPath);
+        if(!file.exists()){
+            file.mkdir();
+        }
+        return true;
     }
 }

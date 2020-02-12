@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" href="${una}/admin/img/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="${una}/admin/img/favicon.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>模板管理 - UnaBoot</title>
+    <link rel="stylesheet" href="${una}/admin/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="${una}/admin/css/font-awesome.css">
+    <link rel="stylesheet" href="${una}/admin/css/ionicons.css">
+    <link rel="stylesheet" href="${una}/admin/css/adminlte.min.css">
+    <link rel="stylesheet" href="${una}/admin/plugins/zTree_v3/css/zTreeStyle/zTreeStyle.css" />
+    <link rel="stylesheet" href="${una}/admin/plugins/layer/skin/default/layer.css"/>
+    <link rel="stylesheet" href="${una}/admin/css/unaboot-admin.css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <style>
+        .tpl-files .ztree li span.button.switch{
+            display: none;
+        }
+    </style>
+</head>
+<body class="hold-transition sidebar-mini sidebar-collapse">
+<div class="wrapper">
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <#include "admin/common/header.html"/>
+    </nav>
+    <aside class="main-sidebar sidebar-dark-maroon  elevation-4 ">
+        <#include "admin/common/menu.html"/>
+    </aside>
+    <div class="content-wrapper">
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h3 class="m-0 text-dark text-lg">模板管理</h3>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body  p-0">
+                                <div class="channel-left">
+                                    <div class="header p-4 text-center mb-2">
+                                        <button class="btn btn-primary btn-sm mr-2"><i class="fa fa-upload"></i> 上传模板</button>
+                                        <button class="btn btn-success btn-sm disabled"><i class="fa fa-download"></i> 下载模板</button>
+                                    </div>
+                                    <div class="channel-tree pl-4 pr-4 pt-0 tpl-files">
+                                        <ul id="channel-tree" class="ztree"></ul>
+                                    </div>
+                                </div>
+                                <div class="channel-right">
+                                    <div class="tools pl-4 mt-4">
+                                        <button class="btn btn-success disabled btn-sm mr-2">
+                                            <i class="fa fa-files-o"></i> 新建模板
+                                        </button>
+                                        <button class="btn btn-info disabled btn-sm mr-2">
+                                            <i class="fa fa-folder"></i> 新建目录
+                                        </button>
+                                        <button class="btn btn-danger disabled btn-sm">
+                                            <i class="fa fa-trash"></i> 删除
+                                        </button>
+                                    </div>
+                                    <div class="data-list pl-4 mt-4">
+                                        <table class="table table-hover with-border">
+                                            <thead class="bg-light">
+                                            <tr>
+                                                <th width="20">
+                                                    <div class="checkbox-wrapper">
+                                                        <input type="checkbox" id="checkAll">
+                                                        <label for="checkAll"></label>
+                                                    </div>
+                                                </th>
+                                                <th>模板名称</th><th>大小</th><th>最后修时间</th><th width="150">操作</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div class="checkbox-wrapper">
+                                                        <input type="checkbox">
+                                                        <label></label>
+                                                    </div>
+                                                </td>
+                                                <td><a href="#" class="edit-file">index.html</a></td>
+                                                <td>15kb</td>
+                                                <td>2020-01-23 03:43:55</td>
+                                                <td>
+                                                    <a href="#" class="del-opt"><i class="fa fa-trash"></i> 删除</a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="checkbox-wrapper">
+                                                        <input type="checkbox">
+                                                        <label></label>
+                                                    </div>
+                                                </td>
+                                                <td><a href="#" class="edit-file">common</a></td>
+                                                <td>— —</td>
+                                                <td>2020-01-23 03:43:55</td>
+                                                <td>
+                                                    <a href="#" class="del-opt"><i class="fa fa-trash"></i> 删除</a>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="pull-right">
+                                            <ul class="pagination">
+                                                <li class="page-item disabled">
+                                                    <a href="#" class="page-link">Previous</a>
+                                                </li>
+                                                <li class="page-item active">
+                                                    <a href="#" class="page-link">1</a>
+                                                </li>
+                                                <li class="page-item">
+                                                    <a href="#" class="page-link">2</a>
+                                                </li>
+                                                <li class="page-item">
+                                                    <a href="#" class="page-link">3</a>
+                                                </li>
+                                                <li class="page-item">
+                                                    <a href="#" class="page-link">4</a>
+                                                </li>
+                                                <li class="page-item">
+                                                    <a href="#" class="page-link">5</a>
+                                                </li>
+                                                <li class="page-item active">
+                                                    <a href="#" class="page-link">Next</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <#include "admin/common/footer.html"/>
+</div>
+<script src="${una}/admin/plugins/jquery/jquery.min.js"></script>
+<script src="${una}/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="${una}/admin/js/adminlte.min.js"></script>
+<script type="text/javascript" src="${una}/admin/plugins/zTree_v3/js/jquery.ztree.all.js"></script>
+<script type="text/javascript" src="${una}/admin/js/dom-resize.js"></script>
+<script type="text/javascript" src="${una}/admin/plugins/layer/layer.js"></script>
+<script type="text/javascript">
+    $(function(){
+        var ztreeObj;
+        var settings = {
+            async:{
+                enable:true,
+                autoParam:['id','name','pid'],
+                type:'get',
+                url:'./data/templates.json'
+            },
+            callback:{
+                onAsyncSuccess:expandAll,
+                onClick:onClick,
+            },
+            data:{
+                simpleData:{
+                    enable:true,
+                    idKey:'id',
+                    pIdKey:'pid',
+                    rootPid:0
+                }
+            },
+            view:{
+                showIcon:true,
+                showLine:false
+            }
+        }
+        ztreeObj = $.fn.zTree.init($("#channel-tree"),settings,[]);
+        function expandAll(){
+            ztreeObj.expandAll(true);
+        }
+        function onClick(event,treeId,treeNode){
+            console.log("event:"+event+",treeId:"+treeId+",treeNode"+treeNode);
+        }
+        computerWidth();
+
+        $(".container-fluid").resize(function(){
+            computerWidth();
+        });
+        function computerWidth(){
+            var channel_left_width = $(".channel-left").width();
+            var content_wrapper_width = $(".container-fluid").width();
+            $(".channel-right").width(content_wrapper_width - channel_left_width-30);
+        }
+        $(".edit-file").on("click",function(){
+            var index =layer.open({
+                skin:"",
+                type:2,
+                title:"<span class='edit-file-title'><i class='fa fa-folder-open text-yellow'></i>.../themes/default/index.html</span>",
+                shadeClose:false,
+                shade:0.4,
+                offset:['55px'],
+                area:['70%','88%'],
+                content:'./edit-file.html',
+                resize:false,
+                anim:1,
+                maxmin:true,
+                move:false,
+                end:function(){
+                    location.reload();
+                },
+                success:function(layero,index){
+                    var iframeWindow = window[layero.find('iframe')[0]['name']];
+                    var height = layero.find('iframe')[0]['clientHeight'];
+                    iframeWindow.setTextareaHeight(height-47);
+                },
+                full:function(layero){
+                    var iframeWindow = window[layero.find('iframe')[0]['name']];
+                    var height = layero.find('iframe')[0]['clientHeight'];
+                    iframeWindow.setTextareaHeight(height-50);
+                },
+                restore:function(layero){
+                    var iframeWindow = window[layero.find('iframe')[0]['name']];
+                    var height = layero.find('iframe')[0]['clientHeight'];
+                    iframeWindow.setTextareaHeight(height-50);
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>
