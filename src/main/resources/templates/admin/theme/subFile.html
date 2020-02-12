@@ -1,0 +1,33 @@
+<table class="table table-hover with-border">
+    <thead class="bg-light">
+        <tr>
+            <th>模板名称</th><th>大小</th><th>最后修时间</th><th width="150">操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        <#if files?? && files?size gt 0>
+            <#list files as file>
+                <tr>
+                    <td>
+                        <#if file.folder>
+                            <i class="fa fa-folder-open"></i> ${file.name}
+                        <#else>
+                            <a href="#" data-id="${file.id}" class="edit-file"><i class="fa fa-file"></i> ${file.name}</a>
+                        </#if>
+                    </td>
+                    <td>
+                        <#if file.folder>
+                            --
+                        <#else>
+                            ${file.size}
+                        </#if>
+                    </td>
+                    <td>${file.lastModifyDate?string("yyyy-MM-dd HH:mm:ss")}</td>
+                    <td>
+                        <a href="#" data-id="${file.id}" class="del-opt"><i class="fa fa-trash"></i> 删除</a>
+                    </td>
+                </tr>
+            </#list>
+        </#if>
+    </tbody>
+</table>

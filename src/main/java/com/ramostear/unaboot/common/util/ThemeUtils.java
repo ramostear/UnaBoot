@@ -32,6 +32,7 @@ public class ThemeUtils {
         }
 
         String themeName = fileName.substring(0,suffixIndex);
+        log.info("file upload root dir:"+UnaBootConst.FILE_UPLOAD_ROOT_DIR);
         String themeFile = UnaBootConst.FILE_UPLOAD_ROOT_DIR+"themes"+UnaBootConst.SEPARATOR+fileName;
         String themeFolder = UnaBootConst.FILE_UPLOAD_ROOT_DIR+"themes"+UnaBootConst.SEPARATOR+themeName;
         File tempFile = new File(themeFile);

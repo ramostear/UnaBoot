@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" href="${una}/admin/img/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="${una}/admin/img/favicon.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>上传模板 - UnaBoot</title>
+    <link rel="stylesheet" href="${una}/admin/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="${una}/admin/css/font-awesome.css">
+    <link rel="stylesheet" href="${una}/admin/css/ionicons.css">
+    <link rel="stylesheet" href="${una}/admin/css/adminlte.min.css">
+    <link rel="stylesheet" href="${una}/admin/plugins/layer/skin/default/layer.css"/>
+    <link rel="stylesheet" href="${una}/admin/css/unaboot-admin.css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <style>
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <form action="" id="upload-theme" class="" enctype="multipart/form-data">
+                <div class="upload-theme-box">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" class="form-control file-name" id="show-name" placeholder="请选择主题文件（.zip/.rar）" onkeydown="return false;" onpause="return false;">
+                            <div class="input-group-btn ml-1">
+                                <button type="button" id="upload-btn" class="btn btn-secondary upload-btn">
+                                    <i class="fa fa-folder-open"></i>
+                                    <span>浏览...</span>
+                                    <input name="theme" class="upload-file-input" multiple="multiple" onchange="fileChange(this)" type="file" accept="application/zip">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary" disabled id="submit-btn">
+                            <i class="fa fa-upload"> 上传</i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="${una}/admin/plugins/jquery/jquery.min.js"></script>
+<script src="${una}/admin/plugins/jquery/jquery.form.js"></script>
+<script src="${una}/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="${una}/admin/js/adminlte.min.js"></script>
+<script type="text/javascript" src="${una}/admin/plugins/layer/layer.js"></script>
+<script type="text/javascript">
+    $("#submit-btn").on("click",function(){
+       var load = layer.load(2,{shade:[0.4,'#f0f0f0f0']});
+       $("#upload-theme").ajaxSubmit({
+           type:'POST',
+           url:'${una}/admin/theme/upload',
+           success:function(){
+               layer.close(load);
+               layer.alert("主题文件已经上传成功",{
+                   title:'系统提示信息',
+                   icon:1
+               },function(){
+                  var pid =parent.layer.getFrameIndex(window.name);
+                  parent.layer.close(pid);
+                  parent.location.reload();
+               });
+           },
+           error:function(){
+               layer.close(load);
+               layer.alert("主题文件上传失败",{
+                   title:'系统提示信息',
+                   icon:2
+               })
+           }
+       })
+    });
+    function fileChange(target){
+        var isIe =  /msie/i.test(navigator.userAgent) && !window.opera;
+        var fileName = null;
+        if(isIe && !TARGET.files){
+            var filePath = target.value;
+            var fileSystem = new ActiveXObject("Scripting.FileSystemObject");
+            var file = fileSystem.GetFile(filePath);
+            fileName = file.name;
+        }else{
+            fileName = target.files[0].name;
+        }
+        $("#show-name").val(fileName);
+        $("#submit-btn").attr("disabled",false);
+        //$("#submit-btn").removeClass("hidden");
+    }
+</script>
+</body>
+</html>

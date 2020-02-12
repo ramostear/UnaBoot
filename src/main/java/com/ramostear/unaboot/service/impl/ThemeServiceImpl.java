@@ -47,33 +47,43 @@ public class ThemeServiceImpl extends UnaBootServiceImpl<Theme,Integer> implemen
     }
 
     @Override
-    public List<ThemeFile> loadThemeFile(String folder) {
+    public List<ThemeFile> loadThemeFile(String folder,boolean isPageData) {
         String fullFolderPath;
-        if(StringUtils.isBlank(folder)){
+        if(StringUtils.isBlank(folder) || folder.trim() == ""){
             folder = "themes";
             fullFolderPath = UnaBootConst.FILE_UPLOAD_ROOT_DIR+"themes";
         }else{
-            fullFolderPath = UnaBootConst.FILE_UPLOAD_ROOT_DIR+"themes"+UnaBootConst.SEPARATOR+folder;
+            fullFolderPath = UnaBootConst.FILE_UPLOAD_ROOT_DIR+folder;
+        }
+        List<ThemeFile> themeFiles = new ArrayList<>();
+        if(folder.equals("themes") && !isPageData){
+            ThemeFile root = new ThemeFile();
+            root.setId("themes");
+            root.setPid("-1");
+            root.setName("主题根目录");
+            root.setFolder(true);
+            themeFiles.add(root);
         }
         File targetFile = new File(fullFolderPath);
-        File[] subFiles = targetFile.listFiles();
-        if(subFiles == null || subFiles.length <=0){
-            return Collections.emptyList();
+        if(!targetFile.exists()|| targetFile.isFile()){
+            return themeFiles;
         }
-        List<ThemeFile> themeFiles = new ArrayList<>(subFiles.length);
-        for(File file : subFiles){
-            ThemeFile themeFile = new ThemeFile();
-            themeFile.setName(file.getName());
-            themeFile.setPid(folder);
-            themeFile.setId(folder+UnaBootConst.SEPARATOR+file.getName());
-            themeFile.setSize(FileSizeUtils.autoConvert(file.length()));
-            themeFile.setLastModifyDate(new Date(file.lastModified()));
-            if(file.isDirectory()){
-                themeFile.setFolder(true);
-            }else{
-                themeFile.setFolder(false);
+        File[] subFiles = targetFile.listFiles();
+        if(subFiles != null && subFiles.length >0){
+            for(File file : subFiles){
+                ThemeFile themeFile = new ThemeFile();
+                themeFile.setName(file.getName());
+                themeFile.setPid(folder);
+                themeFile.setId(folder+UnaBootConst.SEPARATOR+file.getName());
+                themeFile.setSize(FileSizeUtils.autoConvert(file.length()));
+                themeFile.setLastModifyDate(new Date(file.lastModified()));
+                if(file.isDirectory()){
+                    themeFile.setFolder(true);
+                }else{
+                    themeFile.setFolder(false);
+                }
+                themeFiles.add(themeFile);
             }
-            themeFiles.add(themeFile);
         }
         return themeFiles;
     }
@@ -83,7 +93,7 @@ public class ThemeServiceImpl extends UnaBootServiceImpl<Theme,Integer> implemen
         if(StringUtils.isBlank(file)){
             return "";
         }
-        String fullFilePath = UnaBootConst.FILE_UPLOAD_ROOT_DIR+"themes"+UnaBootConst.SEPARATOR+file;
+        String fullFilePath = UnaBootConst.FILE_UPLOAD_ROOT_DIR+file;
         File targetFile = new File(fullFilePath);
         if(targetFile.isDirectory()){
             return "";

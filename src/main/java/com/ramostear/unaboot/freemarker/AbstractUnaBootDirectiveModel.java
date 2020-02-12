@@ -38,7 +38,7 @@ public abstract class AbstractUnaBootDirectiveModel extends ApplicationObjectSup
         className = className.substring(className.lastIndexOf(".")+1);
         String beanName = StringUtils.uncapitalize(className);
         String directiveName = UnaBootConst.DIRECTIVE_PREFIX+ UnaBootUtils.camelToUnderline(beanName);
-        log.info("render directive name is : [{}]",directiveName);
+        log.info("UnaBoot custom freemarker value label name: [{}]",directiveName);
         cfg.getConfiguration().setSharedVariable(directiveName,getApplicationContext().getBean(beanName));
     }
 

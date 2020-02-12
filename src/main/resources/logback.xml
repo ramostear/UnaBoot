@@ -63,6 +63,7 @@
     <logger name="org.springframework.jdbc" level="debug"/>
 
     <logger name="com.ramostear.unaboot" level="info"/>
+    <logger name="freemarker.cache" level="debug"/>
 
     <root level="info">
         <appender-ref ref="console"/>

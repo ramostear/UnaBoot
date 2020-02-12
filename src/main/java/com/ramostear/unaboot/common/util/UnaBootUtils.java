@@ -47,4 +47,18 @@ public class UnaBootUtils {
         }
         return StringUtils.lowerCase(buffer.toString());
     }
+
+    public static int getWordCount(String content){
+        int count = 0;
+        String cn_words = content.replaceAll("[^(\\u4e00-\\u9fa5，。《》？；’‘：“”【】、）（……￥！·)]", "");
+        int cn_words_count = cn_words.length();
+        String non_cn_words = content.replaceAll("[^(a-zA-Z0-9`\\-=\';.,/~!@#$%^&*()_+|}{\":><?\\[\\])]", " ");
+        int non_cn_words_count = 0;
+        String[] temp = non_cn_words.split(" ");
+        for(String ch:temp){
+            if(ch.trim().length() != 0) non_cn_words_count++;
+        }
+        count = cn_words_count + non_cn_words_count;
+        return count;
+    }
 }

@@ -49,6 +49,7 @@ public class ArchiveUtils {
         outputStream.close();
         inputStream.close();
         zipFile.close();
+        System.gc();
     }
 
     public static void unRar(String source,String target) throws Exception{

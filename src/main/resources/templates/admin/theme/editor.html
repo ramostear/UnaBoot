@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" href="${una}/admin/img/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="${una}/admin/img/favicon.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>edit-file</title>
+    <link rel="stylesheet" href="${una}/admin/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="${una}/admin/css/font-awesome.css">
+    <link rel="stylesheet" href="${una}/admin/css/ionicons.css">
+    <link rel="stylesheet" href="${una}/admin/css/adminlte.min.css">
+    <link rel="stylesheet" href="${una}/admin/plugins/layer/skin/default/layer.css"/>
+    <link rel="stylesheet" href="${una}/admin/css/unaboot-admin.css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
+<body>
+<div class="wrapper">
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 p-0">
+                    <div id="editor_area"></div>
+                </div>
+                <div class="fixed-bottom pl-4 pt-2 pr-4 pb-2 bg-gray-light text-right">
+                    <span class="pull-left text-danger"><small><i class="fa fa-exclamation-triangle"></i> 修改模板后视图将受影响,请谨慎操作。</small></span>
+                    <button class="btn btn-sm btn-primary"><i class="fa fa-save"></i> 保存</button>
+                    <button class="btn btn-sm btn-default"><i class="fa fa-times-circle-o"></i> 取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${una}/admin/plugins/jquery/jquery.min.js"></script>
+<script src="${una}/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="${una}/admin/js/adminlte.min.js"></script>
+<script type="text/javascript" src="${una}/admin/plugins/layer/layer.js"></script>
+<script type="text/javascript" src="${una}/admin/plugins/ace-1.4.8/ace.js"></script>
+<script type="text/javascript" src="${una}/admin/plugins/ace-1.4.8/ext-language_tools.js"></script>
+<script type="text/javascript">
+    var editor;
+    $(function(){
+        ace.require("ace/ext/language_tools");
+        ace.require("ace/ext/spellcheck");
+        ace.require("ace/ext/static_highlight");
+        ace.require("ace/ext/searchbox");
+        editor = ace.edit("editor_area");
+        editor.setFontSize(14);
+        editor.session.setUseWrapMode(true);
+        editor.setHighlightActiveLine(true);
+        editor.setTheme("ace/theme/dracula");
+        editor.setOptions({
+            enableBasicAutocompletion: true,
+            enableSnippets: true,
+            enableLiveAutocompletion: true
+        });
+        editor.session.setMode("ace/mode/html");
+
+        $.ajax({
+            type:'GET',
+            url:'${una}/admin/theme/read',
+            data:{path:"${path}"},
+            success:function(content){
+                editor.setValue(content);
+            },
+            error:function(){
+                layer.alert("加载文件失败",{title:'系统提示信息',icon:1});
+            }
+        })
+    });
+    function setTextareaHeight(height){
+        $("#editor_area").css("height",height+"px");
+    }
+</script>
+</body>
+</html>

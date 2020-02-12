@@ -38,7 +38,7 @@ public abstract class AbstractMethodModel extends ApplicationObjectSupport imple
         className = className.substring(className.lastIndexOf(".")+1);
         String beanName = StringUtils.uncapitalize(className);
         String methodName = UnaBootConst.DIRECTIVE_PREFIX+StringUtils.uncapitalize(className);
-        log.info("render the custom method name is :[{}]",methodName);
+        log.info("UnaBoot custom freemarker method label name:[{}]",methodName);
         cfg.getConfiguration().setSharedVariable(methodName,getApplicationContext().getBean(beanName));
     }
 

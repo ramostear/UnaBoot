@@ -22,7 +22,7 @@ public interface ThemeService extends UnaBootService<Theme,Integer> {
      * @param folder
      * @return
      */
-    List<ThemeFile> loadThemeFile(String folder);
+    List<ThemeFile> loadThemeFile(String folder,boolean isPageData);
 
     /**
      * Load theme file contents

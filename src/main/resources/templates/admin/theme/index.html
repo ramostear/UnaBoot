@@ -48,7 +48,7 @@
                             <div class="card-body  p-0">
                                 <div class="channel-left">
                                     <div class="header p-4 text-center mb-2">
-                                        <button class="btn btn-primary btn-sm mr-2"><i class="fa fa-upload"></i> 上传模板</button>
+                                        <button class="btn btn-primary btn-sm mr-2" id="upload-theme"><i class="fa fa-upload"></i> 上传模板</button>
                                         <button class="btn btn-success btn-sm disabled"><i class="fa fa-download"></i> 下载模板</button>
                                     </div>
                                     <div class="channel-tree pl-4 pr-4 pt-0 tpl-files">
@@ -68,74 +68,7 @@
                                         </button>
                                     </div>
                                     <div class="data-list pl-4 mt-4">
-                                        <table class="table table-hover with-border">
-                                            <thead class="bg-light">
-                                            <tr>
-                                                <th width="20">
-                                                    <div class="checkbox-wrapper">
-                                                        <input type="checkbox" id="checkAll">
-                                                        <label for="checkAll"></label>
-                                                    </div>
-                                                </th>
-                                                <th>模板名称</th><th>大小</th><th>最后修时间</th><th width="150">操作</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr>
-                                                <td>
-                                                    <div class="checkbox-wrapper">
-                                                        <input type="checkbox">
-                                                        <label></label>
-                                                    </div>
-                                                </td>
-                                                <td><a href="#" class="edit-file">index.html</a></td>
-                                                <td>15kb</td>
-                                                <td>2020-01-23 03:43:55</td>
-                                                <td>
-                                                    <a href="#" class="del-opt"><i class="fa fa-trash"></i> 删除</a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="checkbox-wrapper">
-                                                        <input type="checkbox">
-                                                        <label></label>
-                                                    </div>
-                                                </td>
-                                                <td><a href="#" class="edit-file">common</a></td>
-                                                <td>— —</td>
-                                                <td>2020-01-23 03:43:55</td>
-                                                <td>
-                                                    <a href="#" class="del-opt"><i class="fa fa-trash"></i> 删除</a>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                        <div class="pull-right">
-                                            <ul class="pagination">
-                                                <li class="page-item disabled">
-                                                    <a href="#" class="page-link">Previous</a>
-                                                </li>
-                                                <li class="page-item active">
-                                                    <a href="#" class="page-link">1</a>
-                                                </li>
-                                                <li class="page-item">
-                                                    <a href="#" class="page-link">2</a>
-                                                </li>
-                                                <li class="page-item">
-                                                    <a href="#" class="page-link">3</a>
-                                                </li>
-                                                <li class="page-item">
-                                                    <a href="#" class="page-link">4</a>
-                                                </li>
-                                                <li class="page-item">
-                                                    <a href="#" class="page-link">5</a>
-                                                </li>
-                                                <li class="page-item active">
-                                                    <a href="#" class="page-link">Next</a>
-                                                </li>
-                                            </ul>
-                                        </div>
+                                        <div id="data-table" style="max-height: 640px;overflow-y: auto;"></div>
                                     </div>
                                 </div>
                             </div>
@@ -159,9 +92,9 @@
         var settings = {
             async:{
                 enable:true,
-                autoParam:['id','name','pid'],
+                autoParam:['id'],
                 type:'get',
-                url:'./data/templates.json'
+                url:'${una}/admin/theme/treeNodes'
             },
             callback:{
                 onAsyncSuccess:expandAll,
@@ -172,7 +105,10 @@
                     enable:true,
                     idKey:'id',
                     pIdKey:'pid',
-                    rootPid:0
+                    rootPid:-1,
+                },
+                key:{
+                    isParent:'folder'
                 }
             },
             view:{
@@ -185,10 +121,25 @@
             ztreeObj.expandAll(true);
         }
         function onClick(event,treeId,treeNode){
-            console.log("event:"+event+",treeId:"+treeId+",treeNode"+treeNode);
+            console.log("event:"+event+",treeId:"+treeId+",treeNode:"+treeNode.id);
+            var folder = treeNode.id;
+            var reg = /\.[^\.]+$/;
+            var matches = reg.exec(folder);
+            if(!matches){
+                $.ajax({
+                    type:'get',
+                    url:'${una}/admin/theme/subFiles',
+                    data:{
+                        pid:folder
+                    },
+                    success:function(page){
+                      $("#data-table").html(page);
+                    }
+                })
+            }
         }
         computerWidth();
-
+        initDataTable();
         $(".container-fluid").resize(function(){
             computerWidth();
         });
@@ -197,7 +148,63 @@
             var content_wrapper_width = $(".container-fluid").width();
             $(".channel-right").width(content_wrapper_width - channel_left_width-30);
         }
-        $(".edit-file").on("click",function(){
+        function initDataTable(){
+            $.ajax({
+                type:'get',
+                url:'${una}/admin/theme/subFiles',
+                success:function(page){
+                    $("#data-table").html(page);
+                }
+            });
+        }
+
+        $("#upload-theme").on("click",function(){
+            layer.open({
+                type:2,
+                title:"<i class='fa fa-upload'>上传新的主题文件</i>",
+                shadeClose:false,
+                shade:0.4,
+                offset:['100px'],
+                area:['500px','300px'],
+                content:'${una}/admin/theme/upload',
+                resize:false,
+                anim:1
+            })
+        });
+        $(document).on("click",".edit-file",function(){
+            var id = $(this).attr("data-id");
+            id = id.replace(/\\/g,'/');
+            var index =layer.open({
+                skin:"",
+                type:2,
+                title:"<span class='edit-file-title'><i class='fa fa-folder-open text-yellow'></i>.../"+id+"</span>",
+                shadeClose:false,
+                shade:0.4,
+                offset:['55px'],
+                area:['70%','88%'],
+                content:'${una}/admin/theme/editor?path='+id,
+                resize:false,
+                anim:1,
+                maxmin:true,
+                move:false,
+                success:function(layero,index){
+                    var iframeWindow = window[layero.find('iframe')[0]['name']];
+                    var height = layero.find('iframe')[0]['clientHeight'];
+                    iframeWindow.setTextareaHeight(height-47);
+                },
+                full:function(layero){
+                    var iframeWindow = window[layero.find('iframe')[0]['name']];
+                    var height = layero.find('iframe')[0]['clientHeight'];
+                    iframeWindow.setTextareaHeight(height-50);
+                },
+                restore:function(layero){
+                    var iframeWindow = window[layero.find('iframe')[0]['name']];
+                    var height = layero.find('iframe')[0]['clientHeight'];
+                    iframeWindow.setTextareaHeight(height-50);
+                }
+            });
+        });
+       /* $(".edit-file").on("click",function(){
             var index =layer.open({
                 skin:"",
                 type:2,
@@ -230,7 +237,7 @@
                     iframeWindow.setTextareaHeight(height-50);
                 }
             });
-        });
+        });*/
     });
 </script>
 </body>

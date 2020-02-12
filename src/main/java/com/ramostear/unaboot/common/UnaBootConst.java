@@ -11,25 +11,26 @@ import java.io.File;
  **/
 public class UnaBootConst {
 
+    public static final String USER_HOME_KEY = "user.home";
     /**
      * UnaBoot用于获取主机用户的home目录
      */
     public static final String USER_HOME = System.getProperties().getProperty(UnaBootConst.USER_HOME_KEY);
 
-    public static final String USER_HOME_KEY = "user.home";
-
-    public static final String FILE_UPLOAD_ROOT_DIR =
-            UnaBootConst.USER_HOME
-            +UnaBootConst.SEPARATOR+".una"
-            +UnaBootConst.SEPARATOR;
-    /**
-     * 系统版本
-     */
-    public static final String VERSION = "1.1.0";
     /**
      * 路径分割符
      */
     public static final String SEPARATOR = File.separator;
+
+    public static final String FILE_UPLOAD_ROOT_DIR =
+            UnaBootConst.USER_HOME
+            +SEPARATOR+".una"
+            +SEPARATOR;
+    /**
+     * 系统版本
+     */
+    public static final String VERSION = "1.1.0";
+
     /**
      * 自定义FreeMarker指令名称前缀
      */
