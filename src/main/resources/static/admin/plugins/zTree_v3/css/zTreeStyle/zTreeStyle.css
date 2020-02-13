@@ -29,7 +29,7 @@ website:	http://code.google.com/p/jquerytree/
 .ztree li span.button {line-height:0; margin:0; width:16px; height:16px; display: inline-block; vertical-align:middle;
 	border:0 none; cursor: pointer;outline:none;
 	background-color:transparent; background-repeat:no-repeat; background-attachment: scroll;
-	background-image:url("./img/zTreeStandard.png"); *background-image:url("./img/zTreeStandard.gif")}
+	background-image:url("img/zTreeStandard.png"); *background-image:url("./img/zTreeStandard.gif")}
 
 .ztree li span.button.chk {width:13px; height:13px; margin:0 3px 0 0; cursor: auto}
 .ztree li span.button.chk.checkbox_false_full {background-position:0 0}
@@ -82,7 +82,7 @@ ul.tmpTargetzTree {background-color:#FFE6B0; opacity:0.8; filter:alpha(opacity=8
 
 span.tmpzTreeMove_arrow {width:16px; height:16px; display: inline-block; padding:0; margin:2px 0 0 1px; border:0 none; position:absolute;
 	background-color:transparent; background-repeat:no-repeat; background-attachment: scroll;
-	background-position:-110px -80px; background-image:url("./img/zTreeStandard.png"); *background-image:url("./img/zTreeStandard.gif")}
+	background-position:-110px -80px; background-image:url("img/zTreeStandard.png"); *background-image:url("./img/zTreeStandard.gif")}
 
 ul.ztree.zTreeDragUL {margin:0; padding:0; position:absolute; width:auto; height:auto;overflow:hidden; background-color:#cfcfcf; border:1px #00B83F dotted; opacity:0.8; filter:alpha(opacity=80)}
 .zTreeMask {z-index:10000; background-color:#cfcfcf; opacity:0.0; filter:alpha(opacity=0); position:absolute}

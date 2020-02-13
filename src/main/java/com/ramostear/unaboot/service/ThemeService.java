@@ -52,4 +52,11 @@ public interface ThemeService extends UnaBootService<Theme,Integer> {
      * @return
      */
     boolean newFolder(String fullName);
+
+    /**
+     * Remove target file from disk.
+     * @param fullName
+     * @return
+     */
+    boolean deleteFile(String fullName);
 }

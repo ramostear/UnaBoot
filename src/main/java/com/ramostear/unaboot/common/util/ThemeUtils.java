@@ -67,4 +67,25 @@ public class ThemeUtils {
         }
         return new Theme(themeName);
     }
+
+    public static boolean deleteFile(String path){
+        File file = new File(path);
+        return deleteFile(file);
+    }
+
+
+    public static boolean deleteFile(File file){
+        if(!file.exists()){
+            return false;
+        }
+        if(file.isDirectory()){
+            File[] files = file.listFiles();
+            if(files != null && files.length >0){
+                for (File f:files){
+                    deleteFile(f);
+                }
+            }
+        }
+        return file.delete();
+    }
 }

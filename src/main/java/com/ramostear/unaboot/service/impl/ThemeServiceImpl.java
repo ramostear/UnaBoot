@@ -138,7 +138,7 @@ public class ThemeServiceImpl extends UnaBootServiceImpl<Theme,Integer> implemen
 
     @Override
     public boolean writeContentToThemeFile(String file, String content) {
-        String fullFilePath = UnaBootConst.FILE_UPLOAD_ROOT_DIR+"themes"+UnaBootConst.SEPARATOR+file;
+        String fullFilePath = UnaBootConst.FILE_UPLOAD_ROOT_DIR+file;
         File targetFile = new File(fullFilePath);
         if(targetFile.isDirectory()){
             return false;
@@ -170,7 +170,7 @@ public class ThemeServiceImpl extends UnaBootServiceImpl<Theme,Integer> implemen
         if(StringUtils.isBlank(fullName)){
             return false;
         }
-        String fullPath = UnaBootConst.FILE_UPLOAD_ROOT_DIR+"themes"+UnaBootConst.SEPARATOR+fullName;
+        String fullPath = UnaBootConst.FILE_UPLOAD_ROOT_DIR+fullName;
         File file = new File(fullPath);
         if(!file.exists()){
             try {
@@ -188,11 +188,18 @@ public class ThemeServiceImpl extends UnaBootServiceImpl<Theme,Integer> implemen
         if(StringUtils.isBlank(fullName)){
             return false;
         }
-        String fullPath = UnaBootConst.FILE_UPLOAD_ROOT_DIR+"themes"+UnaBootConst.SEPARATOR+fullName;
+        String fullPath = UnaBootConst.FILE_UPLOAD_ROOT_DIR+fullName;
         File file = new File(fullPath);
         if(!file.exists()){
             file.mkdir();
         }
         return true;
+    }
+
+    @Override
+    public boolean deleteFile(String fullName) {
+        String fullPath = UnaBootConst.FILE_UPLOAD_ROOT_DIR+fullName;
+        log.info("delete file from disk :[{}]",fullPath);
+        return ThemeUtils.deleteFile(fullPath);
     }
 }

@@ -18,7 +18,7 @@
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     <style>
         .tpl-files .ztree li span.button.switch{
-            display: none;
+            /*display: none;*/
         }
     </style>
 </head>
@@ -57,15 +57,20 @@
                                 </div>
                                 <div class="channel-right">
                                     <div class="tools pl-4 mt-4">
-                                        <button class="btn btn-success disabled btn-sm mr-2">
+                                        <div class="input-group right mr-2" style="width: 30%;float: left; height: 31px;">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-level-up"> ../</i></span>
+                                            </div>
+                                            <input type="text" id="parent-folder" value="themes" readonly class="form-control" style="height: 31px">
+                                        </div>
+                                        <button type="button" id="new-file" class="btn btn-success btn-sm mr-2">
                                             <i class="fa fa-files-o"></i> 新建模板
                                         </button>
-                                        <button class="btn btn-info disabled btn-sm mr-2">
-                                            <i class="fa fa-folder"></i> 新建目录
+                                        <button type="button" id="new-folder" class="btn btn-info btn-sm mr-2">
+                                            <i class="fa fa-folder-open-o"></i> 新建目录
                                         </button>
-                                        <button class="btn btn-danger disabled btn-sm">
-                                            <i class="fa fa-trash"></i> 删除
-                                        </button>
+
+
                                     </div>
                                     <div class="data-list pl-4 mt-4">
                                         <div id="data-table" style="max-height: 640px;overflow-y: auto;"></div>
@@ -87,6 +92,15 @@
 <script type="text/javascript" src="${una}/admin/js/dom-resize.js"></script>
 <script type="text/javascript" src="${una}/admin/plugins/layer/layer.js"></script>
 <script type="text/javascript">
+    String.prototype.endWith=function(str){
+        if(str==null||str==""||this.length==0||str.length>this.length)
+            return false;
+        if(this.substring(this.length-str.length)==str)
+            return true;
+        else
+            return false;
+        return true;
+    }
     $(function(){
         var ztreeObj;
         var settings = {
@@ -98,7 +112,7 @@
             },
             callback:{
                 onAsyncSuccess:expandAll,
-                onClick:onClick,
+                onClick:onClick
             },
             data:{
                 simpleData:{
@@ -113,7 +127,7 @@
             },
             view:{
                 showIcon:true,
-                showLine:false
+                showLine:true
             }
         }
         ztreeObj = $.fn.zTree.init($("#channel-tree"),settings,[]);
@@ -121,11 +135,15 @@
             ztreeObj.expandAll(true);
         }
         function onClick(event,treeId,treeNode){
-            console.log("event:"+event+",treeId:"+treeId+",treeNode:"+treeNode.id);
+           // console.log("event:"+event+",treeId:"+treeId+",treeNode:"+treeNode.id);
+            if(treeNode.id != "themes"){
+                ztreeObj.reAsyncChildNodes(treeNode,"refresh",true);
+            }
             var folder = treeNode.id;
             var reg = /\.[^\.]+$/;
             var matches = reg.exec(folder);
             if(!matches){
+                $("#parent-folder").val(folder.replace(/\\/g,'/'));
                 $.ajax({
                     type:'get',
                     url:'${una}/admin/theme/subFiles',
@@ -135,7 +153,51 @@
                     success:function(page){
                       $("#data-table").html(page);
                     }
-                })
+                });
+            }else{
+                var id = folder.replace(/\\/g,'/');
+                if(id.endWith(".png")||id.endWith(".jpg")||id.endWith(".jpeg")||id.endWith(".gif")||id.endWith(".bmp")||id.endWith(".webp")){
+                    var img = "<img src='${una}/"+id+"' class='img-fluid' style='height:500px;'>";
+                    layer.open({
+                        type: 1,//Page层类型
+                        title: '<i class="fa fa-image"></i> 预览',
+                        shade: 0.6 ,//遮罩透明度
+                        offset:'auto',
+                        anim: 1 ,//0-6的动画形式，-1不开启
+                        content: img,
+                        resize:false
+                    });
+                }else{
+                    layer.open({
+                        type:2,
+                        title:"<span class='edit-file-title'><i class='fa fa-folder-open text-yellow'></i>.../"+id+"</span>",
+                        shadeClose:false,
+                        shade:0.4,
+                        offset:['55px'],
+                        area:['70%','88%'],
+                        content:'${una}/admin/theme/editor?path='+id,
+                        resize:false,
+                        anim:1,
+                        maxmin:true,
+                        move:false,
+                        success:function(layero,index){
+                            var iframeWindow = window[layero.find('iframe')[0]['name']];
+                            var height = layero.find('iframe')[0]['clientHeight'];
+                            iframeWindow.setTextareaHeight(height-47);
+                        },
+                        full:function(layero){
+                            var iframeWindow = window[layero.find('iframe')[0]['name']];
+                            var height = layero.find('iframe')[0]['clientHeight'];
+                            iframeWindow.setTextareaHeight(height-50);
+                        },
+                        restore:function(layero){
+                            var iframeWindow = window[layero.find('iframe')[0]['name']];
+                            var height = layero.find('iframe')[0]['clientHeight'];
+                            iframeWindow.setTextareaHeight(height-50);
+                        }
+                    });
+                }
+
             }
         }
         computerWidth();
@@ -174,70 +236,235 @@
         $(document).on("click",".edit-file",function(){
             var id = $(this).attr("data-id");
             id = id.replace(/\\/g,'/');
-            var index =layer.open({
-                skin:"",
-                type:2,
-                title:"<span class='edit-file-title'><i class='fa fa-folder-open text-yellow'></i>.../"+id+"</span>",
-                shadeClose:false,
-                shade:0.4,
-                offset:['55px'],
-                area:['70%','88%'],
-                content:'${una}/admin/theme/editor?path='+id,
-                resize:false,
-                anim:1,
-                maxmin:true,
-                move:false,
-                success:function(layero,index){
-                    var iframeWindow = window[layero.find('iframe')[0]['name']];
-                    var height = layero.find('iframe')[0]['clientHeight'];
-                    iframeWindow.setTextareaHeight(height-47);
-                },
-                full:function(layero){
-                    var iframeWindow = window[layero.find('iframe')[0]['name']];
-                    var height = layero.find('iframe')[0]['clientHeight'];
-                    iframeWindow.setTextareaHeight(height-50);
-                },
-                restore:function(layero){
-                    var iframeWindow = window[layero.find('iframe')[0]['name']];
-                    var height = layero.find('iframe')[0]['clientHeight'];
-                    iframeWindow.setTextareaHeight(height-50);
-                }
+            if(id.endWith(".png")||id.endWith(".jpg")||id.endWith(".jpeg")||id.endWith(".gif")||id.endWith(".bmp")||id.endWith(".webp")){
+                var img = "<img src='${una}/"+id+"' class='img-fluid' style='height:500px;'>";
+                layer.open({
+                    type: 1,//Page层类型
+                    title: '<i class="fa fa-image"></i> 预览',
+                    shade: 0.6 ,//遮罩透明度
+                    offset:'auto',
+                    anim: 1 ,//0-6的动画形式，-1不开启
+                    content: img,
+                    resize:false
+                });
+            }else{
+                layer.open({
+                    type:2,
+                    title:"<span class='edit-file-title'><i class='fa fa-folder-open text-yellow'></i>.../"+id+"</span>",
+                    shadeClose:false,
+                    shade:0.4,
+                    offset:['55px'],
+                    area:['70%','88%'],
+                    content:'${una}/admin/theme/editor?path='+id,
+                    resize:false,
+                    anim:1,
+                    maxmin:true,
+                    move:false,
+                    success:function(layero,index){
+                        var iframeWindow = window[layero.find('iframe')[0]['name']];
+                        var height = layero.find('iframe')[0]['clientHeight'];
+                        iframeWindow.setTextareaHeight(height-47);
+                    },
+                    full:function(layero){
+                        var iframeWindow = window[layero.find('iframe')[0]['name']];
+                        var height = layero.find('iframe')[0]['clientHeight'];
+                        iframeWindow.setTextareaHeight(height-50);
+                    },
+                    restore:function(layero){
+                        var iframeWindow = window[layero.find('iframe')[0]['name']];
+                        var height = layero.find('iframe')[0]['clientHeight'];
+                        iframeWindow.setTextareaHeight(height-50);
+                    }
+                });
+            }
+        });
+
+        $("#new-file").on("click",function(){
+           var parent = $("#parent-folder").val();
+           if(parent == null || parent.trim() == ""){
+               parent = "themes";
+           }
+           layer.prompt({title:'创建新的模板文件',formType:0},function(fileName,index){
+              var suffix = fileName.substring(fileName.lastIndexOf(".")).toLowerCase();
+              if(suffix === ".png" || suffix === ".jpg"|| suffix === ".jpeg"||suffix === ".gif"|| suffix === ".bmp"||suffix===".webp"){
+                  layer.alert("不支持创建图像文件",{title:"系统提示信息",icon:0});
+                  return false;
+              }else{
+                  $.ajax({
+                      type:'POST',
+                      url:'${una}/admin/theme/newFile',
+                      data:{
+                          path:parent+"/"+fileName
+                      },
+                      success:function(){
+                          layer.close(index);
+                          layer.confirm(fileName+"文件已经创建，现在需要编辑该文件吗?",{
+                              btn:['是(Y)','否(N)'],
+                              title:'系统提示信息',
+                              icon:1
+                          },function(index){
+                              layer.close(index);
+                              var id = parent.replace("/","\\");
+                              var pnode = ztreeObj.getNodeByParam("id",id);
+                              ztreeObj.selectNode(pnode,false,false);
+                              ztreeObj.expandNode(pnode,true,false,true);
+                              ztreeObj.reAsyncChildNodes(pnode,"refresh",false);
+                              $.ajax({
+                                  type:'get',
+                                  url:'${una}/admin/theme/subFiles',
+                                  data:{
+                                      pid:parent
+                                  },
+                                  success:function(page){
+                                      $("#data-table").html(page);
+                                  }
+                              });
+                              layer.open({
+                                  type:2,
+                                  title:"<span class='edit-file-title'><i class='fa fa-folder-open text-yellow'></i>.../"+parent+"/"+fileName+"</span>",
+                                  shadeClose:false,
+                                  shade:0.4,
+                                  offset:['55px'],
+                                  area:['70%','88%'],
+                                  content:'${una}/admin/theme/editor?path='+parent+"/"+fileName,
+                                  resize:false,
+                                  anim:1,
+                                  maxmin:true,
+                                  move:false,
+                                  success:function(layero,index){
+                                      var iframeWindow = window[layero.find('iframe')[0]['name']];
+                                      var height = layero.find('iframe')[0]['clientHeight'];
+                                      iframeWindow.setTextareaHeight(height-47);
+                                  },
+                                  full:function(layero){
+                                      var iframeWindow = window[layero.find('iframe')[0]['name']];
+                                      var height = layero.find('iframe')[0]['clientHeight'];
+                                      iframeWindow.setTextareaHeight(height-50);
+                                  },
+                                  restore:function(layero){
+                                      var iframeWindow = window[layero.find('iframe')[0]['name']];
+                                      var height = layero.find('iframe')[0]['clientHeight'];
+                                      iframeWindow.setTextareaHeight(height-50);
+                                  }
+                              });
+                          },function(index){
+                              layer.close(index);
+                              var id = parent.replace("/","\\");
+                             var pnode = ztreeObj.getNodeByParam("id",id);
+                              ztreeObj.selectNode(pnode,false,false);
+                              ztreeObj.expandNode(pnode,true,false,true);
+                             ztreeObj.reAsyncChildNodes(pnode,"refresh",false);
+                              $.ajax({
+                                  type:'get',
+                                  url:'${una}/admin/theme/subFiles',
+                                  data:{
+                                      pid:parent
+                                  },
+                                  success:function(page){
+                                      $("#data-table").html(page);
+                                  }
+                              });
+                          });
+                      },
+                      error:function(){
+                          layer.close(index);
+                          layer.alert("文件创建失败",{title:'系统提示信息',icon:0});
+                      }
+                  });
+              }
+           });
+        });
+
+        $("#new-folder").on("click",function(){
+            var parent = $("#parent-folder").val();
+            if(parent == null || parent.trim() == ""){
+                parent = "themes";
+            }
+            layer.prompt({title:"请输入文件夹名称",formType:0},function(folderName,index){
+               $.ajax({
+                   type:'POST',
+                   url:'${una}/admin/theme/newFolder',
+                   data:{
+                       path:parent+"/"+folderName
+                   },
+                   success:function(){
+                       layer.close(index);
+                       layer.alert("文件夹已经创建成功",{title:'系统提示信息',icon:1},function(index){
+                          layer.close(index);
+                           var id = parent.replace("/","\\");
+                           var pnode = ztreeObj.getNodeByParam("id",id);
+                           ztreeObj.selectNode(pnode,false,false);
+                           ztreeObj.expandNode(pnode,true,false,true);
+                           if(parent != "themes"){
+                               ztreeObj.reAsyncChildNodes(pnode,"refresh",false);
+                           }else{
+                               var curren = {
+                                   id:id+"\\"+folderName,
+                                   pid:id,
+                                   name:folderName,
+                                   folder:true
+                               };
+                               ztreeObj.addNodes(pnode,0,curren);
+                           }
+                           $.ajax({
+                               type:'get',
+                               url:'${una}/admin/theme/subFiles',
+                               data:{
+                                   pid:parent
+                               },
+                               success:function(page){
+                                   $("#data-table").html(page);
+                               }
+                           });
+                       });
+                   }
+               });
             });
         });
-       /* $(".edit-file").on("click",function(){
-            var index =layer.open({
-                skin:"",
-                type:2,
-                title:"<span class='edit-file-title'><i class='fa fa-folder-open text-yellow'></i>.../themes/default/index.html</span>",
-                shadeClose:false,
-                shade:0.4,
-                offset:['55px'],
-                area:['70%','88%'],
-                content:'./edit-file.html',
-                resize:false,
-                anim:1,
-                maxmin:true,
-                move:false,
-                end:function(){
-                    location.reload();
-                },
-                success:function(layero,index){
-                    var iframeWindow = window[layero.find('iframe')[0]['name']];
-                    var height = layero.find('iframe')[0]['clientHeight'];
-                    iframeWindow.setTextareaHeight(height-47);
-                },
-                full:function(layero){
-                    var iframeWindow = window[layero.find('iframe')[0]['name']];
-                    var height = layero.find('iframe')[0]['clientHeight'];
-                    iframeWindow.setTextareaHeight(height-50);
-                },
-                restore:function(layero){
-                    var iframeWindow = window[layero.find('iframe')[0]['name']];
-                    var height = layero.find('iframe')[0]['clientHeight'];
-                    iframeWindow.setTextareaHeight(height-50);
-                }
-            });
-        });*/
+
+        $(document).on("click",".del-opt",function(){
+           var path = $(this).attr("data-id");
+           layer.confirm("该操作不可逆，确定删除吗？",{
+               title:'系统提示信息',
+               icon:0,
+               btn:['是(Y)','否(N)']
+           },function(index){
+               var load = layer.load(2,{shade:[0.4,'#f0f0f0f0']});
+               $.ajax({
+                   type:'POST',
+                   url:'${una}/admin/theme/deleteFile',
+                   data:{
+                       path:path
+                   },
+                   success:function(){
+                       layer.close(load);
+                       layer.alert("文件已经删除",{title:'系统提示信息',icon:1},function(alertIndex){
+                          var ztreeNode = ztreeObj.getNodeByParam('id',path);
+                          var pnode = ztreeNode.getParentNode();
+                          ztreeObj.removeNode(ztreeNode);
+                           $.ajax({
+                               type:'get',
+                               url:'${una}/admin/theme/subFiles',
+                               data:{
+                                   pid:pnode.id
+                               },
+                               success:function(page){
+                                   $("#data-table").html(page);
+                               }
+                           });
+                           layer.close(alertIndex);
+                       });
+                       layer.close(index);
+                   },
+                   error:function(){
+                       layer.close(load);
+                       layer.close(index);
+                   }
+               });
+           },function(index){
+              layer.close(index);
+           });
+        });
     });
 </script>
 </body>

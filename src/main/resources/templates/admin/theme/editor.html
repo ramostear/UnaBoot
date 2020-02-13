@@ -26,8 +26,8 @@
                 </div>
                 <div class="fixed-bottom pl-4 pt-2 pr-4 pb-2 bg-gray-light text-right">
                     <span class="pull-left text-danger"><small><i class="fa fa-exclamation-triangle"></i> 修改模板后视图将受影响,请谨慎操作。</small></span>
-                    <button class="btn btn-sm btn-primary"><i class="fa fa-save"></i> 保存</button>
-                    <button class="btn btn-sm btn-default"><i class="fa fa-times-circle-o"></i> 取消</button>
+                    <button class="btn btn-sm btn-primary" id="save-file"><i class="fa fa-save"></i> 保存</button>
+                    <button class="btn btn-sm btn-default" id="close"><i class="fa fa-times-circle-o"></i> 取消</button>
                 </div>
             </div>
         </div>
@@ -47,7 +47,7 @@
         ace.require("ace/ext/static_highlight");
         ace.require("ace/ext/searchbox");
         editor = ace.edit("editor_area");
-        editor.setFontSize(14);
+        editor.setFontSize(16);
         editor.session.setUseWrapMode(true);
         editor.setHighlightActiveLine(true);
         editor.setTheme("ace/theme/dracula");
@@ -56,8 +56,8 @@
             enableSnippets: true,
             enableLiveAutocompletion: true
         });
-        editor.session.setMode("ace/mode/html");
-
+        //editor.session.setMode("ace/mode/html");
+        initLanguage();
         $.ajax({
             type:'GET',
             url:'${una}/admin/theme/read',
@@ -68,10 +68,62 @@
             error:function(){
                 layer.alert("加载文件失败",{title:'系统提示信息',icon:1});
             }
-        })
+        });
+        $("#save-file").on("click",function(){
+           var content = editor.getValue();
+           var path = "${path}";
+           var load = layer.load(2,{shade:[0.4,'#f0f0f0f0']});
+           $.ajax({
+               type:'POST',
+               url:'${una}/admin/theme/write',
+               cache:false,
+               contentType:'application/x-www-form-urlencoded;charset=utf-8',
+               data:{
+                   path:path,
+                   content:content
+               },
+               success:function(){
+                   layer.close(load);
+                   layer.alert("文件已保存成功",{title:'系统提示信息',icon:1});
+               },
+               error:function(){
+                   layer.close(load);
+                   layer.alert("服务器异常，请联系管理员",{title:'系统提示信息',icon:0});
+               }
+           });
+        });
+        $("#close").on("click",function(){
+            var pid =parent.layer.getFrameIndex(window.name);
+            parent.layer.close(pid);
+        });
     });
     function setTextareaHeight(height){
         $("#editor_area").css("height",height+"px");
+    }
+    function initLanguage(){
+        var path = "${path}";
+        var suffixIndex = path.lastIndexOf(".");
+        var pathLength = path.length;
+        var suffix = path.substring(suffixIndex,pathLength);
+        if (suffix === ".js") {
+            editor.session.setMode("ace/mode/javascript");
+        }else if(suffix === ".css"){
+            editor.session.setMode("ace/mode/css");
+        }else if(suffix === ".html"){
+            editor.session.setMode("ace/mode/html");
+        }else if(suffix === ".json"){
+            editor.session.setMode("ace/mode/json");
+        }else if(suffix === ".yaml"){
+            editor.session.setMode("ace/mode/yaml");
+        }else if(suffix === ".java"){
+            editor.session.setMode("ace/mode/java");
+        }else if(suffix === ".md"){
+            editor.session.setMode("ace/mode/markdown");
+        }else if(suffix === ".ftl"){
+            editor.session.setMode("ace/mode/ftl");
+        }else{
+            editor.session.setMode("ace/mode/text");
+        }
     }
 </script>
 </body>

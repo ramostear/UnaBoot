@@ -75,17 +75,79 @@ public class ThemeController extends UnaBootController {
         }
     }
 
+    /**
+     * Jump to the editor page
+     * @param path
+     * @param model
+     * @return
+     */
     @GetMapping("/editor")
     public String editor(@RequestParam("path")String path,Model model){
         model.addAttribute("path",path);
         return "/admin/theme/editor";
     }
 
+    /**
+     * Read file content
+     * @param path
+     * @return
+     */
     @ResponseBody
     @GetMapping("/read")
     public String readContent(@RequestParam("path")String path){
         return themeService.loadThemeFileContent(path);
     }
+
+    /**
+     * Write data to template file
+     * @param path
+     * @param content
+     * @return
+     */
+    @ResponseBody
+    @PostMapping("/write")
+    public ResponseEntity<Object> writeContent(@RequestParam("path")String path,@RequestParam("content") String content){
+        boolean flag = themeService.writeContentToThemeFile(path, content);
+        if(flag){
+            return ok();
+        }else{
+            return badRequest();
+        }
+    }
+    @ResponseBody
+    @PostMapping("/newFile")
+    public ResponseEntity<Object> newFile(@RequestParam("path")String path){
+        boolean flag = themeService.newFile(path);
+        if(flag){
+            return ok();
+        }else{
+            return badRequest();
+        }
+    }
+
+    @ResponseBody
+    @PostMapping("/newFolder")
+    public ResponseEntity<Object> newFolder(@RequestParam("path")String path){
+        boolean flag = themeService.newFolder(path);
+        if(flag){
+            return ok();
+        }else{
+            return badRequest();
+        }
+    }
+
+    @ResponseBody
+    @PostMapping("/deleteFile")
+    public ResponseEntity<Object> deleteFile(@RequestParam("path")String path){
+        //TODO 如果删除整个主题文件，则需要判断该主题是否正在被使用，如果当前主题已经被使用，则不允许删除整个主题文件
+        boolean flag = themeService.deleteFile(path);
+        if(flag){
+            return ok();
+        }else{
+            return badRequest();
+        }
+    }
+
 
     private static void clear(String fileName){
         System.gc();
