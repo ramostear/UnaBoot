@@ -18,6 +18,7 @@ import java.io.Serializable;
  **/
 @Data
 @Entity
+@Builder
 @Table(name="settings")
 @ToString(callSuper = true)
 @NoArgsConstructor

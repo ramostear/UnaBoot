@@ -33,7 +33,7 @@ spring:
     proxy-target-class: true
   jpa:
     generate-ddl: false
-    show-sql: false
+    show-sql: true
     hibernate:
       ddl-auto: update
     database-platform: org.hibernate.dialect.MySQL5Dialect

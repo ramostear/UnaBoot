@@ -5,6 +5,7 @@ import com.ramostear.unaboot.common.util.FileSizeUtils;
 import com.ramostear.unaboot.common.util.ThemeUtils;
 import com.ramostear.unaboot.domain.entity.Theme;
 import com.ramostear.unaboot.domain.valueobject.ThemeFile;
+import com.ramostear.unaboot.domain.valueobject.ThemeVo;
 import com.ramostear.unaboot.repository.ThemeRepository;
 import com.ramostear.unaboot.service.ThemeService;
 import com.ramostear.unaboot.service.base.UnaBootServiceImpl;
@@ -86,6 +87,20 @@ public class ThemeServiceImpl extends UnaBootServiceImpl<Theme,Integer> implemen
             }
         }
         return themeFiles;
+    }
+
+    @Override
+    public List<ThemeVo> loadThemes() {
+        String loadPath = UnaBootConst.FILE_UPLOAD_ROOT_DIR+"themes";
+        File targetFile = new File(loadPath);
+        File[] files = targetFile.listFiles();
+        List<ThemeVo> themes = new ArrayList<>();
+        if(files!=null && files.length > 0){
+            for (File file:files){
+                themes.add(ThemeVo.builder().name(file.getName()).build());
+            }
+        }
+        return themes;
     }
 
     @Override

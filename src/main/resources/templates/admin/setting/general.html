@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" href="${una}/admin/img/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="${una}/admin/img/favicon.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>常规配置 - UnaBoot</title>
+    <link rel="stylesheet" href="${una}/admin/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="${una}/admin/css/font-awesome.css">
+    <link rel="stylesheet" href="${una}/admin/css/ionicons.css">
+    <link rel="stylesheet" href="${una}/admin/css/adminlte.min.css">
+    <link rel="stylesheet" href="${una}/admin/plugins/layer/skin/default/layer.css"/>
+    <link rel="stylesheet" href="${una}/admin/css/unaboot-admin.css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
+<body class="hold-transition sidebar-mini sidebar-collapse">
+<div class="wrapper">
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <#include "admin/common/header.html"/>
+    </nav>
+    <aside class="main-sidebar sidebar-dark-maroon  elevation-4 ">
+        <#include "admin/common/menu.html"/>
+    </aside>
+    <div class="content-wrapper">
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h3 class="m-0 text-dark text-lg">通用设置</h3>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <form action="#" id="general-form">
+                            <div class="form-group row">
+                                <label class="col-3 col-form-label font-weight-normal text-right" for="title">网站标题<small class="text-danger">(*必填)</small></label>
+                                <div class="col-7">
+                                    <input type="text" class="form-control" name="title" id="title" value="${general['title'].value}" placeholder="请输入网站标题"/>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-3 col-form-label font-weight-normal text-right" for="description">网站标语<small class="text-gray">(*选填)</small></label>
+                                <div class="col-7">
+                                    <textarea type="text" rows="3" class="form-control" name="description" id="description"  style="resize: none;" placeholder="请用一句话概括你的网站">${general['description'].value}</textarea>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-3 col-form-label font-weight-normal text-right" for="keywords">关键词汇<small class="text-gray">(*选填)</small></label>
+                                <div class="col-7">
+                                    <input type="text" class="form-control" name="keywords" id="keywords" value="${general['keywords'].value}" placeholder="请配置网站关键词"/>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-3 col-form-label font-weight-normal text-right" for="domain">网站域名<small class="text-danger">(*必填)</small></label>
+                                <div class="col-7">
+                                    <input type="text" class="form-control" name="domain" id="domain" value="${general['domain'].value}" placeholder="请填写网站域名"/>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-3 col-form-label font-weight-normal text-right" for="icp">备案编号<small class="text-danger">(*必填)</small></label>
+                                <div class="col-7">
+                                    <input type="text" class="form-control" name="icp" id="icp" value="${general['icp'].value}" placeholder="请填写网站ICP备案编号"/>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-3 col-form-label font-weight-normal text-right" for="iscp">网安编号<small class="text-gray">(*选填)</small></label>
+                                <div class="col-7">
+                                    <input type="text" class="form-control" name="iscp" id="iscp" value="${general['iscp'].value}" placeholder="请填写全国互联网安全备案编号"/>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-3 col-form-label font-weight-normal text-right" for="email">站长邮箱<small class="text-danger">(*必填)</small></label>
+                                <div class="col-7">
+                                    <input type="text" class="form-control" name="email" id="email" value="${general['email'].value}" placeholder="请填写网站管理员邮箱"/>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-3 col-form-label font-weight-normal text-right" for="copyright">版权信息<small class="text-danger">(*必填)</small></label>
+                                <div class="col-7">
+                                    <input type="text" class="form-control" name="copyright" id="copyright" value="${general['copyright'].value}" placeholder="请填写网站版权信息"/>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-3 col-form-label font-weight-normal text-right" for="logo">网站Logo<small class="text-danger">(*必填)</small></label>
+                                <div class="col-7">
+                                    <img src="${(general['logo'].value)!una+'/admin/img/thumb.jpg'}" style="height: 120px;" class="img-thumbnail thumb-logo img-fluid mb-2" alt="网站logo">
+                                    <input type="hidden" name="logo" id="logo" value="${general['logo'].value}">
+                                    <input type="file" id="logo-file" onchange="selectFile(this,'logo')" style="display: none;" accept="image/*"/>
+                                    <div class="btn-group">
+                                        <button type="button" onclick="document.getElementById('logo-file').click();" class="btn btn-sm btn-primary"><i class="fa fa-upload"></i> 上传</button>
+                                        <button type="button" onclick="undo(this,'logo')" data-id="${(general['logo'].value)!una+'/admin/img/thumb.jpg'}" class="btn btn-default btn-sm"><i class="fa fa-undo"></i> 撤销</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-3 col-form-label font-weight-normal text-right" for="favicon">网站图标<small class="text-danger">(*必填)</small></label>
+                                <div class="col-7">
+                                    <img src="${(general['favicon'].value)!una+'/admin/img/thumb.jpg'}" style="height: 64px;width: 64px;" class="img-thumbnail thumb-favicon img-fluid mb-2" alt="网站logo">
+                                    <input type="hidden" name="favicon" id="favicon" value="${general['favicon'].value}">
+                                    <input type="file" id="favicon-file" onchange="selectFile(this,'favicon')" style="display: none;" accept="image/*"/>
+                                    <div class="btn-group">
+                                        <button type="button" onclick="document.getElementById('favicon-file').click();" class="btn btn-sm btn-primary"><i class="fa fa-upload"></i> 上传</button>
+                                        <button type="button" onclick="undo(this,'favicon')" data-id="${(general['favicon'].value)!una+'/admin/img/thumb.jpg'}" class="btn btn-default btn-sm"><i class="fa fa-undo"></i> 撤销</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-3 col-form-label font-weight-normal text-right" for="theme">网站主题<small class="text-danger">(*必填)</small></label>
+                                <div class="col-4">
+                                    <select type="text" class="form-control" name="theme" id="theme" >
+                                        <#if themes?? && themes?size gt 0>
+                                            <#list themes as theme>
+                                                <#if general['theme'].value?? && general['theme'].value == theme.name>
+                                                    <option value="${theme.name}" selected>${theme.name}</option>
+                                                <#else>
+                                                    <option value="${theme.name}">${theme.name}</option>
+                                                </#if>
+                                            </#list>
+                                        <#else>
+                                            <option value="default" selected>default</option>
+                                        </#if>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-12 text-right">
+                                    <button type="button" id="submit-form" class="btn btn-primary">更新配置</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <#include "admin/common/footer.html"/>
+</div>
+<script src="${una}/admin/plugins/jquery/jquery.min.js"></script>
+<script src="${una}/admin/plugins/jquery/jquery.serializejson.js"></script>
+<script src="${una}/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="${una}/admin/js/adminlte.min.js"></script>
+<script type="text/javascript" src="${una}/admin/plugins/layer/layer.js"></script>
+<script src="${una}/admin/js/jquery.validate.min.js"></script>
+<script type="text/javascript">
+    var form = $("#general-form");
+    form.validate({
+        errorPlacement: function errorPlacement(error, element) {
+            element.after(error);
+        },
+        rules:{
+            title:{
+                required:true
+            },
+            domain:{
+                required:true,
+                url:true
+            },
+            icp:{
+                required:true
+            },
+            email:{
+                required:true,
+                email: true
+            },
+            copyright:{
+                required:true
+            },
+            logo:{
+                required:true
+            },
+            favicon:{
+                required:true
+            },
+            theme:{
+                required:true
+            }
+        },
+        messages:{
+            title:'请输入网站标题',
+            domain: {
+                required:'请输入网站域名',
+                url:'网站域名格式不正确'
+            },
+            icp: '网站备案号不能为空',
+            email:{
+                required:'站长邮箱不能为空',
+                email:"邮箱格式不正确"
+            },
+            copyright:{
+                required:'请输入网站版权信息'
+            },
+            logo:{
+                required:'请上传网站logo'
+            },
+            favicon:{
+                required:'请上传网站Title小图标'
+            },
+            theme:{
+                required:'请设置网站主题'
+            }
+        }
+    });
+    $("#submit-form").on("click",function(){
+        var flag = form.valid();
+        if(flag){
+            var data = $("#general-form").serialize();
+            layer.confirm("确定保存此表单数据吗?",{
+                btn:['是(Y)','否(N)'],
+                title:'系统提示信息',
+                icon:1
+            },function(index){
+               var load = layer.load(2,{shade:[0.4,'#f0f0f0f0']});
+               $.ajax({
+                   type:'POST',
+                   url:'${una}/admin/setting/general',
+                   data:data,
+                   success:function(){
+                       layer.close(load);
+                       layer.close(index);
+                       layer.alert("表单数据已经保存",{title:'系统提示',icon:1});
+                   },
+                   error:function(){
+                       layer.close(load);
+                       layer.close(index);
+                       layer.alert("服务器异常",{title:'系统提示',icon:0});
+                   }
+               })
+            },function(index){
+                layer.close(index);
+            });
+        }
+    });
+
+    function selectFile(ele,id){
+        try{
+            var file = ele.files[0];
+            var reader = new FileReader();
+            var fileName = "";
+            if(typeof(fileName) != "undefined"){
+                fileName = $(ele).val().split("\\").pop();
+            }
+            reader.onload = function(){
+                var image = new Image();
+                image.src = reader.result;
+                image.onload = function(){
+                    var w = image.width,h=image.height;
+                    var canvas = document.createElement("canvas");
+                    var ctx = canvas.getContext("2d");
+                    $(canvas).attr({width:w,height:h});
+                    ctx.drawImage(image,0,0,w,h);
+                    var base64 = canvas.toDataURL("image/png",0.5);
+                    var result = {
+                        url:window.URL.createObjectURL(file),
+                        base64:base64,
+                        clearBase64:base64.substr(base64.indexOf(',')+1),
+                        suffix:base64.substring(base64.indexOf(',')+1,base64.indexOf(';'))
+                    };
+                    $("input[id="+id+"]").val(result.base64);
+                    $("img.thumb-"+id).attr("src",result.base64);
+                }
+            }
+            reader.readAsDataURL(ele.files[0]);
+        }catch (e) {
+            alert("upload file error");
+        }
+    }
+
+    function undo(ele,id){
+        var img_src = $(ele).attr("data-id");
+        $("img.thumb-"+id).attr('src',img_src);
+        if(id=="logo"){
+            $("input[id=logo]").val(${general['logo'].value});
+        }else{
+            $("input[id=favicon]").val(${general['favicon'].value});
+        }
+    }
+</script>
+</body>
+</html>

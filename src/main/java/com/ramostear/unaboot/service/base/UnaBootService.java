@@ -27,7 +27,7 @@ public interface UnaBootService<T,ID extends Serializable> {
      * @return
      */
     @NonNull
-    List<T> finaAll(@NonNull Sort sort);
+    List<T> findAll(@NonNull Sort sort);
 
     /**
      * 查询所有记录，并对结果集进行分页处理

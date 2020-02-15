@@ -47,7 +47,7 @@ public abstract class UnaBootServiceImpl<T,ID extends Serializable> implements U
     }
 
     @Override
-    public List<T> finaAll(Sort sort) {
+    public List<T> findAll(Sort sort) {
         Assert.notNull(sort,"sort must not be null");
         return repository.findAll(sort);
     }
