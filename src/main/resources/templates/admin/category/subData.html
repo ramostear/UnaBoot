@@ -1,0 +1,34 @@
+<table class="table table-hover with-border">
+    <thead class="bg-light">
+    <tr>
+        <th>名称</th><th>Slug</th><th>模板</th><th>导航</th><th>序号</th><th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+        <#if categories?? && categories?size gt 0>
+            <#list categories as category>
+                <tr>
+                    <td>${category.name}</td>
+                    <td>${category.slug}</td>
+                    <td>${category.theme}</td>
+                    <td>
+                        <#if category.show == 1>
+                            是
+                        <#else>
+                            否
+                        </#if>
+                    </td>
+                    <td>${category.sortId}</td>
+                    <td>
+                        <a href="javascript:void(0);" class="edit-category" data-id="${category.id}"><i class="fa fa-pencil mr-2"></i></a>
+                        <a href="javascript:void(0);" class="delete-category" data-id="${category.id}"><i class="fa fa-trash text-danger"></i></a>
+                    </td>
+                </tr>
+            </#list>
+        <#else>
+            <tr>
+                <td colspan="6" class="text-center">暂无任何可用数据</td>
+            </tr>
+        </#if>
+    </tbody>
+</table>

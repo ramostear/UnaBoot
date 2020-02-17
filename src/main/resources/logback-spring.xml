@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration debug="false">
+
+    <!--日志文件主目录-->
+    <property name="LOG_HOME" value="${user.home}/.una/log"/>
+    <!--日志文件名称-->
+    <springProperty scope="context" name="APP_NAME" source="spring.application.name"/>
+    <!--默认配置-->
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <!--控制台配置-->
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+    <!--配置日志文件 File-->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--设置日志策略-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--设置日志文件输出路径-->
+            <FileNamePattern>${LOG_HOME}/%d{yyyyMMdd}/${APP_NAME}.log</FileNamePattern>
+            <!--日志保存天数-->
+            <MaxHistory>15</MaxHistory>
+        </rollingPolicy>
+        <!--设置日志格式-->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!--格式化输出：%d表示日期，%thread表示线程,%-5level表示级别从左显示5个字符宽度，%msg表示日志消息，%n表示换行符号-->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread]  %logger{100} - %msg%n</pattern>
+            <charset>utf8</charset>
+        </encoder>
+        <!--设置日志文件的最大/最小限制-->
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>10MB</MaxFileSize>
+        </triggeringPolicy>
+    </appender>
+
+    <!--将文件输入设置为异步输出-->
+    <appender name="ASYNC-FILE" class="ch.qos.logback.classic.AsyncAppender">
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>256</queueSize>
+        <appender-ref ref="FILE"/>
+    </appender>
+
+    <!--将控制台输出设置为异步-->
+    <appender name="ASYNC-CONSOLE" class="ch.qos.logback.classic.AsyncAppender">
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>256</queueSize>
+        <appender-ref ref="CONSOLE"/>
+    </appender>
+
+    <!--root节点，全局日志级别，用来指定最基础的日志输出级别-->
+    <root level="INFO">
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="CONSOLE"/>
+    </root>
+    <!--子节点日志级别设置-->
+    <logger level="WARN" name="org.springframework"/>
+    <logger level="DEBUG" name="java.sql"/>
+    <logger  level="DEBUG" name="org.springframework.jdbc"/>
+    <logger level="DEBUG" name="org.hibernate.sql"/>
+    <logger level="INFO" name="com.ramostear.unaboot"/>
+    <logger level="WARN" name="freemarker.cache"/>
+</configuration>

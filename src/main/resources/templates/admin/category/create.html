@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" href="${una}/admin/img/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="${una}/admin/img/favicon.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>新建栏目 - UnaBoot</title>
+    <link rel="stylesheet" href="${una}/admin/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="${una}/admin/css/font-awesome.css">
+    <link rel="stylesheet" href="${una}/admin/css/ionicons.css">
+    <link rel="stylesheet" href="${una}/admin/css/adminlte.min.css">
+    <link rel="stylesheet" href="${una}/admin/plugins/layer/skin/default/layer.css"/>
+    <link rel="stylesheet" href="${una}/admin/css/unaboot-admin.css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <style>
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-12 pt-2">
+            <form action="" id="category-form">
+               <input type="hidden" name="pid" id="parent-id" value="${parent!'0'}">
+                <div class="form-group row">
+                    <label class="col-3 col-form-label font-weight-normal text-right" for="name">栏目名称<small class="text-danger">(*必填)</small></label>
+                    <div class="col-8">
+                        <input type="text" class="form-control" name="name" id="name"  placeholder="请输入栏目名称"/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-3 col-form-label font-weight-normal text-right" for="slug">Slug<small class="text-danger">(*必填)</small></label>
+                    <div class="col-8">
+                        <input type="text" class="form-control" name="slug" id="slug"  placeholder="请输入栏目Slug值"/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-3 col-form-label font-weight-normal text-right" for="theme">模板<small class="text-danger">(*必填)</small></label>
+                    <div class="col-8">
+                        <select class="form-control" name="theme" id="theme">
+                            <#if templates?? && templates?size gt 0>
+                                <#list templates as template>
+                                    <option value="${template}">${template}</option>
+                                </#list>
+                            </#if>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-3 col-form-label font-weight-normal text-right" for="sortId">序号<small class="text-danger">(*必填)</small></label>
+                    <div class="col-8">
+                        <input type="number" class="form-control" name="sortId" id="sortId" min="0" step="1" value="0"/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-3 col-form-label font-weight-normal text-right">导航栏目</label>
+                    <div class="col-9">
+                        <div class="custom-control custom-radio custom-control-inline pr-4">
+                            <input type="radio" id="show-on" name="show" value="1" class="custom-control-input">
+                            <label class="custom-control-label font-weight-normal" for="show-on">是(Y)</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" id="show-off" name="show" value="0" checked class="custom-control-input">
+                            <label class="custom-control-label font-weight-normal" for="show-off">否(N)</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-3 col-form-label font-weight-normal text-right" for="discribe">栏目介绍<small class="text-danger">(*必填)</small></label>
+                    <div class="col-8">
+                        <textarea class="form-control" rows="3" name="describe" id="describe"></textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-3 col-form-label font-weight-normal text-right" for="keywords">栏目关键词<small class="text-danger">(*必填)</small></label>
+                    <div class="col-8">
+                        <textarea class="form-control" rows="2" name="keywords" id="keywords"></textarea>
+                    </div>
+                </div>
+                <div class="fixed-bottom pl-4 pt-2 pr-4 pb-2 bg-gray-light text-right">
+                    <button type="button" class="btn btn-sm btn-primary" id="save-data"><i class="fa fa-save"></i> 保存</button>
+                    <button type="button" class="btn btn-sm btn-default" id="close"><i class="fa fa-times-circle-o"></i> 取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="${una}/admin/plugins/jquery/jquery.min.js"></script>
+<script src="${una}/admin/plugins/jquery/jquery.serializejson.js"></script>
+<script src="${una}/admin/plugins/jquery/jquery.form.js"></script>
+<script src="${una}/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="${una}/admin/js/adminlte.min.js"></script>
+<script type="text/javascript" src="${una}/admin/plugins/layer/layer.js"></script>
+<script src="${una}/admin/js/jquery.validate.min.js"></script>
+<script type="text/javascript">
+    var form = $("#category-form");
+    form.validate({
+        errorPlacement: function errorPlacement(error, element) {
+            element.after(error);
+        },
+        rules:{
+            name:{
+                required:true
+            },
+            slug:{
+                required:true
+            },
+            theme:{
+                required:true
+            },
+            describe:{
+                required:true
+            },
+            keywords:{
+                required:true
+            }
+        },
+        messages:{
+            name:{
+                required:'请输入栏目名称'
+            },
+            slug: {
+                required:'请输入栏目slug(作为访问地址)'
+            },
+            theme: {
+                required:'请设置栏目的渲染模板'
+            },
+            describe:{
+                required:'请设置栏目的简介信息'
+            },
+            keywords:{
+                required:'请输入栏目的关键词'
+            }
+        }
+    });
+    $("#save-data").on("click",function(){
+       var flag =  form.valid();
+       if(flag){
+           var data = $("#category-form").serialize();
+           var pid = $("#parent-id").val();
+           var load = layer.load(2,{shade:[0.4,'#f0f0f0f0']});
+           $.ajax({
+               type:'POST',
+               url:"${una}/admin/category/"+pid+"/create",
+               data:data,
+               success:function(){
+                   layer.close(load);
+                   var index = parent.layer.getFrameIndex(window.name);
+                   parent.layer.alert("数据已经成功保存",{title:'系统提示信息',icon:1},function(sub){
+                       parent.reloadData(pid);
+                       parent.layer.close(index);
+                       parent.layer.close(sub);
+                   });
+               },
+               error:function(){
+                   layer.close(load);
+                   layer.alert("服务器异常",{title:'系统提示',icon:0});
+               }
+           });
+       }
+    });
+    $("#close").on("click",function(){
+        var index = parent.layer.getFrameIndex(window.name);
+        parent.layer.close(index);
+    });
+</script>
+</body>
+</html>
