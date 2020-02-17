@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" href="${una}/admin/img/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="${una}/admin/img/favicon.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>系统日志 - UnaBoot</title>
+    <link rel="stylesheet" href="${una}/admin/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="${una}/admin/css/font-awesome.css">
+    <link rel="stylesheet" href="${una}/admin/css/ionicons.css">
+    <link rel="stylesheet" href="${una}/admin/css/adminlte.min.css">
+    <link rel="stylesheet" href="${una}/admin/plugins/layer/skin/default/layer.css"/>
+    <link rel="stylesheet" href="${una}/admin/css/unaboot-admin.css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <style>
+        #logging-content{
+            overflow: auto;
+            font-size: 16px;
+            font-family: "Meiryo UI", "Microsoft YaHei", "Malgun Gothic", "Segoe UI", "Trebuchet MS", Helvetica, "Monaco", monospace, Tahoma, STXihei, "华文细黑", STHeiti, "Helvetica Neue", "Droid Sans", "wenquanyi micro hei", FreeSans, Arimo, Arial, SimSun, "宋体", Heiti, "黑体", sans-serif;
+            font-weight: lighter;
+            padding-left: 15px;
+            background-color: #343a40;
+            color: #ffff;
+            letter-spacing: 1px;
+        }
+        #logging-content:focus{
+            outline: none;
+        }
+        #logging-content{
+            overflow-y: auto;
+        }
+        #logging-content::-webkit-scrollbar {/*滚动条整体样式*/
+            width: 8px; /*高宽分别对应横竖滚动条的尺寸*/
+            height: 4px;
+        }
+        #logging-content::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+            border-radius: 5px;
+            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+            background: rgba(0,0,0,0.2);
+        }
+        #logging-content::-webkit-scrollbar-track {/*滚动条里面轨道*/
+            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+            border-radius: 0;
+            background: rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="hold-transition sidebar-mini sidebar-collapse">
+<div class="wrapper">
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <#include "admin/common/header.html"/>
+    </nav>
+    <aside class="main-sidebar sidebar-dark-maroon  elevation-4 ">
+        <#include "admin/common/menu.html"/>
+    </aside>
+    <div class="content-wrapper">
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h3 class="m-0 text-dark text-lg">
+                            <a href="https://www.ramostear.com">
+                                <img src="${una}/admin/img/logo.png" style="height: 25px;">
+                            </a>
+                            系统日志
+                        </h3>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title"><i class="fa fa-code"></i> Console</h3>
+                            </div>
+                            <div class="card-body p-0 bg-dark">
+                                <div id="logging-content" class="bg-dark" contenteditable="true">
+
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="btn-group">
+                                    <button id="to-bottom" class="btn btn-sm btn-default">至底部</button>
+                                    <button id="auto-scroll" class="btn btn-sm btn-primary">自动滚动</button>
+                                    <button type="button" title="Clear All" class="btn btn-sm btn-danger" id="clear-content"><i class="fa fa-trash"></i> 清屏</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <#include "admin/common/footer.html"/>
+</div>
+<script src="${una}/admin/plugins/jquery/jquery.min.js"></script>
+<script src="${una}/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="${una}/admin/js/adminlte.min.js"></script>
+<script type="text/javascript" src="${una}/admin/plugins/layer/layer.js"></script>
+<script type="text/javascript">
+    var autoScroll = false;
+    frameHeight();
+    function frameHeight(){
+        $("#logging-content").css("height",(document.documentElement.clientHeight-300)+"px");
+    }
+    window.addEventListener("resize",frameHeight);
+    var websocket = null;
+    var load = layer.load(2,{shade:[0.4,'#f0f0f0f0']});
+    if('WebSocket' in window){
+        websocket = new WebSocket("ws://localhost/admin/websocket/logging");
+    }else{
+        layer.msg("不支持WebSocket");
+    }
+    websocket.onerror = function(e){
+        layer.msg("WebSocket链接异常:"+e);
+    }
+
+    websocket.onopen = function(){
+        layer.close(load);
+        layer.msg("WebSocket链接成功");
+    }
+    websocket.onmessage = function(event){
+        if(event.data){
+            var loggingText = $("#logging-content");
+            loggingText.append(event.data);
+            if(autoScroll){
+                loggingText.animate({
+                    scrollTop:loggingText[0].scrollHeight
+                });
+                //loggingText.scrollTo(loggingText[0].scrollHeight);
+            }
+        }
+    }
+
+    $("#clear-content").on("click",function(){
+       $("#logging-content").text("");
+    });
+
+    $("#to-bottom").on("click",function(){
+        $("#logging-content").animate({
+            scrollTop:$("#logging-content")[0].scrollHeight
+        });
+    });
+    $("#auto-scroll").on("click",function(){
+       if(autoScroll){
+           $(this).text('开启滚动');
+       }else{
+           $(this).text('关闭滚动');
+       }
+       autoScroll = !autoScroll;
+    });
+</script>
+</body>
+</html>

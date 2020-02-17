@@ -1,6 +1,8 @@
 package com.ramostear.unaboot.web.admin;
 
+import com.ramostear.unaboot.common.util.QiniuUtils;
 import com.ramostear.unaboot.domain.entity.Setting;
+import com.ramostear.unaboot.domain.valueobject.Qiniu;
 import com.ramostear.unaboot.service.SettingService;
 import com.ramostear.unaboot.service.ThemeService;
 import com.ramostear.unaboot.web.UnaBootController;
@@ -55,6 +57,47 @@ public class SettingController extends UnaBootController {
         return updateSetting(request);
     }
 
+    @GetMapping("/cdn")
+    public String cdn(Model model){
+        model.addAttribute("cdn", QiniuUtils.getConfig());
+        model.addAttribute("zones",QiniuUtils.zones());
+        return "/admin/setting/cdn";
+    }
+
+    @PostMapping("/cdn")
+    @ResponseBody
+    public ResponseEntity<Object> cdn(Qiniu qiniu){
+        boolean flag = QiniuUtils.setConfig(qiniu);
+        if(flag){
+            return ok();
+        }else{
+            return badRequest();
+        }
+    }
+
+    @GetMapping("/druid")
+    public String druid(){
+        return "/admin/setting/druid";
+    }
+
+
+    @GetMapping("/gitalk")
+    public String gitalk(Model model){
+        model.addAttribute("gitalk",settingService.gitalk());
+        return "/admin/setting/gitalk";
+    }
+
+    @PostMapping("/gitalk")
+    @ResponseBody
+    public ResponseEntity<Object> gitalk(HttpServletRequest request){
+        return updateSetting(request);
+    }
+
+
+    @GetMapping("/logging")
+    public String logging(){
+        return "/admin/setting/log";
+    }
 
     private ResponseEntity<Object> updateSetting(HttpServletRequest request){
         Map<String,String[]> parameters = request.getParameterMap();
@@ -68,7 +111,7 @@ public class SettingController extends UnaBootController {
         Set<String> keySet = settings.keySet();
         keySet.forEach(key->{
             servletContext.setAttribute(key,settings.get(key).getValue());
-            log.info("General setting key:[{}],value:[{}]",key,settings.get(key).getValue());
+            log.info("General setting key:{},value:{}",key,settings.get(key).getValue());
         });
         return ok();
     }

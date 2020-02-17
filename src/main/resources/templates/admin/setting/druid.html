@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" href="${una}/admin/img/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="${una}/admin/img/favicon.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>数据源监控 - UnaBoot</title>
+    <link rel="stylesheet" href="${una}/admin/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="${una}/admin/css/font-awesome.css">
+    <link rel="stylesheet" href="${una}/admin/css/ionicons.css">
+    <link rel="stylesheet" href="${una}/admin/css/adminlte.min.css">
+    <link rel="stylesheet" href="${una}/admin/css/unaboot-admin.css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
+<body class="hold-transition sidebar-mini sidebar-collapse">
+<div class="wrapper">
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <#include "admin/common/header.html"/>
+    </nav>
+    <aside class="main-sidebar sidebar-dark-maroon  elevation-4 ">
+        <#include "admin/common/menu.html"/>
+    </aside>
+    <div class="content-wrapper">
+        <div class="content p-0">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <iframe id="druid-frame" name="druid-frame" src="${una}/admin/druid/index" frameborder="0" scrolling="auto" width="100%" height="800"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <#include "admin/common/footer.html"/>
+</div>
+<script src="${una}/admin/plugins/jquery/jquery.min.js"></script>
+<script src="${una}/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="${una}/admin/js/adminlte.min.js"></script>
+<script>
+    $(function(){
+       var iframe = $("#druid-frame")[0];
+       if(iframe.attachEvent){
+           iframe.attachEvent("onload",function(){
+               $("#druid-frame").contents().find(".footer").hide();
+               $("#druid-frame").contents().find(".container").removeClass("container").addClass("container-fluid");
+               $("#druid-frame").contents().find("a.brand").html("<img src='${una}/admin/img/alibaba.png' style='height:19px;'>");
+           });
+       }else{
+           iframe.onload = function(){
+               $("#druid-frame").contents().find(".footer").hide();
+               $("#druid-frame").contents().find(".navbar-inner>div").removeClass("container").addClass("container-fluid");
+               $("#druid-frame").contents().find("a.brand").html("<img src='${una}/admin/img/alibaba.png' style='height:19px;'>");
+               $("#druid-frame").contents().find("a.brand");
+           }
+       }
+       frameHeight();
+
+       function frameHeight(){
+           document.getElementById("druid-frame").height = document.documentElement.clientHeight -120;
+       }
+       window.addEventListener("resize",frameHeight);
+    });
+</script>
+</body>
+</html>

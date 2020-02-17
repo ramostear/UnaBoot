@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" href="${una}/admin/img/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="${una}/admin/img/favicon.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>评论配置 - UnaBoot</title>
+    <link rel="stylesheet" href="${una}/admin/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="${una}/admin/css/font-awesome.css">
+    <link rel="stylesheet" href="${una}/admin/css/ionicons.css">
+    <link rel="stylesheet" href="${una}/admin/css/adminlte.min.css">
+    <link rel="stylesheet" href="${una}/admin/plugins/layer/skin/default/layer.css"/>
+    <link rel="stylesheet" href="${una}/admin/css/unaboot-admin.css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
+<body class="hold-transition sidebar-mini sidebar-collapse">
+<div class="wrapper">
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <#include "admin/common/header.html"/>
+    </nav>
+    <aside class="main-sidebar sidebar-dark-maroon  elevation-4 ">
+        <#include "admin/common/menu.html"/>
+    </aside>
+    <div class="content-wrapper">
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h3 class="m-0 text-dark text-lg">
+                            <a href="https://gitalk.github.io" target="_blank">
+                                <img src="${una}/admin/img/gitalk.png" style="height: 25px;">
+                            </a>
+                            评论插件设置
+                        </h3>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <form action="#" id="gitalk-form">
+                            <div class="form-group row">
+                                <label class="col-3 col-form-label font-weight-normal text-right">开启Gitalk<small class="text-danger">(*必填)</small></label>
+                                <div class="col-7">
+                                    <div class="custom-control custom-radio custom-control-inline pr-4">
+                                        <input type="radio" name="gitalk_enabled" id="gitalk_enabled_on" value="1" <#if gitalk.enabled == true> checked</#if> class="custom-control-input">
+                                        <label class="custom-control-label font-weight-normal" for="gitalk_enabled_on">启用</label>
+                                    </div>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" id="gitalk_enable_off" name="gitalk_enabled" value="0" <#if gitalk.enabled == false> checked</#if> class="custom-control-input">
+                                        <label class="custom-control-label font-weight-normal" for="gitalk_enable_off">禁用</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="gitalk-data" class="hidden">
+                                <div class="form-group row">
+                                    <label class="col-3 col-form-label font-weight-normal text-right" for="gitalk_client_id">clientId<small class="text-danger">(*必填)</small></label>
+                                    <div class="col-7">
+                                        <input type="text" class="form-control" name="gitalk_client_id" id="gitalk_client_id" value="${gitalk.clientId}" placeholder="Gitalk clientId..."/>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-3 col-form-label font-weight-normal text-right" for="gitalk_client_secret">clientSecret<small class="text-danger">(*必填)</small></label>
+                                    <div class="col-7">
+                                        <input type="text" class="form-control" name="gitalk_client_secret" id="gitalk_client_secret" value="${gitalk.clientSecret}" placeholder="Gitalk clientSecret..."/>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-3 col-form-label font-weight-normal text-right" for="gitalk_repo">repo<small class="text-gray">(*选填)</small></label>
+                                    <div class="col-7">
+                                        <input type="text" class="form-control" name="gitalk_repo" id="gitalk_repo" value="${gitalk.repo}" placeholder="Gitalk repo..."/>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-3 col-form-label font-weight-normal text-right" for="gitalk_owner">owner<small class="text-danger">(*必填)</small></label>
+                                    <div class="col-7">
+                                        <input type="text" class="form-control" name="gitalk_owner" id="gitalk_owner" value="${gitalk.owner}" placeholder="Gitalk owner..."/>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-3 col-form-label font-weight-normal text-right" for="gitalk_admin">admin<small class="text-danger">(*必填)</small></label>
+                                    <div class="col-7">
+                                        <input type="text" class="form-control" name="gitalk_admin" id="gitalk_admin" value="${gitalk.admin}" placeholder="Gitalk admin..."/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-12 text-center">
+                                    <button type="button" id="submit-form" class="btn btn-primary">保存配置</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="main-footer">
+        <div class="float-right d-none d-sm-inline">
+            Powered By 树下魅狐
+        </div>
+        <strong>&copy; 2015-2029 <a href="https://www.ramostear.com">ramostear.com</a>.</strong> All rights reserved.
+    </footer>
+</div>
+<script src="${una}/admin/plugins/jquery/jquery.min.js"></script>
+<script src="${una}/admin/plugins/jquery/jquery.serializejson.js"></script>
+<script src="${una}/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="${una}/admin/js/adminlte.min.js"></script>
+<script type="text/javascript" src="${una}/admin/plugins/layer/layer.js"></script>
+<script src="${una}/admin/js/jquery.validate.min.js"></script>
+<script type="text/javascript">
+    var form = $("#gitalk-form");
+    form.validate({
+        errorPlacement: function errorPlacement(error, element) {
+            element.after(error);
+        },
+        rules:{
+            gitalk_client_id:{
+                required:true
+            },
+            gitalk_client_secret:{
+                required:true
+            },
+            gitalk_repo:{
+                required:true
+            },
+            gitalk_owner:{
+                required:true
+            },
+            gitalk_admin:{
+                required:true
+            }
+        },
+        messages:{
+            gitalk_client_id:{
+                required:'请填写Gitalk ClientId'
+            },
+            gitalk_client_secret: {
+                required:'请填写Gitalk ClientSecret',
+            },
+            gitalk_repo: {
+                required:'请填写Gitalk Repository地址'
+            },
+            gitalk_owner:{
+                required:'请填写Gitalk 用户名称'
+            },
+            gitalk_admin:{
+                required:'请填写Gitalk 管理员名称'
+            }
+        }
+    });
+    initData(true);
+    $("#submit-form").on("click",function(){
+        var enabled = $("input:radio[name='gitalk_enabled']:checked").val();
+        if(enabled == 0){
+            layer.confirm("你确定关闭Gitalk评论插件吗？",{
+                title:'系统提示',
+                icon:1,
+                btn:['是(Y)','否(N)']
+            },function(index){
+                submitForm(false);
+                layer.close(index);
+            },function(index){
+                layer.close(index);
+            });
+        }else{
+            submitForm(true);
+        }
+    });
+
+    function submitForm(validate){
+        var data = $("#gitalk-form").serialize();
+        var flag = false;
+        if(validate){
+            flag = form.valid();
+        }else{
+            flag = true;
+        }
+        if(flag){
+            var load = layer.load(2,{shade:[0.4,'#f0f0f0f0']});
+            $.ajax({
+                type:'POST',
+                url:'${una}/admin/setting/gitalk',
+                data:data,
+                success:function(){
+                    layer.close(load);
+                    layer.alert("数据已经成功保存",{title:'系统提示信息',icon:1});
+                },
+                error:function(){
+                    layer.close(load);
+                    layer.alert("服务器异常",{title:'系统提示信息',icon:0});
+                }
+            });
+        }
+    }
+
+    $("input[name='gitalk_enabled']").on("click",function(){
+        initData(false);
+    });
+
+    function initData(first){
+        var value = $("input:radio[name='gitalk_enabled']:checked").val();
+        if(value == 0){
+            if(first){
+                $("#gitalk-data").hide();
+            }else{
+                $("#gitalk-data").slideUp();
+            }
+
+        }else{
+            if(first){
+                $("#gitalk-data").show();
+            }else{
+                $("#gitalk-data").slideDown();
+            }
+        }
+    }
+</script>
+</body>
+</html>

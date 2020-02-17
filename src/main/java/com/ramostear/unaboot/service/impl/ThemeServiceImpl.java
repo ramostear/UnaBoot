@@ -17,10 +17,9 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -101,6 +100,24 @@ public class ThemeServiceImpl extends UnaBootServiceImpl<Theme,Integer> implemen
             }
         }
         return themes;
+    }
+
+    @Override
+    public List<String> templateDetail(String theme) {
+        String fullPath = UnaBootConst.FILE_UPLOAD_ROOT_DIR+"themes"+UnaBootConst.SEPARATOR+theme;
+        File file = new File(fullPath);
+        if(!file.exists() || file.isFile()){
+            return Collections.emptyList();
+        }
+        File[] subFiles = file.listFiles();
+        if(subFiles != null && subFiles.length >0){
+            return Arrays.stream(subFiles)
+                    .filter(f -> f.isFile() && f.getName().endsWith(".html"))
+                    .map(f->f.getName())
+                    .collect(Collectors.toList());
+        }else{
+            return Collections.emptyList();
+        }
     }
 
     @Override

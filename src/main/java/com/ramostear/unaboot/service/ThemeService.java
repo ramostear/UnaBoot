@@ -31,6 +31,8 @@ public interface ThemeService extends UnaBootService<Theme,Integer> {
      */
     List<ThemeVo> loadThemes();
 
+    List<String> templateDetail(String theme);
+
     /**
      * Load theme file contents
      * @param file

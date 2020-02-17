@@ -2,6 +2,7 @@ package com.ramostear.unaboot.service.impl;
 
 import com.ramostear.unaboot.common.UnaBootConst;
 import com.ramostear.unaboot.domain.entity.Setting;
+import com.ramostear.unaboot.domain.valueobject.Gitalk;
 import com.ramostear.unaboot.repository.SettingRepository;
 import com.ramostear.unaboot.service.SettingService;
 import com.ramostear.unaboot.service.base.UnaBootServiceImpl;
@@ -62,5 +63,24 @@ public class SettingServiceImpl extends UnaBootServiceImpl<Setting,Integer> impl
             list.add(setting);
         });
         updateInBatch(list);
+    }
+
+    @Override
+    public Gitalk gitalk() {
+        Gitalk gitalk = new Gitalk();
+        Map<String,Setting> settings = this.convertTo();
+        if(CollectionUtils.isEmpty(settings)){
+            return gitalk;
+        }
+        String[] keys = {"gitalk_enabled","gitalk_client_id",
+                         "gitalk_client_secret","gitalk_repo",
+                         "gitalk_owner","gitalk_admin"};
+        gitalk.setEnabled(settings.get(keys[0])!= null?(settings.get(keys[0]).getValue()).equals("1"):false);
+        gitalk.setClientId(settings.get(keys[1])!=null?(settings.get(keys[1]).getValue()):"");
+        gitalk.setClientSecret(settings.get(keys[2])!=null?(settings.get(keys[2]).getValue()):"");
+        gitalk.setRepo(settings.get(keys[3])!=null?(settings.get(keys[3]).getValue()):"");
+        gitalk.setOwner(settings.get(keys[4])!=null?(settings.get(keys[4]).getValue()):"");
+        gitalk.setAdmin(settings.get(keys[5])!=null?(settings.get(keys[5]).getValue()):"");
+        return gitalk;
     }
 }

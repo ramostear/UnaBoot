@@ -29,7 +29,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h3 class="m-0 text-dark text-lg">通用设置</h3>
+                        <h3 class="m-0 text-dark text-lg">
+                            <a href="https://www.ramostear.com">
+                                <img src="${una}/admin/img/logo.png" style="height: 25px;">
+                            </a>
+                            通用设置
+                        </h3>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
             </div><!-- /.container-fluid -->
@@ -276,9 +281,9 @@
         var img_src = $(ele).attr("data-id");
         $("img.thumb-"+id).attr('src',img_src);
         if(id=="logo"){
-            $("input[id=logo]").val(${general['logo'].value});
+            $("input[id=logo]").val('${general['logo'].value}');
         }else{
-            $("input[id=favicon]").val(${general['favicon'].value});
+            $("input[id=favicon]").val('${general['favicon'].value}');
         }
     }
 </script>

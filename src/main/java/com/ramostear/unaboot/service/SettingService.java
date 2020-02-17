@@ -1,6 +1,7 @@
 package com.ramostear.unaboot.service;
 
 import com.ramostear.unaboot.domain.entity.Setting;
+import com.ramostear.unaboot.domain.valueobject.Gitalk;
 import com.ramostear.unaboot.service.base.UnaBootService;
 import org.springframework.lang.NonNull;
 
@@ -28,6 +29,9 @@ public interface SettingService extends UnaBootService<Setting,Integer> {
      * @param collection
      */
     void update(@NonNull Collection<Setting> collection);
+
+
+    Gitalk gitalk();
 
 
 }
