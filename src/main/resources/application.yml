@@ -4,9 +4,9 @@ server:
   port: 80
 logging:
   level:
-    com.ramostear.unaboot:  debug
-    org.springframework:  warn
-    org.spring.springboot:  info
+    com.ramostear.unaboot:  info
+    org.springframework:  debug
+    org.spring.springboot:  debug
 spring:
   freemarker:
     suffix: .html

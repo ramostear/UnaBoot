@@ -7,6 +7,7 @@ import com.ramostear.unaboot.service.CategoryService;
 import com.ramostear.unaboot.service.ThemeService;
 import com.ramostear.unaboot.web.UnaBootController;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
@@ -80,6 +81,32 @@ public class CategoryController extends UnaBootController {
             return ok();
         }else{
             return badRequest();
+        }
+    }
+
+    @GetMapping("/{id:\\d+}/update")
+    public String update(@PathVariable("id")Integer id,Model model){
+        String theme = (String) servletContext.getAttribute("theme");
+        if(StringUtils.isEmpty(theme)){
+            theme = "default";
+        }
+        List<String> templates = themeService.templateDetail(theme);
+        Category category = categoryService.findById(id);
+        model.addAttribute("category",category)
+             .addAttribute("templates",templates);
+        return "/admin/category/update";
+    }
+
+    @ResponseBody
+    @PostMapping("/{id:\\d+}/update")
+    public ResponseEntity<Object> update(@PathVariable("id")Integer id,Category category){
+        Category target = categoryService.findById(id);
+        if(target == null){
+            return badRequest();
+        }else{
+            BeanUtils.copyProperties(category,target,new String[]{"id","createTime"});
+            categoryService.update(target);
+            return ok();
         }
     }
 

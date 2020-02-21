@@ -65,11 +65,26 @@ public class LoggerWsHandler extends TextWebSocketHandler {
                        line = line.replace("WARN","<span class='text-yellow' style='font-weight:600;'>WARN</span>");
                        line = line.replace("ERROR","<span class='text-danger' style='font-weight:600;'>ERROR</span>");
 
+                       String temp = line;
                        String[] split = line.split("]");
                        if(split.length >=2){
                            String[] subSplit = split[1].split("-");
                            if(subSplit.length>=2){
                                line = split[0]+"]"+"<span style='color:#26e1ff;'>"+subSplit[0]+"</span>"+"-"+subSplit[1];
+                               if(subSplit.length >=3){
+                                   for(int m=3;m<=subSplit.length;m++){
+                                       line+="-"+subSplit[m-1];
+                                   }
+
+                               }
+                           }
+                           if(split.length>=3){
+                               for(int n=3;n<=split.length;n++){
+                                   line+="]"+split[n-1];
+                               }
+                           }
+                           if(temp.endsWith("]")){
+                               line+="]";
                            }
                        }
                        Pattern pattern = Pattern.compile("[\\d+][\\d+][\\d+][\\d+]-[\\d+][\\d+]-[\\d+][\\d+] [\\d+][\\d+]:[\\d+][\\d+]:[\\d+][\\d+]");

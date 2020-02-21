@@ -205,6 +205,21 @@
                 layer.close(index);
             });
         });
+
+        $(document).on("click",".edit-category",function(){
+           var id = $(this).attr("data-id");
+           layer.open({
+               type:2,
+               title:"修改栏目",
+               shadeClose:false,
+               shade:0.4,
+               offset:['55px'],
+               area:['550px','700px'],
+               content:"${una}/admin/category/"+id+"/update",
+               resize:false,
+               anim:1
+           });
+        });
     });
 </script>
 </body>

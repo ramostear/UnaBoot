@@ -51,9 +51,8 @@
         <appender-ref ref="CONSOLE"/>
     </root>
     <!--子节点日志级别设置-->
-    <logger level="WARN" name="org.springframework"/>
+    <logger level="DEBUG" name="org.springframework"/>
     <logger level="DEBUG" name="java.sql"/>
-    <logger  level="DEBUG" name="org.springframework.jdbc"/>
     <logger level="DEBUG" name="org.hibernate.sql"/>
     <logger level="INFO" name="com.ramostear.unaboot"/>
     <logger level="WARN" name="freemarker.cache"/>
