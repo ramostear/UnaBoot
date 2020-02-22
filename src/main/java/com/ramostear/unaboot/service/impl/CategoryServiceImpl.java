@@ -3,11 +3,11 @@ package com.ramostear.unaboot.service.impl;
 import com.ramostear.unaboot.common.exception.AlreadyExistException;
 import com.ramostear.unaboot.common.exception.ForbiddenException;
 import com.ramostear.unaboot.common.exception.NotFoundException;
-import com.ramostear.unaboot.common.util.ServiceUtils;
 import com.ramostear.unaboot.domain.dto.CategoryDto;
 import com.ramostear.unaboot.domain.entity.Category;
 import com.ramostear.unaboot.domain.valueobject.CategoryVo;
 import com.ramostear.unaboot.repository.CategoryRepository;
+import com.ramostear.unaboot.repository.PostCategoryRepository;
 import com.ramostear.unaboot.service.CategoryService;
 import com.ramostear.unaboot.service.base.UnaBootServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -32,10 +32,12 @@ import java.util.stream.Collectors;
 public class CategoryServiceImpl extends UnaBootServiceImpl<Category,Integer> implements CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final PostCategoryRepository postCategoryRepository;
 
-    public CategoryServiceImpl(CategoryRepository categoryRepository) {
+    public CategoryServiceImpl(CategoryRepository categoryRepository,PostCategoryRepository postCategoryRepository) {
         super(categoryRepository);
         this.categoryRepository = categoryRepository;
+        this.postCategoryRepository = postCategoryRepository;
     }
 
     @Override
@@ -92,9 +94,12 @@ public class CategoryServiceImpl extends UnaBootServiceImpl<Category,Integer> im
     public void deleteCategoryAndRelationById(Integer id) {
         List<Category> categories = this.findByParent(id);
         if(categories != null && categories.size() > 0){
-            throw new ForbiddenException("该栏目还存在子栏目，不允许删除");
+            throw new ForbiddenException("该栏目还存在子栏目，不允许删除!");
         }
-        //TODO 还需要解除和文章的关联，如果该栏目下面有文章，则不允许删除
+        Set<Integer> postIds =  postCategoryRepository.findPostsByCategory(id);
+        if(postIds != null && postIds.size() > 0){
+            throw new ForbiddenException("该栏目下还有文章，不允许删除!");
+        }
         delete(id);
     }
 
