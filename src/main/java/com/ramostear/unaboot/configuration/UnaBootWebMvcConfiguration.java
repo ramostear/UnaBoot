@@ -15,6 +15,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +47,16 @@ public class UnaBootWebMvcConfiguration extends WebMvcConfigurationSupport {
         super.addResourceHandlers(registry);
         registry.addResourceHandler("/**")
                 .addResourceLocations("classpath:/static/")
-                .addResourceLocations("file:"+ UnaBootConst.FILE_UPLOAD_ROOT_DIR);
+                .addResourceLocations("file:"+ UnaBootConst.FILE_UPLOAD_ROOT_DIR+"themes/");
+    }
+
+    @Bean
+    public FreeMarkerConfigurer freeMarkerConfigurer(){
+        String[] templateLoaderPaths = {"classpath:/templates/","file:"+UnaBootConst.FILE_UPLOAD_ROOT_DIR+"themes/"};
+        FreeMarkerConfigurer configurer = new FreeMarkerConfigurer();
+        configurer.setDefaultEncoding("UTF-8");
+        configurer.setTemplateLoaderPaths(templateLoaderPaths);
+        return configurer;
     }
 
     @Override

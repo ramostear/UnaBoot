@@ -98,4 +98,8 @@ public class UnaBootConst {
 
     public static final String ALGORITHM_NAME = "MD5";
     public static final int HASH_ITERATIONS = 1024;
+
+    public static final int DRAFT = 0;
+    public static final int ACTIVE = 1;
+    public static final int WAIT = -1;
 }

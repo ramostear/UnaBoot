@@ -99,6 +99,11 @@ public class SettingController extends UnaBootController {
         return "/admin/setting/log";
     }
 
+    @GetMapping("/freemarker")
+    public String freemarker(){
+        return "/default/index";
+    }
+
     private ResponseEntity<Object> updateSetting(HttpServletRequest request){
         Map<String,String[]> parameters = request.getParameterMap();
         List<Setting> items = new ArrayList<>();
