@@ -47,6 +47,7 @@ public class UnaBootWebMvcConfiguration extends WebMvcConfigurationSupport {
         super.addResourceHandlers(registry);
         registry.addResourceHandler("/**")
                 .addResourceLocations("classpath:/static/")
+                .addResourceLocations("file:"+UnaBootConst.FILE_UPLOAD_ROOT_DIR+"store/")
                 .addResourceLocations("file:"+ UnaBootConst.FILE_UPLOAD_ROOT_DIR+"themes/");
     }
 
