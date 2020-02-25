@@ -1,3 +1,4 @@
+<#include "/admin/common/page.html"/>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,6 +13,7 @@
     <link rel="stylesheet" href="${una}/admin/css/font-awesome.css">
     <link rel="stylesheet" href="${una}/admin/css/ionicons.css">
     <link rel="stylesheet" href="${una}/admin/css/adminlte.min.css">
+    <link rel="stylesheet" href="${una}/admin/plugins/layer/skin/default/layer.css"/>
     <link rel="stylesheet" href="${una}/admin/css/unaboot-admin.css">
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
@@ -39,8 +41,9 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <p class="text-gray pull-left">共查询到<span class="text-danger">150</span>条符合条件的标签</p>
-                                <button class="btn btn-sm btn-primary pull-right"><i class="fa fa-plus"></i> 新建标签</button>
+                                <p class="text-gray pull-left">共查询到<span class="text-danger">${data.totalElements!'0'}</span>条符合条件的标签</p>
+                                <button type="button" class="btn btn-sm btn-default pull-right ml-2" id="refresh"><i class="fa fa-refresh"></i></button>
+                                <button type="button" id="create-tag" class="btn btn-sm btn-primary pull-right"><i class="fa fa-plus"></i> 新建标签</button>
                             </div>
                             <div class="card-body">
                                 <table class="table table-striped table-hover with-border">
@@ -50,42 +53,27 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td>SpringBoot</td>
-                                        <td>Spring Boot Framework</td>
-                                        <td>2019-12-29 12:23:59</td>
-                                        <td>
-                                            <a href="javascript:void(0);" title="修改" class="ml-2"><i class="fa fa-edit"></i></a>
-                                            <a href="javascript:void(0);" title="删除" class="text-red"><i class="fa fa-trash-o"></i></a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>SpringBoot</td>
-                                        <td>Spring Boot Framework</td>
-                                        <td>2019-12-29 12:23:59</td>
-                                        <td>
-                                            <a href="javascript:void(0);" title="修改" class="ml-2"><i class="fa fa-edit"></i></a>
-                                            <a href="javascript:void(0);" title="删除" class="text-red"><i class="fa fa-trash-o"></i></a>
-                                        </td>
-                                    </tr>
+                                    <#if data?? && data.content?size gt 0>
+                                        <#list data.content as tag>
+                                            <tr>
+                                                <td>${tag.name}</td>
+                                                <td>${tag.mark}</td>
+                                                <td>${tag.createTime?string("yyyy-MM-dd HH:mm")}</td>
+                                                <td>
+                                                    <a href="javascript:void(0);" data-id="${tag.id}" title="修改" class="ml-2 edit-tag"><i class="fa fa-edit"></i></a>
+                                                    <a href="javascript:void(0);" data-id="${tag.id}" title="删除" class="text-red delete-tag"><i class="fa fa-trash-o"></i></a>
+                                                </td>
+                                            </tr>
+                                        </#list>
+                                    <#else>
+                                        <tr><td colspan="4" class="text-center">暂无任何可用数据!</td></tr>
+                                    </#if>
                                     </tbody>
                                 </table>
                             </div>
                             <div class="card-footer">
                                 <nav aria-label="..." class="pull-right">
-                                    <ul class="pagination">
-                                        <li class="page-item disabled">
-                                            <a class="page-link" href="#" tabindex="-1">Previous</a>
-                                        </li>
-                                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                        <li class="page-item active">
-                                            <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                                        </li>
-                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#">Next</a>
-                                        </li>
-                                    </ul>
+                                    <@paging una+"/admin/tag/index" data 9/>
                                 </nav>
                             </div>
                         </div>
@@ -99,8 +87,66 @@
 <script src="${una}/admin/plugins/jquery/jquery.min.js"></script>
 <script src="${una}/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="${una}/admin/js/adminlte.min.js"></script>
+<script type="text/javascript" src="${una}/admin/plugins/layer/layer.js"></script>
 <script type="text/javascript">
-
+    $("#create-tag").on("click",function(){
+       layer.open({
+           type:2,
+           title:"创建新标签",
+           shadeClose:false,
+           shade:0.4,
+           offset:['55px'],
+           area:['550px','350px'],
+           content:"${una}/admin/tag/create",
+           resize:false,
+           anim:1
+       });
+    });
+    $("#refresh").on("click",function(){
+       window.location.reload();
+    });
+    $(".edit-tag").on("click",function(){
+       var id = $(this).attr("data-id");
+        layer.open({
+            type:2,
+            title:"修改标签信息",
+            shadeClose:false,
+            shade:0.4,
+            offset:['55px'],
+            area:['550px','350px'],
+            content:"${una}/admin/tag/"+id+"/update",
+            resize:false,
+            anim:1
+        });
+    });
+    $(".delete-tag").on("click",function(){
+        var that = $(this);
+        var id = $(this).attr("data-id");
+        layer.alert("你确定删除该标签吗？",{
+            title:'系统提示',
+            icon:0,
+            btn:['是(Y)','否(N)']
+        },function(index){
+            var load = layer.load(2,{shade:[0.4,'#f0f0f0f0']});
+            $.ajax({
+                type:'DELETE',
+                url:'${una}/admin/tag/'+id,
+                success:function(){
+                    layer.close(load);
+                    layer.close(index);
+                    layer.msg("标签已经删除",{icon:1});
+                    that.parents('tr').remove();
+                },
+                error:function(data){
+                    layer.close(load);
+                    layer.close(index);
+                    layer.alert(data.responseText,{title:'系统提示信息',icon:0});
+                }
+            })
+        },function(index){
+            layer.close(index);
+        });
+    });
 </script>
 </body>
 </html>
