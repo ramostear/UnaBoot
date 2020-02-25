@@ -43,7 +43,7 @@
                         <select class="form-control" name="theme" id="theme">
                             <#if templates?? && templates?size gt 0>
                                 <#list templates as template>
-                                    <#if tempate == category.template>
+                                    <#if template == category.theme>
                                         <option value="${template}" selected>${template}</option>
                                     <#else>
                                         <option value="${template}">${template}</option>

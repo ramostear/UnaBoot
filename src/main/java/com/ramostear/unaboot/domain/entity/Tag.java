@@ -29,6 +29,9 @@ public class Tag extends UnaBootPO implements Serializable {
     @Column(name = "name",columnDefinition = "varchar(32) not null")
     private String name;
 
+    @Column(name = "mark",columnDefinition = "varchar(64) default ''")
+    private String mark;
+
     @Override
     protected void prePersist() {
         super.prePersist();

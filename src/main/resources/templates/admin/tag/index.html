@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" href="${una}/admin/img/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="${una}/admin/img/favicon.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>标签列表 - UnaBoot</title>
+    <link rel="stylesheet" href="${una}/admin/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="${una}/admin/css/font-awesome.css">
+    <link rel="stylesheet" href="${una}/admin/css/ionicons.css">
+    <link rel="stylesheet" href="${una}/admin/css/adminlte.min.css">
+    <link rel="stylesheet" href="${una}/admin/css/unaboot-admin.css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
+<body class="hold-transition sidebar-mini sidebar-collapse">
+<div class="wrapper">
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <#include "/admin/common/header.html"/>
+    </nav>
+    <aside class="main-sidebar sidebar-dark-maroon  elevation-4 ">
+        <#include "/admin/common/menu.html"/>
+    </aside>
+    <div class="content-wrapper">
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h3 class="m-0 text-dark text-lg">标签列表</h3>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <p class="text-gray pull-left">共查询到<span class="text-danger">150</span>条符合条件的标签</p>
+                                <button class="btn btn-sm btn-primary pull-right"><i class="fa fa-plus"></i> 新建标签</button>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-striped table-hover with-border">
+                                    <thead class="bg-light">
+                                    <tr>
+                                        <th>名称</th><th>描述</th><th>最后修时间</th><th width="150">操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>SpringBoot</td>
+                                        <td>Spring Boot Framework</td>
+                                        <td>2019-12-29 12:23:59</td>
+                                        <td>
+                                            <a href="javascript:void(0);" title="修改" class="ml-2"><i class="fa fa-edit"></i></a>
+                                            <a href="javascript:void(0);" title="删除" class="text-red"><i class="fa fa-trash-o"></i></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>SpringBoot</td>
+                                        <td>Spring Boot Framework</td>
+                                        <td>2019-12-29 12:23:59</td>
+                                        <td>
+                                            <a href="javascript:void(0);" title="修改" class="ml-2"><i class="fa fa-edit"></i></a>
+                                            <a href="javascript:void(0);" title="删除" class="text-red"><i class="fa fa-trash-o"></i></a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="card-footer">
+                                <nav aria-label="..." class="pull-right">
+                                    <ul class="pagination">
+                                        <li class="page-item disabled">
+                                            <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                        </li>
+                                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                        <li class="page-item active">
+                                            <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
+                                        </li>
+                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="#">Next</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <#include "/admin/common/footer.html"/>
+</div>
+<script src="${una}/admin/plugins/jquery/jquery.min.js"></script>
+<script src="${una}/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="${una}/admin/js/adminlte.min.js"></script>
+<script type="text/javascript">
+
+</script>
+</body>
+</html>
