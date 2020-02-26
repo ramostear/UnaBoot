@@ -8,4 +8,6 @@ import org.springframework.data.domain.Pageable;
 public interface UnaBootJobRepository extends UnaBootRepository<UnaBootJob,Integer> {
 
     Page<UnaBootJob> findAllByOrderByUpdateTimeDesc(Pageable pageable);
+
+    UnaBootJob findByParams(String params);
 }

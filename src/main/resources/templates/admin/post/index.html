@@ -1,0 +1,241 @@
+<#include "/admin/common/page.html"/>
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" href="${una}/admin/img/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="${una}/admin/img/favicon.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>文章列表 - UnaBoot</title>
+    <link rel="stylesheet" href="${una}/admin/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="${una}/admin/css/font-awesome.css">
+    <link rel="stylesheet" href="${una}/admin/css/ionicons.css">
+    <link rel="stylesheet" href="${una}/admin/css/adminlte.min.css">
+    <link rel="stylesheet" href="${una}/admin/plugins/layer/skin/default/layer.css"/>
+    <link rel="stylesheet" href="${una}/admin/css/unaboot-admin.css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
+<body class="hold-transition sidebar-mini sidebar-collapse">
+<div class="wrapper">
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <#include "/admin/common/header.html"/>
+    </nav>
+    <aside class="main-sidebar sidebar-dark-maroon  elevation-4 ">
+        <#include "/admin/common/menu.html"/>
+    </aside>
+    <div class="content-wrapper">
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h3 class="m-0 text-dark text-lg">文章列表</h3>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="list-inline">
+                                    <form class="form-inline form-row pull-left" action="${una}/admin/post/index" method="get">
+                                        <a href="${una}/admin/post/index" class="btn btn-sm btn-danger mr-sm-2 mb-2">所有</a>
+                                        <label class="sr-only" for="key">关键词</label>
+                                        <input type="text" class="form-control form-control-sm mb-2 mr-sm-2" id="key" name="key" placeholder="检索关键词...">
+                                        <label class="sr-only" for="status">状态</label>
+                                        <select class="form-control form-control-sm mb-2 mr-sm-2" name="status" id="status">
+                                            <option value="-2" selected>文章状态</option>
+                                            <option value="1">已发布</option>
+                                            <option value="0">未发布</option>
+                                            <option value="-1">发布中</option>
+                                        </select>
+                                        <label class="sr-only" for="category">栏目</label>
+                                        <select class="form-control form-control-sm mb-2 mr-sm-2" name="category" id="category">
+                                            <option value="-1" selected>文章栏目</option>
+                                            <#if categories?? && categories?size gt 0>
+                                                <#list categories as category>
+                                                    <option value="${category.id}">${category.name}</option>
+                                                </#list>
+                                            </#if>
+                                        </select>
+                                        <button type="submit" class="btn btn-sm btn-primary mr-sm-2 mb-2"><i class="fa fa-search"></i> 查询</button>
+                                    </form>
+                                    <a href="${una}/admin/post/write" class="btn bg-teal btn-sm ml-1 mt-1 pull-right"><i class="fa fa-file-word-o"></i> 写文章</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <p class="text-gray">共查询到<span class="text-danger">${data.totalElements!'0'}</span>条符合条件的文章</p>
+                            </div>
+                            <div class="card-body">
+                                <div class="post-list">
+                                    <#if data?? && data.content?size gt 0>
+                                        <#list data.content as post>
+                                            <div class="post-item">
+                                                <div class="post-info has-img">
+                                                    <#if post.status == 1>
+                                                        <a href="${una}/post/${post.slug}" target="_blank" title="${post.title}">
+                                                            <img src="${post.thumb!una+"/admin/img/thumb.jpg"}" class="post-thumb">
+                                                        </a>
+                                                    <#else>
+                                                        <a href="javascript:void(0);" title="${post.title}">
+                                                            <img src="${post.thumb!una+"/admin/img/thumb.jpg"}" class="post-thumb">
+                                                        </a>
+                                                    </#if>
+                                                    <div class="post-bone">
+                                                        <div class="title">
+                                                            <div class="title-txt">
+                                                                <#if post.status == 1>
+                                                                    <a target="_blank" href="${una}/post/${post.slug}">${post.title}</a>
+                                                                <#else>
+                                                                    <a href="javascript:void(0);">${post.title}</a>
+                                                                </#if>
+                                                            </div>
+                                                        </div>
+                                                        <ul class="counter">
+                                                            <li><i class="fa fa-eye"></i> ${post.visits!'0'}</li>
+                                                            <li><i class="fa fa-comments-o"></i> <#if post.comment>已开启<#else>未开启</#if></li>
+                                                            <li><i class="fa fa-thumbs-o-up"></i> 0</li>
+                                                            <li><i class="fa fa-th-list"></i> ${post.category.name}</li>
+                                                            <#if post.tags?? && post.tags?size gt 0>
+                                                                <li>
+                                                                    <i class="fa fa-tags"></i>
+                                                                    <#list post.tags as tag>
+                                                                        <small class="badge badge-secondary">#${tag.name}</small>
+                                                                    </#list>
+                                                                </li>
+                                                            </#if>
+
+                                                        </ul>
+                                                        <div class="construct">
+                                                            <#if post.status == 1>
+                                                                <span class="post-label orange">已发表</span>
+                                                            <#elseif post.status == 0>
+                                                                <span class="post-label">未发表</span>
+                                                            <#else>
+                                                                <span class="post-label waiting">发布中...</span>
+                                                            </#if>
+                                                            <#if post.recommend == true>
+                                                                <span class="post-label red">推荐</span>
+                                                            </#if>
+                                                            <#if post.stick == true>
+                                                                <span class="post-label red">置顶</span>
+                                                            </#if>
+                                                            <#if post.original == true>
+                                                                <span class="post-label blue">原创</span>
+                                                            <#else>
+                                                                <span class="post-label">转载</span>
+                                                            </#if>
+                                                            <span class="post-label orange"><i class="fa fa-user"> ${post.author}</i></span>
+                                                        </div>
+                                                        <div>
+                                                            <span class="create-time"><i class="fa fa-calendar-minus-o"></i> ${post.createTime?string("yyyy年MM月dd日 HH:mm")}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="post-tools">
+                                                    <#if post.status != -1>
+                                                        <div class="tool">
+                                                            <span class="icon-text text-primary edit-post" data-id="${post.id}">
+                                                                <i class="fa fa-pencil"></i> <span>修改</span>
+                                                            </span>
+                                                        </div>
+                                                        <div class="tool">
+                                                            <span class="icon-text text-danger delete-post" data-id="${post.id}">
+                                                                <i class="fa fa-trash"> </i> <span>删除</span>
+                                                            </span>
+                                                        </div>
+                                                    </#if>
+                                                    <#if post.status==0>
+                                                        <div class="tool">
+                                                            <span class="icon-text text-purple publish-post" data-id="${post.id}">
+                                                                <i class="fa fa-send"></i> <span>发布</span>
+                                                            </span>
+                                                        </div>
+                                                    </#if>
+
+                                                </div>
+                                            </div>
+                                        </#list>
+                                    <#else>
+                                        <div class="post-item">
+                                            <p class="text-center">暂无任何可用数据！</p>
+                                        </div>
+                                    </#if>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <nav aria-label="..." class="pull-right">
+                                    <#if data?? && data.content?size gt 0>
+                                        <@paging una+"/admin/post/index"+(urlParam!'') data 9/>
+                                    </#if>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <#include "/admin/common/footer.html"/>
+</div>
+<script src="${una}/admin/plugins/jquery/jquery.min.js"></script>
+<script src="${una}/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="${una}/admin/js/adminlte.min.js"></script>
+<script type="text/javascript" src="${una}/admin/plugins/layer/layer.js"></script>
+<script type="text/javascript">
+    $(function(){
+       $(".publish-post").on("click",function(){
+           var id = $(this).attr("data-id");
+           layer.open({
+               type:2,
+               title:"修改栏目",
+               shadeClose:false,
+               shade:0.4,
+               offset:['55px'],
+               area:['550px','500px'],
+               content:"${una}/admin/post/"+id+"/publish",
+               resize:false,
+               anim:1
+           });
+       });
+       $(".edit-post").on("click",function(){
+           var id = $(this).attr("data-id");
+           window.location.href = "${una}/admin/post/"+id;
+       });
+       $(".delete-post").on("click",function(){
+          var that = $(this);
+          var id = that.attr("data-id");
+           layer.alert("你确定删除该文章吗？",{
+               title:'系统提示',
+               icon:0,
+               btn:['是(Y)','否(N)']
+           },function(index){
+               var load = layer.load(2,{shade:[0.4,'#f0f0f0f0']});
+               $.ajax({
+                   type:'DELETE',
+                   url:'${una}/admin/post/'+id,
+                   success:function(){
+                       layer.close(load);
+                       layer.close(index);
+                       layer.msg("文章已经删除",{icon:1});
+                       that.parents('.post-item').remove();
+                   },
+                   error:function(data){
+                       layer.close(load);
+                       layer.close(index);
+                       layer.alert(data.responseText,{title:'系统提示信息',icon:0});
+                   }
+               })
+           },function(index){
+               layer.close(index);
+           });
+       });
+    });
+</script>
+</body>
+</html>

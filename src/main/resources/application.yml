@@ -5,8 +5,8 @@ server:
 logging:
   level:
     com.ramostear.unaboot:  info
-    org.springframework:  debug
-    org.spring.springboot:  debug
+    org.springframework:  info
+    org.spring.springboot:  info
 spring:
   freemarker:
     suffix: .html

@@ -185,10 +185,10 @@ public class PostServiceImpl extends UnaBootServiceImpl<Post,Integer> implements
         Assert.notNull(postQuery,"Query param object is empty");
         return (Specification<Post>)(root,query,builder)->{
             List<Predicate> predicates = new LinkedList<>();
-            if(postQuery.getStatus() != null){
+            if(postQuery.getStatus() != null && postQuery.getStatus() > -2){
                 predicates.add(builder.equal(root.get("status"),postQuery.getStatus()));
             }
-            if(postQuery.getCategory() != null){
+            if(postQuery.getCategory() != null && postQuery.getCategory() > 0){
                 Subquery<Post> postSubquery = query.subquery(Post.class);
                 Root<PostCategory> postCategoryRoot = postSubquery.from(PostCategory.class);
                 postSubquery.select(postCategoryRoot.get("pid"));

@@ -153,11 +153,16 @@
     background: rgba(244, 67, 54, .05);
     color: #f44336;
 }
+.construct .post-label.waiting{
+    background: rgba(102,51,204,.05);
+    color: #6633CC;
+}
 .post-item .create-time{
     color: #999;
     line-height: 20px;
     margin-top: 8px;
     display: inline-block;
+    font-weight: 400;
 }
 .post-item .post-tools{
     position: absolute;

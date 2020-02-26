@@ -21,7 +21,7 @@ public class UnaBootController {
     @InitBinder
     public void initBinder(ServletRequestDataBinder binder){
         binder.registerCustomEditor(Date.class,
-                new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd"),
+                new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"),
                         true));
     }
 

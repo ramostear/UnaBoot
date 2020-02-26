@@ -14,8 +14,8 @@ public class PostQuery {
 
     private String key;
 
-    private Integer status;
+    private Integer status = -2;
 
-    private Integer category;
+    private Integer category = -1;
 
 }

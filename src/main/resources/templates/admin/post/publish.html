@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" href="${una}/admin/img/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="${una}/admin/img/favicon.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>上传图片 - UnaBoot</title>
+    <link rel="stylesheet" href="${una}/admin/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="${una}/admin/css/font-awesome.css">
+    <link rel="stylesheet" href="${una}/admin/css/ionicons.css">
+    <link rel="stylesheet" href="${una}/admin/css/adminlte.min.css">
+    <link rel="stylesheet" href="${una}/admin/plugins/layer/skin/default/layer.css"/>
+    <link rel="stylesheet" href="${una}/admin/plugins/datetimepicker/bootstrap-datetimepicker.css"/>
+    <link rel="stylesheet" href="${una}/admin/css/unaboot-admin.css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <style>
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <form class="form-inline mt-3">
+                <div class="form-group row">
+                    <div class="col-12 mt-2">
+                        <div class="custom-control custom-radio custom-control-inline pr-4">
+                            <input type="radio" id="publish-now" name="publish" value="1" checked class="custom-control-input">
+                            <label class="custom-control-label font-weight-normal" for="publish-now">立即发布</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" id="publish-later" name="publish" value="0" class="custom-control-input">
+                            <label class="custom-control-label font-weight-normal" for="publish-later">定时发布</label>
+                        </div>
+                    </div>
+                    <div class="col-12 mt-2 hidden" id="data-time">
+                        <div class="form-group row">
+                            <label for="publishDate" class="col-3 col-form-label font-weight-normal">时间:</label>
+                            <div class="col-9">
+                                <input type="text" name="publishDate" value="${defaultDate?string("yyyy-MM-dd HH:mm:ss")}" class="form-control" id="publishDate" >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="pl-4 pt-2 pr-4 pb-2 bg-gray-light text-right fixed-bottom">
+                <button type="button" id="close" class="btn btn-default pull-right">取消</button>
+                <button type="button" id="save" class="btn btn-primary pull-right mr-2">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${una}/admin/plugins/jquery/jquery.min.js"></script>
+<script src="${una}/admin/plugins/jquery/jquery.serializejson.js"></script>
+<script src="${una}/admin/plugins/datetimepicker/bootstrap-datetimepicker.js"></script>
+<script src="${una}/admin/plugins/datetimepicker/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="${una}/admin/plugins/jquery/jquery.form.js"></script>
+<script src="${una}/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="${una}/admin/js/adminlte.min.js"></script>
+<script type="text/javascript" src="${una}/admin/plugins/layer/layer.js"></script>
+<script src="${una}/admin/js/jquery.validate.min.js"></script>
+<script type="text/javascript">
+    $(function(){
+        var date = new Date();
+        date.setDate(date.getDate()+1);
+        $("#publishDate").datetimepicker({
+           language:'zh-CN',
+           format:'yyyy-mm-dd hh:ii:ss',
+           todayBtn:true,
+           autoClose:true,
+           startView:2,
+           minView:0,
+           forceParse:0,
+           startDate:date,
+           minuteStep:5,
+           initialDate:date
+        });
+        $("#save").on("click",function(){
+            var type = $("input:radio[name='publish']:checked").val();
+            var publishDate = $("#publishDate").val();
+            var id = "${id}";
+            $.ajax({
+                type:'post',
+                url:'${una}/admin/post/'+id+"/publish",
+                data:{
+                    type:type,
+                    publishDate:publishDate
+                },
+                success:function(){
+                    layer.alert("文章已经发布成功",{title:'系统提示信息',icon:1},function(){
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                        parent.location.reload();
+                    });
+                },
+                error:function(){
+                    layer.alert("服务器异常,请稍后再试",{title:'系统提示信息',icon:0},function(){
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                    });
+                }
+            });
+        });
+        $("#close").on("click",function(){
+            var index = parent.layer.getFrameIndex(window.name);
+            parent.layer.close(index);
+        });
+
+        $("input[name='publish']").on("click",function(){
+            var value = $("input:radio[name='publish']:checked").val();
+            if(value == 1){
+                $("#data-time").hide();
+            }else{
+                $("#data-time").show();
+            }
+        });
+
+    });
+</script>
+</body>
+</html>

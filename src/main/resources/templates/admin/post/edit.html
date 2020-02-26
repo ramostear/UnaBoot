@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" href="${una}/admin/img/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="${una}/admin/img/favicon.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>修改 - UnaBoot</title>
+    <link rel="stylesheet" href="${una}/admin/plugins/fontawesome-free/css/all.min.css"/>
+    <link rel="stylesheet" href="${una}/admin/css/font-awesome.css"/>
+    <link rel="stylesheet" href="${una}/admin/css/ionicons.css"/>
+    <link rel="stylesheet" href="${una}/admin/css/adminlte.min.css"/>
+    <link rel="stylesheet" href="${una}/admin/plugins/layer/skin/default/layer.css"/>
+    <link rel="stylesheet" href="${una}/admin/plugins/editormd/css/editormd.min.css" />
+    <link rel="stylesheet" href="${una}/admin/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css"/>
+    <link rel="stylesheet" href="${una}/admin/css/unaboot-admin.css"/>
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet"/>
+</head>
+<body class="hold-transition sidebar-mini sidebar-collapse">
+<div class="wrapper">
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <#include "/admin/common/header.html"/>
+    </nav>
+    <aside class="main-sidebar sidebar-dark-maroon  elevation-4 ">
+        <#include "/admin/common/menu.html"/>
+    </aside>
+    <form id="post-form">
+        <div class="content-wrapper">
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card mt-3" style="border-radius: 0px;">
+                                <div class="card-header text-right">
+                                    <input type="text" name="title" value="${post.title}" placeholder="请在此处输入文章标题(标题长度为50个字符)" autocomplete="off" class="form-control post-title pull-left" maxlength="68"  style="width: 50%">
+                                    <a href="${una}/admin/post/index" class="btn btn-sm btn-default"><i class="fa fa-angle-double-left"> 返回</i></a>
+                                    <a href="#" class="btn btn-sm bg-teal pl-4 pr-4" data-widget="control-sidebar" data-slide="true">
+                                        <i class="fa fa-save"></i> 保存为 <i class="fa fa-angle-double-right"></i>
+                                    </a>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div class="editormd mb-0" id="content" style="border: none">
+                                        <textarea class="editormd-markdown-textarea" name="markdown" id="markdown">${post.markdown}</textarea>
+                                        <textarea class="editormd-html-textarea" name="html" id="html">${post.html}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <#include "/admin/common/footer.html"/>
+        <aside class="control-sidebar control-sidebar-light sidebar-wrapper">
+            <div class="control-sidebar-content">
+                <div class="card m-0">
+                    <div class="card-header sch">
+                        <h4 class="card-title">配置参数</h4>
+                        <a href="javascript:void(0);" class="text-danger pull-right" title="关闭" data-widget="control-sidebar" data-slide="true">
+                            <i class="fa fa-times-circle-o"></i>
+                        </a>
+                    </div>
+                    <div class="card-body p-0 scb">
+                        <p class="mb-0 p-2 text-dark" style="background: #e8f2ff;">首选项</p>
+                        <div class="p-4">
+                            <div class="form-group row">
+                                <label for="slug" class="col-3 col-form-label font-weight-normal">Slug:</label>
+                                <div class="col-9">
+                                    <input type="text" name="slug" value="${post.slug}" class="form-control" id="slug" placeholder="请输入slug名称" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="category" class="col-3 col-form-label font-weight-normal">文章分类:</label>
+                                <div class="col-9">
+                                    <select name="category" class="form-control" id="category">
+                                        <option>请选择分类</option>
+                                        <#if categories?? && categories?size gt 0>
+                                            <#list categories as category>
+                                                <#if post.category ==  category.id>
+                                                    <option value="${category.id}" selected>${category.name}</option>
+                                                <#else>
+                                                    <option value="${category.id}">${category.name}</option>
+                                                </#if>
+                                            </#list>
+                                        </#if>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="theme" class="col-3 col-form-label font-weight-normal">显示模板:</label>
+                                <div class="col-9">
+                                    <select name="theme" class="form-control" id="theme">
+                                        <option>请选择模板</option>
+                                        <#if themes?? && themes?size gt 0>
+                                            <#list themes as theme>
+                                                <#if post.theme == theme>
+                                                    <option value="${theme}" selected>${theme}</option>
+                                                <#else>
+                                                    <option value="${theme}">${theme}</option>
+                                                </#if>
+                                            </#list>
+                                        </#if>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="tags" class="col-3 col-form-label font-weight-normal">文章标签:</label>
+                                <input type="hidden" value="${post.convertTagIds()}" name="tags" id="tags"/>
+                                <div class="col-9">
+                                    <input name="taginput" type="text" class="form-control" id="taginput" placeholder="请输入文章标签">
+                                </div>
+                            </div>
+
+                        </div>
+                        <p class="mb-0 p-2 text-dark" style="background: #e8f2ff;">常用选项</p>
+                        <div class="p-4">
+                            <div class="form-group row">
+                                <div class="col-12">
+                                    <div class="custom-control custom-radio custom-control-inline pr-4">
+                                        <input type="radio" id="comment-on" name="comment" value="1" <#if post.comment == true>checked</#if> class="custom-control-input">
+                                        <label class="custom-control-label font-weight-normal" for="comment-on">允许评论</label>
+                                    </div>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" id="comment-off" name="comment" value="0" <#if post.comment == false>checked</#if> class="custom-control-input">
+                                        <label class="custom-control-label font-weight-normal" for="comment-off">禁止评论</label>
+                                    </div>
+                                </div>
+                                <div class="col-12 mt-2">
+                                    <div class="custom-control custom-radio custom-control-inline pr-4">
+                                        <input type="radio" id="original-on" name="original" value="1" <#if post.original == true>checked</#if> class="custom-control-input">
+                                        <label class="custom-control-label font-weight-normal" for="original-on">原创文章</label>
+                                    </div>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" id="original-off" name="original" value="0" <#if post.original == false>checked</#if> class="custom-control-input">
+                                        <label class="custom-control-label font-weight-normal" for="original-off">转载文章</label>
+                                    </div>
+                                </div>
+                                <div class="col-12 mt-2">
+                                    <div class="custom-control custom-checkbox custom-control-inline pr-2">
+                                        <input type="checkbox" class="custom-control-input" id="recommend" <#if post.recommend == true>checked</#if> name="recommend" value="1">
+                                        <label class="custom-control-label font-weight-normal" for="recommend">推荐到首页</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                        <input type="checkbox" class="custom-control-input" id="stick" <#if post.stick == true>checked</#if> name="stick" value="1">
+                                        <label class="custom-control-label font-weight-normal" for="stick">置顶为轮播</label>
+                                    </div>
+                                </div>
+                                <div class="col-12 mt-2">
+                                    <img src="${post.thumb!una+'/admin/img/thumb.jpg'}" id="preview-thumb" class="img-thumbnail mb-2">
+                                    <input type="hidden" name="thumb" value="${post.thumb!''}" id="thumb"/>
+                                    <div class="btn-group">
+                                        <button type="button" id="upload-thumb" class="btn btn-sm btn-primary"><i class="fa fa-upload"></i> 上传</button>
+                                        <button type="button" id="undo-thumb" class="btn btn-default btn-sm"><i class="fa fa-undo"></i> 撤销</button>
+                                    </div>
+                                </div>
+                                <div class="col-12 mt-2">
+                                    <textarea class="form-control" rows="3" name="summary" id="summary" placeholder="请在此输入文章摘要(选填)...">${post.summary}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="mb-0 p-2 text-dark" style="background: #e8f2ff;">高级选项</p>
+                        <div class="p-4">
+                            <div class="form-group row">
+                                <label for="author" class="col-3 col-form-label font-weight-normal">作者:</label>
+                                <div class="col-9">
+                                    <input type="text" name="author" value="${post.author}" class="form-control" id="author" placeholder="请在此输入原文作者(选填)" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="projectUrl" class="col-3 col-form-label font-weight-normal">Github:</label>
+                                <div class="col-9">
+                                    <input type="text" name="projectUrl" value="${post.projectUrl!''}" class="form-control" id="projectUrl" placeholder="关联GitHub项目地址(选填)" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="source" class="col-3 col-form-label font-weight-normal">原文链接:</label>
+                                <div class="col-9">
+                                    <input type="text" name="source" value="${post.source!''}" class="form-control" id="source" placeholder="请在此输入原文链接(选填)" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-12">
+                                    <textarea name="keywords" class="form-control" id="keywords" rows="2" placeholder="请在此输入文章关键词(选填)" autocomplete="off">${post.keywords}</textarea>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="card-footer scf bg-white border-top text-center">
+                        <button type="button" data-id="0" class="submit btn btn-sm btn-default pl-4 pr-4 mr-2" style="border-radius: 15px">草稿</button>
+                        <button type="button" data-id="1" class="submit btn btn-sm btn-primary pl-4 pr-4" style="border-radius: 15px">发布</button>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </form>
+</div>
+<script src="${una}/admin/plugins/jquery/jquery.min.js"></script>
+<script src="${una}/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="${una}/admin/plugins/jquery/jquery.serializejson.js"></script>
+<script src="${una}/admin/js/jquery.validate.min.js"></script>
+<script src="${una}/admin/js/adminlte.min.js"></script>
+<script type="text/javascript" src="${una}/admin/plugins/layer/layer.js"></script>
+<script type="text/javascript" src="${una}/admin/plugins/editormd/editormd.js" ></script>
+<script type="text/javascript" src="${una}/admin/js/dom-resize.js"></script>
+<script type="text/javascript" src="${una}/admin/plugins/typeahead/bootstrap3-typeahead.js"></script>
+<script type="text/javascript" src="${una}/admin/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
+<script type="text/javascript">
+    var form = $("#post-form");
+    form.validate({
+        errorPlacement: function errorPlacement(error, element) {
+            element.after(error);
+        },
+        rules:{
+            title:{
+                required:true,
+                minlength:8,
+                maxlength:64
+            },
+            slug:{
+                required:true,
+                minlength:8,
+                maxlength:64
+            },
+            markdown:{
+                required:true
+            },
+            category:{
+                required:true
+            },
+            theme:{
+                required:true
+            },
+            summary:{
+                required:true,
+                maxlength:128
+            },
+            author:{
+                required:true
+            },
+            keywords:{
+                required:true
+            }
+
+        },
+        messages:{
+            title:{
+                required:'请输入文章标题',
+                minlength:'文章标题至少填写8个字符',
+                maxlength:'文章标题最多填写68个字符'
+            },
+            slug:{
+                required:'请输入文章Slug名称',
+                minlength:'文章Slug至少填写8个字符',
+                maxlength:'文章Slug最多填写68个字符'
+            },
+            markdown: {
+                required:'文章内容不能为空'
+            },
+            theme: {
+                required:'请设置文章的渲染模板'
+            },
+            category:{
+                required:'请设置文章所属栏目信息'
+            },
+            summary:{
+                required:"请填写文章的概要信息",
+                maxlength:'文章概要最多能填写128个字符'
+            },
+            author:{
+                required:"请填写文章的作者名称"
+            },
+            keywords:{
+                required:'请输入文章的关键词'
+            }
+        }
+    });
+    $(function(){
+        var markdownEdit;
+        markdownEdit = editormd('content',{
+            width:"100%",
+            height:740,
+            syncScrolling:'single',
+            path:'${una}/admin/plugins/editormd/lib/',
+            codeFold:true,
+            emoji:true,
+            taskList:true,
+            tocm:true,
+            tex:true,
+            watch:true,
+            flowChart:true,
+            sequenceDiagram:true,
+            imageUpload:true,
+            htmlDecode:'style,script,iframe|on*',
+            imageFormats:['jpg','jpeg','gif','png','bmp','webp'],
+            imageUploadURL:'${una}/admin/upload/editormd',
+            toolbarIcons:function(){
+                return ["bold","del","italic","quote","ucwords","uppercase","lowercase","|","h1","h2","h3","h4","h5","h6","|","list-ul","list-ol","hr","|","link","reference-link","image","code","preformatted-text","code-block","table","datetime","html-entities","preview"];
+            }
+        });
+        $("input[id=taginput]").tagsinput({
+            maxTags:3,
+            itemValue:'id',
+            itemText:'name',
+            typeahead:{
+                source:function(){
+                    return $.get("${una}/admin/tag/data.json");
+                },
+                afterSelect:function(){
+                    this.$element[0].value = ''
+                }
+            },
+            freeInput: false
+        });
+        $.ajax({
+            type:'get',
+            url:'${una}/admin/tag/${post.id}/data.json',
+            success:function(data){
+                for(var i=0;i<data.length;i++){
+                    $("input[id=taginput]").tagsinput("add",data[i]);
+                }
+            }
+        });
+        $("#upload-thumb").on("click",function(){
+           layer.open({
+               type:2,
+               title:"<i class='fa fa-image'> 上传文章封面</i>",
+               shadeClose:false,
+               shade:0.4,
+               area:['450px','200px'],
+               content:'${una}/admin/post/thumb',
+               resize:false,
+               anim:2
+           });
+        });
+
+        $("#undo-thumb").on("click",function(){
+           var thumb_url = $("#thumb").val();
+           if(thumb_url.trim() != ""){
+               $.ajax({
+                   type:'POST',
+                   url:'${una}/admin/post/thumb',
+                   data:{
+                       url:thumb_url
+                   },
+                   success:function(){
+                       $("#preview-thumb").attr("src","${una}/admin/img/thumb.jpg");
+                       $("#thumb").val("");
+                       console.log(thumb_url+"已经被删除");
+                   },
+                   error:function(){
+                       console.log("删除"+thumb_url+"失败");
+                   }
+               });
+           }
+        });
+
+        $(".submit").on("click",function(){
+            var ele = $(this);
+            var tags = $("#taginput").val();
+            $("input[id=tags]").val(tags);
+            var flag =  form.valid();
+            if(flag){
+                var autoSave = ele.attr("data-id");
+                var data = $("#post-form").serializeJSON();
+                data = JSON.stringify(data);
+                var load = layer.load(2,{shade:[0.4,'#f0f0f0f0']});
+                $.ajax({
+                    type:'post',
+                    url:'${una}/admin/post/${post.id}?autoSave='+autoSave,
+                    data:data,
+                    contentType:'application/json;charset=utf-8',
+                    success:function(){
+                        layer.close(load);
+                        layer.alert("文章已经保存成功",{title:'系统提示信息',icon:1},function(){
+                           window.location.href = "${una}/admin/post/index";
+                        });
+                    },
+                    error:function(message){
+                        layer.close(load);
+                        layer.alert(message.responseText,{title:'系统提示',icon:0});
+                    }
+                });
+            }
+        });
+    });
+    refreshSize();
+    $('.container-fluid').resize(function(){
+        refreshSize();
+    });
+    function refreshSize(){
+        var sidebar_height = $(".sidebar-wrapper").outerHeight();
+        $(".sidebar-wrapper .card .card-body").height(sidebar_height - 49);
+    }
+</script>
+</body>
+</html>

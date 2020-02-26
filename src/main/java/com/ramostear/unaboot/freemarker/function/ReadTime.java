@@ -1,5 +1,6 @@
 package com.ramostear.unaboot.freemarker.function;
 
+import com.ramostear.unaboot.common.util.UnaBootUtils;
 import com.ramostear.unaboot.freemarker.AbstractMethodModel;
 import freemarker.template.TemplateModelException;
 import org.springframework.stereotype.Service;
@@ -17,11 +18,12 @@ import java.util.List;
 public class ReadTime extends AbstractMethodModel {
     @Override
     public Object exec(List args) throws TemplateModelException {
-        int contentLength = getInteger(args,0);
-        if(contentLength<400){
+        String content = getString(args,0);
+        int length = UnaBootUtils.getWordCount(content);
+        if(length<400){
             return 0;
         }else{
-            return contentLength/400;
+            return length/400;
         }
     }
 }

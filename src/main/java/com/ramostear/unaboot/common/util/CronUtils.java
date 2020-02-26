@@ -16,7 +16,7 @@ public class CronUtils {
 
     private CronUtils(){}
 
-    private static final SimpleDateFormat format = new SimpleDateFormat("ss mm HH dd MM ? yyyy");
+    private static final SimpleDateFormat format = new SimpleDateFormat("ss mm HH dd MM ?");
 
     public static String getCron(Date date){
         String timeExpression = "0/1 * * * * ? *";

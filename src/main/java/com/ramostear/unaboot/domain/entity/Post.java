@@ -113,5 +113,8 @@ public class Post extends UnaBootPO implements Serializable {
         if(likes == null || likes <0){
             likes = 0L;
         }
+        if(StringUtils.isBlank(projectUrl)){
+            projectUrl = "";
+        }
     }
 }

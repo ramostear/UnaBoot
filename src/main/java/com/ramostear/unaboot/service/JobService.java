@@ -14,6 +14,8 @@ public interface JobService {
 
     UnaBootJob getJob(Integer jobId);
 
+    UnaBootJob findByParam(String param);
+
     boolean editJob(UnaBootJob job);
 
     Page<UnaBootJob> findAllJobs(Pageable pageable);

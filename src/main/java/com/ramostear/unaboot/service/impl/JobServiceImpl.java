@@ -54,12 +54,17 @@ public class JobServiceImpl extends UnaBootServiceImpl<UnaBootJob,Integer> imple
     }
 
     @Override
+    public UnaBootJob findByParam(String param) {
+        return unaBootJobRepository.findByParams(param);
+    }
+
+    @Override
     @Transactional
     public boolean editJob(UnaBootJob job) {
-        UnaBootJob origanl = getJob(job.getJobId());
-        if(origanl != null){
-            BeanUtils.copyProperties(job,origanl,new String[]{"jobId","createTime"});
-            unaBootJobRepository.save(origanl);
+        UnaBootJob original = getJob(job.getJobId());
+        if(original != null){
+            BeanUtils.copyProperties(job,original,new String[]{"jobId","createTime"});
+            unaBootJobRepository.save(original);
             return true;
         }else{
             return false;

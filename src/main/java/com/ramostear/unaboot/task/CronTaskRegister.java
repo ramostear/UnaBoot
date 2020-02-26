@@ -1,5 +1,6 @@
 package com.ramostear.unaboot.task;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.TaskScheduler;
@@ -7,6 +8,7 @@ import org.springframework.scheduling.config.CronTask;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -16,6 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @Date 2020/2/16 0016 18:46
  * @Version since UnaBoot-1.0
  **/
+@Slf4j
 @Component
 public class CronTaskRegister implements DisposableBean {
 
@@ -47,6 +50,15 @@ public class CronTaskRegister implements DisposableBean {
         ScheduledTask scheduledTask = this.scheduledTasks.remove(task);
         if(scheduledTask != null){
             scheduledTask.cancel();
+           log.info("Task has been removed:{}",task.toString());
+        }
+    }
+    public void removeAll(){
+        Set<Runnable> runnables = this.scheduledTasks.keySet();
+        if(runnables != null && runnables.size() > 0){
+            runnables.forEach(task->{
+                removeCronTask(task);
+            });
         }
     }
 

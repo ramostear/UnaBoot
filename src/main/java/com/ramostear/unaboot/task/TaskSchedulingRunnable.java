@@ -91,4 +91,13 @@ public class TaskSchedulingRunnable implements Runnable{
                 && params.equals(that.params);
 
     }
+
+    @Override
+    public String toString() {
+        return "TaskSchedulingRunnable{" +
+                "beanName='" + beanName + '\'' +
+                ", methodName='" + methodName + '\'' +
+                ", params='" + params + '\'' +
+                '}';
+    }
 }

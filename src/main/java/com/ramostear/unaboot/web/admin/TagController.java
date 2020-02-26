@@ -35,6 +35,20 @@ public class TagController extends UnaBootController {
         return "/admin/tag/index";
     }
 
+    @ResponseBody
+    @GetMapping("/data.json")
+    public List<Tag> data(){
+        List<Tag> tags = tagService.findAll();
+        return tags;
+    }
+
+    @ResponseBody
+    @GetMapping("/{postId:\\d+}/data.json")
+    public List<Tag> postTags(@PathVariable("postId")Integer postId){
+        List<Tag> tags = postTagService.findAllTagByPostId(postId);
+        return tags;
+    }
+
     @GetMapping("/create")
     public String create(){
         return "/admin/tag/create";

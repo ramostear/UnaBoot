@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @ClassName UnaBootJob
@@ -48,7 +49,7 @@ public class UnaBootJob extends UnaBootPO implements Serializable {
     @Column(name = "cron_time",columnDefinition = "timestamp")
     private Date cronTime;
 
-    @Column(name = "job_state")
+    @Column(name = "job_state",columnDefinition = "int default 1")
     private Boolean jobState;
 
     @Column(name = "remark")
@@ -59,7 +60,7 @@ public class UnaBootJob extends UnaBootPO implements Serializable {
         super.prePersist();
         jobId = null;
         if(cronTime == null){
-            cronTime = DateTimeUtils.current();
+            cronTime = DateTimeUtils.append(new Date(),1, TimeUnit.DAYS);
         }
         if(StringUtils.isEmpty(cronExpression)){
             cronExpression = CronUtils.getCron(cronTime);
