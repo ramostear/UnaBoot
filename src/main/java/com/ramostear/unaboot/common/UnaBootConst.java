@@ -102,4 +102,8 @@ public class UnaBootConst {
     public static final int DRAFT = 0;
     public static final int ACTIVE = 1;
     public static final int WAIT = -1;
+
+    public static final int USER_NEW = 0;
+    public static final int USER_DEFAULT = 1;
+
 }

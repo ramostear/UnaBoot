@@ -22,7 +22,7 @@
         }
     </style>
 </head>
-<body class="hold-transition sidebar-mini sidebar-collapse">
+<body class="hold-transition sidebar-mini sidebar-collapse layout-fixed layout-navbar-fixed">
 <div class="wrapper">
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
         <#include "/admin/common/header.html"/>
@@ -156,11 +156,11 @@
                 });
             }else{
                 var id = folder.replace(/\\/g,'/');
-                if(id.endWith(".png")||id.endWith(".jpg")||id.endWith(".jpeg")||id.endWith(".gif")||id.endWith(".bmp")||id.endWith(".webp")){
-                    var img = "<img src='${una}/"+id+"' class='img-fluid' style='height:500px;'>";
+                if(id.endWith(".png")||id.endWith(".jpg")||id.endWith(".jpeg")||id.endWith(".gif")||id.endWith(".bmp")||id.endWith(".webp")||id.endWith(".svg")){
+                    var img = "<img src='${una}/"+id.substring(7,id.length)+"' class='img-fluid' style='height:500px;'>";
                     layer.open({
                         type: 1,//Page层类型
-                        title: '<i class="fa fa-image"></i> 预览',
+                        title: '<i class="fa fa-image"></i> '+id,
                         shade: 0.6 ,//遮罩透明度
                         offset:'auto',
                         anim: 1 ,//0-6的动画形式，-1不开启
@@ -236,11 +236,11 @@
         $(document).on("click",".edit-file",function(){
             var id = $(this).attr("data-id");
             id = id.replace(/\\/g,'/');
-            if(id.endWith(".png")||id.endWith(".jpg")||id.endWith(".jpeg")||id.endWith(".gif")||id.endWith(".bmp")||id.endWith(".webp")){
-                var img = "<img src='${una}/"+id+"' class='img-fluid' style='height:500px;'>";
+            if(id.endWith(".png")||id.endWith(".jpg")||id.endWith(".jpeg")||id.endWith(".gif")||id.endWith(".bmp")||id.endWith(".webp")||id.endWith(".svg")){
+                var img = "<img src='${una}/"+id.substring(7,id.length)+"' class='img-fluid' style='height:500px;'>";
                 layer.open({
                     type: 1,//Page层类型
-                    title: '<i class="fa fa-image"></i> 预览',
+                    title: '<i class="fa fa-image"></i> '+id,
                     shade: 0.6 ,//遮罩透明度
                     offset:'auto',
                     anim: 1 ,//0-6的动画形式，-1不开启

@@ -52,6 +52,7 @@ public class UserServiceImpl extends UnaBootServiceImpl<User,Integer> implements
     }
 
     @Override
+    @Transactional
     public User updatePassword(Integer id, String originalPassword, String currentPassword) {
         Assert.notNull(id,"User`s ID can not be empty");
         Assert.notNull(originalPassword,"User`s original password can not be empty");
@@ -65,6 +66,18 @@ public class UserServiceImpl extends UnaBootServiceImpl<User,Integer> implements
         String _validatePassword = EncryptUtils.simpleHash(originalPassword,user.getUsername());
         Assert.isTrue(_validatePassword.equals(user.getPassword()),"The original password is incorrect");
         user.setPassword(EncryptUtils.simpleHash(currentPassword,user.getUsername()));
+        return userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public User updatePassword(Integer id, String password) {
+        Assert.notNull(id,"User`s ID can not be empty");
+        Assert.notNull(password,"User`s new password can not be empty");
+        Optional<User> userOptional = userRepository.findById(id);
+        Assert.isTrue(userOptional.isPresent(),"User data does not exist");
+        User user = userOptional.get();
+        user.setPassword(EncryptUtils.simpleHash(password,user.getUsername()));
         return userRepository.save(user);
     }
 }

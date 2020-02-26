@@ -37,4 +37,6 @@ public interface UserService extends UnaBootService<User,Integer> {
      * @return  user entity
      */
     User updatePassword(Integer id,String originalPassword,String currentPassword);
+
+    User updatePassword(Integer id,String password);
 }

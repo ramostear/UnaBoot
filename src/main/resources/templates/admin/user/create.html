@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" href="${una}/admin/img/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="${una}/admin/img/favicon.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>新增账户 - UnaBoot</title>
+    <link rel="stylesheet" href="${una}/admin/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="${una}/admin/css/font-awesome.css">
+    <link rel="stylesheet" href="${una}/admin/css/ionicons.css">
+    <link rel="stylesheet" href="${una}/admin/css/adminlte.min.css">
+    <link rel="stylesheet" href="${una}/admin/plugins/layer/skin/default/layer.css"/>
+    <link rel="stylesheet" href="${una}/admin/css/unaboot-admin.css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <style>
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-12 pt-2">
+            <form action="" id="user-form">
+                <div class="form-group row">
+                    <label class="col-3 col-form-label font-weight-normal text-right" for="username">账号<small class="text-danger">(*必填)</small></label>
+                    <div class="col-8">
+                        <input type="email" class="form-control" name="username" id="username"  placeholder="请输入Email作为账号"/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-3 col-form-label font-weight-normal text-right" for="nickname">昵称<small class="text-danger">(*必填)</small></label>
+                    <div class="col-8">
+                        <input type="text" class="form-control" name="nickname" id="nickname"  placeholder="请输入昵称或姓名"/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-3 col-form-label font-weight-normal text-right" for="password">密码<small class="text-danger">(*必填)</small></label>
+                    <div class="col-8">
+                       <input type="password" name="password" id="password" class="form-control"/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-3 col-form-label font-weight-normal text-right" for="confirmPwd">确认密码<small class="text-danger">(*必填)</small></label>
+                    <div class="col-8">
+                        <input type="password" name="confirmPwd" id="confirmPwd" class="form-control"/>
+                    </div>
+                </div>
+                <div class="fixed-bottom pl-4 pt-2 pr-4 pb-2 bg-gray-light text-right">
+                    <button type="button" class="btn btn-sm btn-primary" id="save-data"><i class="fa fa-save"></i> 保存</button>
+                    <button type="button" class="btn btn-sm btn-default" id="close"><i class="fa fa-times-circle-o"></i> 取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="${una}/admin/plugins/jquery/jquery.min.js"></script>
+<script src="${una}/admin/plugins/jquery/jquery.serializejson.js"></script>
+<script src="${una}/admin/plugins/jquery/jquery.form.js"></script>
+<script src="${una}/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="${una}/admin/js/adminlte.min.js"></script>
+<script type="text/javascript" src="${una}/admin/plugins/layer/layer.js"></script>
+<script src="${una}/admin/js/jquery.validate.min.js"></script>
+<script type="text/javascript">
+    var form = $("#user-form");
+    form.validate({
+        errorPlacement: function errorPlacement(error, element) {
+            element.after(error);
+        },
+        rules:{
+            username:{
+                required:true,
+                email:true
+            },
+            nickname:{
+                required:true,
+                rangelength:[3,12]
+            },
+            password:{
+                required:true,
+                rangelength:[8,16]
+            },
+            confirmPwd:{
+                required:true,
+                rangelength:[8,16],
+                equalTo:"#password"
+            }
+        },
+        messages:{
+            username:{
+                required:'请填写账号信息',
+                email:'请输入合法的Email'
+            },
+            nickname: {
+                required:'请填写用户昵称或姓名',
+                rangelength:'昵称或用户姓名只允许填写3-12个字符'
+            },
+            password:{
+                required:"请填写账号密码",
+                rangelength:"密码长度在8-16个字符"
+            },
+            confirmPwd:{
+                required:"确认密码不能为空",
+                rangelength:"密码长度在8-16个字符",
+                equalTo:"两次密码不一致"
+            }
+        }
+    });
+    $("#save-data").on("click",function(){
+       var flag =  form.valid();
+       if(flag){
+           var data = $("#user-form").serialize();
+           var load = layer.load(2,{shade:[0.4,'#f0f0f0f0']});
+           $.ajax({
+               type:'POST',
+               url:"${una}/admin/user/create",
+               data:data,
+               success:function(){
+                   layer.close(load);
+                   var index = parent.layer.getFrameIndex(window.name);
+                   parent.layer.alert("数据已经成功保存",{title:'系统提示信息',icon:1},function(sub){
+                       parent.layer.close(index);
+                       parent.layer.close(sub);
+                       parent.location.reload();
+                   });
+               },
+               error:function(){
+                   layer.close(load);
+                   layer.alert("服务器异常",{title:'系统提示',icon:0});
+               }
+           });
+       }
+    });
+    $("#close").on("click",function(){
+        var index = parent.layer.getFrameIndex(window.name);
+        parent.layer.close(index);
+    });
+</script>
+</body>
+</html>

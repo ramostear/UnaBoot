@@ -7,7 +7,9 @@ import com.ramostear.unaboot.task.CronTaskRegister;
 import com.ramostear.unaboot.task.TaskSchedulingRunnable;
 import com.ramostear.unaboot.web.UnaBootController;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,28 +31,12 @@ public class TaskController extends UnaBootController {
     @Autowired
     private CronTaskRegister cronTaskRegister;
 
-
-    @GetMapping("/test")
-    @ResponseBody
-    public String test(){
-        UnaBootJob job = new UnaBootJob();
-        job.setBeanName("unaBootTask");
-        job.setMethodName("demoTask");
-        job.setParams("18645229963");
-        job.setCronExpression("0/2 * * * * ?");
-        job.setCronTime(DateTimeUtils.current());
-        job.setJobState(true);
-        job.setRemark("测试带参数的定时任务是否正常执行");
-
-        jobService.addJob(job);
-        if(job.getJobId() > 0){
-            if(job.getJobState()){
-                TaskSchedulingRunnable task = new TaskSchedulingRunnable(job.getBeanName(),job.getMethodName(),job.getParams());
-                cronTaskRegister.addCronTask(task,job.getCronExpression());
-            }
-        }else{
-            return "Execute UnaBoot Task Failure.";
-        }
-        return "Execute UnaBoot Task Successfully!";
+    @GetMapping("/index")
+    public String index(Model model){
+        Page<UnaBootJob> data = jobService.findAllJobs(page());
+        model.addAttribute("data",data);
+        return "/admin/task/index";
     }
+
+
 }
