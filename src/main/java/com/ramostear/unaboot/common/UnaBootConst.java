@@ -11,11 +11,12 @@ import java.io.File;
  **/
 public class UnaBootConst {
 
-    public static final String USER_HOME_KEY = "user.home";
+    public static final String USER_HOME_KEY = "user.dir";
     /**
      * UnaBoot用于获取主机用户的home目录
      */
-    public static final String USER_HOME = System.getProperties().getProperty(UnaBootConst.USER_HOME_KEY);
+    public static String USER_HOME = System.getProperties().getProperty(UnaBootConst.USER_HOME_KEY);
+
 
     /**
      * 路径分割符

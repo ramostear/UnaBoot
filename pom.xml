@@ -25,7 +25,7 @@
     <version>1.2.0</version>
     <name>una-boot-pro</name>
     <description>UnaBoot Pro Version</description>
-
+    <packaging>war</packaging>
     <properties>
         <java.version>1.8</java.version>
         <mysql.version>5.1.47</mysql.version>
@@ -197,15 +197,18 @@
             <artifactId>ehcache</artifactId>
         </dependency>
         <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>org.apache</groupId>
             <artifactId>ibatis-common</artifactId>
             <version>2.2.0</version>
             <scope>system</scope>
             <systemPath>${pom.basedir}/src/lib/ibatis-common-2.2.0.jar</systemPath>
         </dependency>
-
     </dependencies>
-
     <build>
         <plugins>
             <plugin>

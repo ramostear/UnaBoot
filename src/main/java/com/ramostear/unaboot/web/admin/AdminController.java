@@ -8,7 +8,6 @@ import com.ramostear.unaboot.domain.entity.User;
 import com.ramostear.unaboot.domain.param.LoginParam;
 import com.ramostear.unaboot.domain.valueobject.VerifyCodeVo;
 import com.ramostear.unaboot.service.InstallService;
-import com.ramostear.unaboot.service.UserService;
 import com.ramostear.unaboot.service.VerifyCodeGenService;
 import com.ramostear.unaboot.web.UnaBootController;
 import lombok.extern.slf4j.Slf4j;
@@ -45,8 +44,6 @@ public class AdminController extends UnaBootController {
 
     @Autowired
     private InstallService installService;
-    @Autowired
-    private UserService userService;
     @Autowired
     private VerifyCodeGenService verifyCodeGenService;
     private static final String DEFAULT_MSG = "用户名或密码错误";
