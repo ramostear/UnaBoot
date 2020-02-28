@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="${una}/admin/css/unaboot-admin.css">
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
-<body class="hold-transition sidebar-mini sidebar-collapse layout-fixed layout-navbar-fixed">
+<body class="hold-transition sidebar-mini ">
 <div class="wrapper">
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
         <#include "/admin/common/header.html"/>
@@ -47,56 +47,56 @@
                             <div class="form-group row">
                                 <label class="col-3 col-form-label font-weight-normal text-right" for="title">网站标题<small class="text-danger">(*必填)</small></label>
                                 <div class="col-7">
-                                    <input type="text" class="form-control" name="title" id="title" value="${general['title'].value}" placeholder="请输入网站标题"/>
+                                    <input type="text" class="form-control" name="title" id="title" value="${(general['title'].value)!''}" placeholder="请输入网站标题"/>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-3 col-form-label font-weight-normal text-right" for="description">网站标语<small class="text-gray">(*选填)</small></label>
                                 <div class="col-7">
-                                    <textarea type="text" rows="3" class="form-control" name="description" id="description"  style="resize: none;" placeholder="请用一句话概括你的网站">${general['description'].value}</textarea>
+                                    <textarea type="text" rows="3" class="form-control" name="description" id="description"  style="resize: none;" placeholder="请用一句话概括你的网站">${(general['description'].value)!''}</textarea>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-3 col-form-label font-weight-normal text-right" for="keywords">关键词汇<small class="text-gray">(*选填)</small></label>
                                 <div class="col-7">
-                                    <input type="text" class="form-control" name="keywords" id="keywords" value="${general['keywords'].value}" placeholder="请配置网站关键词"/>
+                                    <input type="text" class="form-control" name="keywords" id="keywords" value="${(general['keywords'].value)!''}" placeholder="请配置网站关键词"/>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-3 col-form-label font-weight-normal text-right" for="domain">网站域名<small class="text-danger">(*必填)</small></label>
                                 <div class="col-7">
-                                    <input type="text" class="form-control" name="domain" id="domain" value="${general['domain'].value}" placeholder="请填写网站域名"/>
+                                    <input type="text" class="form-control" name="domain" id="domain" value="${(general['domain'].value)!''}" placeholder="请填写网站域名"/>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-3 col-form-label font-weight-normal text-right" for="icp">备案编号<small class="text-danger">(*必填)</small></label>
                                 <div class="col-7">
-                                    <input type="text" class="form-control" name="icp" id="icp" value="${general['icp'].value}" placeholder="请填写网站ICP备案编号"/>
+                                    <input type="text" class="form-control" name="icp" id="icp" value="${(general['icp'].value)!''}" placeholder="请填写网站ICP备案编号"/>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-3 col-form-label font-weight-normal text-right" for="iscp">网安编号<small class="text-gray">(*选填)</small></label>
                                 <div class="col-7">
-                                    <input type="text" class="form-control" name="iscp" id="iscp" value="${general['iscp'].value}" placeholder="请填写全国互联网安全备案编号"/>
+                                    <input type="text" class="form-control" name="iscp" id="iscp" value="${(general['iscp'].value)!''}" placeholder="请填写全国互联网安全备案编号"/>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-3 col-form-label font-weight-normal text-right" for="email">站长邮箱<small class="text-danger">(*必填)</small></label>
                                 <div class="col-7">
-                                    <input type="text" class="form-control" name="email" id="email" value="${general['email'].value}" placeholder="请填写网站管理员邮箱"/>
+                                    <input type="text" class="form-control" name="email" id="email" value="${(general['email'].value)!''}" placeholder="请填写网站管理员邮箱"/>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-3 col-form-label font-weight-normal text-right" for="copyright">版权信息<small class="text-danger">(*必填)</small></label>
                                 <div class="col-7">
-                                    <input type="text" class="form-control" name="copyright" id="copyright" value="${general['copyright'].value}" placeholder="请填写网站版权信息"/>
+                                    <input type="text" class="form-control" name="copyright" id="copyright" value="${(general['copyright'].value)!''}" placeholder="请填写网站版权信息"/>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-3 col-form-label font-weight-normal text-right" for="logo">网站Logo<small class="text-danger">(*必填)</small></label>
                                 <div class="col-7">
                                     <img src="${(general['logo'].value)!una+'/admin/img/thumb.jpg'}" style="height: 120px;" class="img-thumbnail thumb-logo img-fluid mb-2" alt="网站logo">
-                                    <input type="hidden" name="logo" id="logo" value="${general['logo'].value}">
+                                    <input type="hidden" name="logo" id="logo" value="${(general['logo'].value)!''}">
                                     <input type="file" id="logo-file" onchange="selectFile(this,'logo')" style="display: none;" accept="image/*"/>
                                     <div class="btn-group">
                                         <button type="button" onclick="document.getElementById('logo-file').click();" class="btn btn-sm btn-primary"><i class="fa fa-upload"></i> 上传</button>
@@ -108,7 +108,7 @@
                                 <label class="col-3 col-form-label font-weight-normal text-right" for="favicon">网站图标<small class="text-danger">(*必填)</small></label>
                                 <div class="col-7">
                                     <img src="${(general['favicon'].value)!una+'/admin/img/thumb.jpg'}" style="height: 64px;width: 64px;" class="img-thumbnail thumb-favicon img-fluid mb-2" alt="网站logo">
-                                    <input type="hidden" name="favicon" id="favicon" value="${general['favicon'].value}">
+                                    <input type="hidden" name="favicon" id="favicon" value="${(general['favicon'].value)!''}">
                                     <input type="file" id="favicon-file" onchange="selectFile(this,'favicon')" style="display: none;" accept="image/*"/>
                                     <div class="btn-group">
                                         <button type="button" onclick="document.getElementById('favicon-file').click();" class="btn btn-sm btn-primary"><i class="fa fa-upload"></i> 上传</button>
@@ -122,7 +122,7 @@
                                     <select type="text" class="form-control" name="theme" id="theme" >
                                         <#if themes?? && themes?size gt 0>
                                             <#list themes as theme>
-                                                <#if general['theme'].value?? && general['theme'].value == theme.name>
+                                                <#if (general['theme'].value)?? && general['theme'].value == theme.name>
                                                     <option value="${theme.name}" selected>${theme.name}</option>
                                                 <#else>
                                                     <option value="${theme.name}">${theme.name}</option>
@@ -281,9 +281,9 @@
         var img_src = $(ele).attr("data-id");
         $("img.thumb-"+id).attr('src',img_src);
         if(id=="logo"){
-            $("input[id=logo]").val('${general['logo'].value}');
+            $("input[id=logo]").val('${(general['logo'].value)!''}');
         }else{
-            $("input[id=favicon]").val('${general['favicon'].value}');
+            $("input[id=favicon]").val('${(general['favicon'].value)!''}');
         }
     }
 </script>

@@ -4,7 +4,9 @@ import com.ramostear.unaboot.common.util.DateTimeUtils;
 import com.ramostear.unaboot.common.util.RandomUtils;
 import com.ramostear.unaboot.domain.dto.support.ObjectInputConverter;
 import com.ramostear.unaboot.domain.entity.Post;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.validation.constraints.NotBlank;
@@ -18,6 +20,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class PostParam  implements ObjectInputConverter<Post> {
 
     @Size(max = 64,min = 8,message = "Slug长度必须在{min}到{max}之间")

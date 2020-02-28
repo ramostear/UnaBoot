@@ -4,6 +4,7 @@ import com.ramostear.unaboot.common.UnaBootConst;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
+import java.io.IOException;
 
 /**
  * @ClassName UnaBootUtils
@@ -26,6 +27,15 @@ public class UnaBootUtils {
             return Boolean.TRUE;
         }else{
             return Boolean.FALSE;
+        }
+    }
+
+    public static void writeInstallFile() throws IOException {
+        String flagFile = UnaBootUtils.class.getResource("/")
+                .getPath()+ UnaBootConst.SEPARATOR+UnaBootConst.INSTALL_FLAG_FILE;
+        File file = new File(flagFile);
+        if(!file.exists()){
+            file.createNewFile();
         }
     }
 

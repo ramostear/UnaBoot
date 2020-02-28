@@ -1,5 +1,6 @@
 package com.ramostear.unaboot.web.admin;
 
+import com.ramostear.unaboot.common.UnaBootConst;
 import com.ramostear.unaboot.common.exception.UnaBootException;
 import com.ramostear.unaboot.domain.entity.PostTag;
 import com.ramostear.unaboot.domain.entity.Tag;
@@ -7,6 +8,7 @@ import com.ramostear.unaboot.service.PostTagService;
 import com.ramostear.unaboot.service.TagService;
 import com.ramostear.unaboot.web.UnaBootController;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +18,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@RequiresRoles(value = UnaBootConst.ROLE_ADMIN)
 @Slf4j
 @Controller
 @RequestMapping("/admin/tag")

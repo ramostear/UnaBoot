@@ -4,6 +4,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.ramostear.unaboot.common.UnaBootConst;
+import com.ramostear.unaboot.interceptor.InstallerInterceptor;
 import com.ramostear.unaboot.interceptor.ServletContextInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -26,6 +27,9 @@ public class UnaBootWebMvcConfiguration extends WebMvcConfigurationSupport {
     @Autowired
     private ServletContextInterceptor servletContextInterceptor;
 
+    @Autowired
+    private InstallerInterceptor installerInterceptor;
+
     @Override
     protected void configurePathMatch(PathMatchConfigurer configurer) {
         super.configurePathMatch(configurer);
@@ -37,9 +41,9 @@ public class UnaBootWebMvcConfiguration extends WebMvcConfigurationSupport {
         super.addInterceptors(registry);
         registry.addInterceptor(servletContextInterceptor)
                 .addPathPatterns("/**");
-        /*registry.addInterceptor(errorInterceptor)
+        registry.addInterceptor(installerInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/admin/**");*/
+                .excludePathPatterns("/unaboot/install.html","/admin/css/**","/admin/fonts/**","/admin/img/**","/admin/js/**","/admin/plugins/**");
     }
 
     @Override

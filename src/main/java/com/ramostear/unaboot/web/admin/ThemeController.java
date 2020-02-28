@@ -5,6 +5,7 @@ import com.ramostear.unaboot.domain.entity.Theme;
 import com.ramostear.unaboot.domain.valueobject.ThemeFile;
 import com.ramostear.unaboot.service.ThemeService;
 import com.ramostear.unaboot.web.UnaBootController;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -16,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.List;
 
-
+@RequiresRoles(value = UnaBootConst.ROLE_ADMIN)
 @Controller
 @RequestMapping("/admin/theme")
 public class ThemeController extends UnaBootController {

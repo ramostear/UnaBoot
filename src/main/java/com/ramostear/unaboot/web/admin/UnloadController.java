@@ -1,9 +1,11 @@
 package com.ramostear.unaboot.web.admin;
 
 import com.alibaba.fastjson.JSONObject;
+import com.ramostear.unaboot.common.UnaBootConst;
 import com.ramostear.unaboot.service.UploadService;
 import com.ramostear.unaboot.web.UnaBootController;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +24,7 @@ import java.util.stream.Collectors;
  * @Date 2020/2/23 0023 8:00
  * @Version since UnaBoot-1.0
  **/
+@RequiresRoles(value = UnaBootConst.ROLE_ADMIN)
 @RestController
 @RequestMapping("/admin/upload")
 public class UnloadController extends UnaBootController {

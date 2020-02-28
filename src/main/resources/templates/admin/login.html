@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="${una}/admin/img/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="${una}/admin/img/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="${una}/admin/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="${una}/admin/css/font-awesome.css">
+    <link rel="stylesheet" href="${una}/admin/css/ionicons.css">
+    <link rel="stylesheet" href="${una}/admin/css/adminlte.min.css">
+    <link rel="stylesheet" href="${una}/admin/plugins/layer/skin/default/layer.css"/>
+    <link rel="stylesheet" href="${una}/admin/css/unaboot-login.css" />
+    <title>管理员登录</title>
+</head>
+<body>
+<div class="nav-top fixed-top navbar navbar-dark navbar-expand">
+    <div class="container">
+        <div class="logo-box">
+            <a href="#">
+                <img src="${una}/admin/img/logo.png" style="width: 120px;" class="logo image img-fluid">
+            </a>
+        </div>
+        <ul class="navbar-nav">
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="https://www.ramostear.com" target="_blank" class="nav-link"><i class="fa far fa-home"></i> Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="https://github.com/ramostear" target="_blank"><i class="far fa fa-github"></i> Github</a>
+            </li>
+
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="https://gitee.com/ramostear" class="nav-link" target="_blank"><i class="fa fa-git"></i> Gitee</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="content">
+    <div class="container">
+        <div class="pro-info">
+            <img src="${una}/admin/img/logo.png" class="pro-img">
+            <p class="mt-4">
+                尤娜(Una)[ˈunə],一个基于SpringBoot-2.2.2.RELEASE版本构建的纯国产Java博客平台，为IT极客写作而生。<br>
+                <span class="blockquote mt-4" style="text-align: right;display: block;">UnaBoot-1.2.0.RELEASE</span>
+            </p>
+        </div>
+        <div class="login-box">
+            <div class="ribbon-wrapper ribbon-lg">
+                <div class="ribbon bg-dark text-lg" style="text-transform: none!important;">
+                    <a href="#"><i class="fa fa-github"></i> Fork Me</a>
+                </div>
+            </div>
+            <div class="card card-default card-outline p-4 pb-5">
+                <div class="card-header border-bottom-0">
+                    <img src="${una}/admin/img/logo-min.png" class="login-img elevation-3 img-circle">
+                </div>
+                <div class="card-body">
+                    <form id="login-form">
+                        <div class="form-group mt-2">
+                            <input type="text" name="username" class="form-control" placeholder="请输入用户名"/>
+                        </div>
+                        <div class="form-group mt-2">
+                            <input type="password" name="password" class="form-control" placeholder="请输入密码"/>
+                        </div>
+                        <div class="form-group mt-2">
+                            <input type="text" name="verifyCode" placeholder="请输入验证码" class="form-control pull-left mr-2" style="width: 50%;">
+                            <img src="" id="verifyImage" alt="验证码" title="看不清楚？点击更换" onclick="getVerifyCode();" class="img-thumbnail pull-right" style="width: 40%;height: 38px;cursor: pointer;"/>
+                        </div>
+                        <br>
+                        <div class="text-center mt-4">
+                            <button type="button" id="login-btn" class="btn btn-primary btn-block">登 陆</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="footer fixed-bottom text-white text-center p-4">
+            &copy; <a href="https://www.ramostear.com" target="_blank" class="text-white">Ramostear</a> 版权所有，请保留版权标识
+        </div>
+    </div>
+    <canvas id="c" style="z-index: 9;opacity: 0.2;"></canvas>
+</div>
+</body>
+
+<script src="${una}/admin/plugins/jquery/jquery.min.js"></script>
+<script src="${una}/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="${una}/admin/plugins/jquery/jquery.serializejson.js"></script>
+<script src="${una}/admin/plugins/jquery/jquery.form.js"></script>
+<script src="${una}/admin/js/adminlte.min.js"></script>
+<script type="text/javascript" src="${una}/admin/plugins/layer/layer.js"></script>
+<script src="${una}/admin/js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="${una}/admin/js/login-page.js"></script>
+<script type="text/javascript">
+    getVerifyCode();
+    function getVerifyCode(){
+        $("#verifyImage").attr("src",timestamp("${una}/verifyCode"))
+    }
+    function timestamp(url) {
+        var timestamp = new Date().getTime();
+        if(url.indexOf("?") > -1){
+            url = url+"&timestamp="+timestamp;
+        }else{
+            url = url+"?timestamp="+timestamp;
+        }
+        return url;
+    }
+    var form = $("#login-form");
+    form.validate({
+        errorPlacement: function errorPlacement(error, element) {
+            element.after(error);
+        },
+        rules:{
+            username:{
+                required:true,
+                email:true
+            },
+            password:{
+                required:true
+            },
+            verifyCode:{
+                required:true
+            }
+        },
+        messages:{
+            username:{
+                required:'请填写登录账号',
+                email:'账号必须是邮箱格式'
+            },
+            password: {
+                required:'请填写登录密码'
+            },
+            verifyCode:{
+                required:"请填写验证码"
+            }
+        }
+    });
+    $("#login-btn").on("click",function(){
+        var flag = form.valid();
+        if(flag){
+            var data = JSON.stringify($("#login-form").serializeJSON());
+            var load = layer.load(2,{shade:[0.4,'#f0f0f0f0']});
+            $.ajax({
+                type:'POST',
+                url:'${una}/admin/login',
+                data:data,
+                contentType:'application/json;charset=utf-8',
+                success:function(){
+                    layer.close(load);
+                    window.location.href = "${una}/admin/index";
+                },
+                error:function(result){
+                    layer.close(load);
+                    layer.alert(result.responseText,{title:'系统提示信息',icon:0});
+                }
+            });
+        }
+    });
+</script>
+</html>

@@ -1,5 +1,6 @@
 package com.ramostear.unaboot.web.admin;
 
+import com.ramostear.unaboot.common.UnaBootConst;
 import com.ramostear.unaboot.common.exception.UnaBootException;
 import com.ramostear.unaboot.domain.entity.Category;
 import com.ramostear.unaboot.domain.valueobject.CategoryVo;
@@ -7,6 +8,7 @@ import com.ramostear.unaboot.service.CategoryService;
 import com.ramostear.unaboot.service.ThemeService;
 import com.ramostear.unaboot.web.UnaBootController;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -25,6 +27,7 @@ import java.util.List;
  * @Date 2020/2/15 0015 1:00
  * @Version since UnaBoot-1.0
  **/
+@RequiresRoles(value = UnaBootConst.ROLE_ADMIN)
 @Controller
 @RequestMapping("/admin/category")
 public class CategoryController extends UnaBootController {

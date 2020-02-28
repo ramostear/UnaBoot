@@ -2,11 +2,11 @@ server:
   servlet:
     context-path: /
   port: 80
-#logging:
- # level:
-  #  com.ramostear.unaboot:  info
-   # org.springframework:  info
-    #org.spring.springboot:  info
+logging:
+  level:
+    com.ramostear.unaboot:  debug
+    org.springframework:  info
+    org.spring.springboot:  info
 spring:
   freemarker:
     suffix: .html

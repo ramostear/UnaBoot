@@ -1,5 +1,6 @@
 package com.ramostear.unaboot.web.admin;
 
+import com.ramostear.unaboot.common.UnaBootConst;
 import com.ramostear.unaboot.common.util.QiniuUtils;
 import com.ramostear.unaboot.domain.entity.Setting;
 import com.ramostear.unaboot.domain.valueobject.Qiniu;
@@ -7,6 +8,7 @@ import com.ramostear.unaboot.service.SettingService;
 import com.ramostear.unaboot.service.ThemeService;
 import com.ramostear.unaboot.web.UnaBootController;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +31,7 @@ import java.util.Set;
  * @Date 2020/2/15 0015 15:17
  * @Version since UnaBoot-1.0
  **/
+@RequiresRoles(value = UnaBootConst.ROLE_ADMIN)
 @Slf4j
 @Controller
 @RequestMapping("/admin/setting")
