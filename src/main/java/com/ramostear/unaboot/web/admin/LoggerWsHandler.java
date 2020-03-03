@@ -49,7 +49,7 @@ public class LoggerWsHandler extends TextWebSocketHandler {
            while (sessionMap.get(session.getId()) != null){
                BufferedReader reader = null;
                try{
-                   String filePath = System.getProperty("user.home")+"/.una/log/"+new SimpleDateFormat("yyyyMMdd").format(new Date())+"/"+applicationName+".log";
+                   String filePath = System.getProperty("user.dir")+"/.una/logs/"+new SimpleDateFormat("yyyyMMdd").format(new Date())+"/"+applicationName+".log";
                    reader = new BufferedReader(new FileReader(filePath));
                    Object[] lines = reader.lines().toArray();
                    Object[] copyOfRange = Arrays.copyOfRange(lines,lengthMap.get(session.getId()),lines.length);
@@ -73,7 +73,7 @@ public class LoggerWsHandler extends TextWebSocketHandler {
                                line = split[0]+"]"+"<span style='color:#26e1ff;'>"+subSplit[0]+"</span>"+"-"+subSplit[1];
                                if(subSplit.length >=3){
                                    for(int m=3;m<=subSplit.length;m++){
-                                       line+="-"+subSplit[m-1];
+                                       line += "-"+subSplit[m-1];
                                    }
 
                                }
@@ -115,7 +115,9 @@ public class LoggerWsHandler extends TextWebSocketHandler {
                    e.printStackTrace();
                }finally {
                    try {
-                       reader.close();
+                       if(reader != null){
+                           reader.close();
+                       }
                    } catch (IOException e) {
                        e.printStackTrace();
                    }

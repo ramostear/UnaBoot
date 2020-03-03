@@ -16,7 +16,7 @@ import java.util.Random;
 
 /**
  * @ClassName VerifyCodeGenServiceImpl
- * @Description TODO
+ * @Description 验证码服务类
  * @Author 树下魅狐
  * @Date 2020/2/28 0028 7:23
  * @Version since UnaBoot-1.0

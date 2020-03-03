@@ -7,6 +7,7 @@ import com.ramostear.unaboot.service.base.UnaBootService;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.List;
 
 public interface ThemeService extends UnaBootService<Theme,Integer> {
@@ -68,4 +69,9 @@ public interface ThemeService extends UnaBootService<Theme,Integer> {
      * @return
      */
     boolean deleteFile(String fullName);
+
+    /**
+     * 设置默认的主题
+     */
+    void initDefaultTheme() throws IOException;
 }

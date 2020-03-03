@@ -140,7 +140,6 @@ public class ThemeController extends UnaBootController {
     @ResponseBody
     @PostMapping("/deleteFile")
     public ResponseEntity<Object> deleteFile(@RequestParam("path")String path){
-        //TODO 如果删除整个主题文件，则需要判断该主题是否正在被使用，如果当前主题已经被使用，则不允许删除整个主题文件
         boolean flag = themeService.deleteFile(path);
         if(flag){
             return ok();

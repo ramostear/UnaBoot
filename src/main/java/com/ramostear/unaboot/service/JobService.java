@@ -20,5 +20,7 @@ public interface JobService {
 
     Page<UnaBootJob> findAllJobs(Pageable pageable);
 
+    void reloadAll();
+
 
 }

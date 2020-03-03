@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 /**
  * @ClassName SettingServiceImpl
- * @Description TODO
+ * @Description 系统设置
  * @Author 树下魅狐
  * @Date 2020/1/17 0017 6:36
  * @Version since UnaBoot-1.0
@@ -75,7 +75,7 @@ public class SettingServiceImpl extends UnaBootServiceImpl<Setting,Integer> impl
         String[] keys = {"gitalk_enabled","gitalk_client_id",
                          "gitalk_client_secret","gitalk_repo",
                          "gitalk_owner","gitalk_admin"};
-        gitalk.setEnabled(settings.get(keys[0])!= null?(settings.get(keys[0]).getValue()).equals("1"):false);
+        gitalk.setEnabled(settings.get(keys[0]) != null && (settings.get(keys[0]).getValue()).equals("1"));
         gitalk.setClientId(settings.get(keys[1])!=null?(settings.get(keys[1]).getValue()):"");
         gitalk.setClientSecret(settings.get(keys[2])!=null?(settings.get(keys[2]).getValue()):"");
         gitalk.setRepo(settings.get(keys[3])!=null?(settings.get(keys[3]).getValue()):"");

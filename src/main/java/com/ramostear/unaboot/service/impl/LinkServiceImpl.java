@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * @ClassName LinkServiceImpl
- * @Description TODO
+ * @Description 友情连接服务实现类
  * @Author 树下魅狐
  * @Date 2020/2/27 0027 4:30
  * @Version since UnaBoot-1.0

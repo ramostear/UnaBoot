@@ -15,15 +15,17 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
  * @ClassName UnaBootUploaderImpl
- * @Description TODO
+ * @Description 文件上传服务
  * @Author 树下魅狐
  * @Date 2020/2/16 0016 0:20
  * @Version since UnaBoot-1.0
  **/
+@Deprecated
 @Slf4j
 @Service("unaBootUploader")
 public class UnaBootUploaderImpl implements UnaBootUploader {
@@ -45,7 +47,7 @@ public class UnaBootUploaderImpl implements UnaBootUploader {
     public boolean remove(Collection<String> urls) {
         boolean flag = false;
         if(!CollectionUtils.isEmpty(urls)){
-            urls.forEach(url->delete(url));
+            urls.forEach(this::delete);
             flag = true;
         }
         return flag;
@@ -55,7 +57,7 @@ public class UnaBootUploaderImpl implements UnaBootUploader {
     private String localStore(MultipartFile file){
         String storePath = UnaBootConst.FILE_UPLOAD_ROOT_DIR+"store";
         String url = "";
-        String suffix = file.getOriginalFilename()
+        String suffix = Objects.requireNonNull(file.getOriginalFilename())
                 .substring(file.getOriginalFilename().lastIndexOf("."));
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         String fileName = sdf.format(new Date())

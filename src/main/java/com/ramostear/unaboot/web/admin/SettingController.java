@@ -110,9 +110,7 @@ public class SettingController extends UnaBootController {
     private ResponseEntity<Object> updateSetting(HttpServletRequest request){
         Map<String,String[]> parameters = request.getParameterMap();
         List<Setting> items = new ArrayList<>();
-        parameters.forEach((key,value)->{
-            items.add(Setting.builder().key(key).value(value[0]).build());
-        });
+        parameters.forEach((key,value)-> items.add(Setting.builder().key(key).value(value[0]).build()));
 
         settingService.update(items);
         Map<String,Setting> settings = settingService.convertTo();

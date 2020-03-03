@@ -24,37 +24,37 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * @ClassName UnaBootDataSourceConfiguration
+ * @ClassName DruidConfiguration
  * @Description 自定义数据源配置
  * @Author 树下魅狐
  * @Date 2020/1/16 0016 21:11
  * @Version since UnaBoot-1.0
  **/
 @Configuration
-public class UnaBootDataSourceConfiguration {
+public class DruidConfiguration {
 
-    @Bean
-    @ConfigurationProperties(prefix = "spring.datasource.druid.h2")
-    public DataSource h2DataSource(DruidProperties properties){
+   // @Bean
+   // @ConfigurationProperties(prefix = "spring.datasource.druid.h2")
+    /*public DataSource h2DataSource(DruidProperties properties){
         DruidDataSource dataSource = DruidDataSourceBuilder.create().build();
         return properties.druidDataSource(dataSource);
-    }
+    }*/
 
-    @Bean
+    /*@Bean
     @ConfigurationProperties(prefix = "spring.datasource.druid.mysql")
-    @ConditionalOnResource(resources = "classpath:install.back")
-    public DataSource mysqlDataSource(DruidProperties properties){
+    @ConditionalOnResource(resources = "classpath:install.back")*/
+    /*public DataSource mysqlDataSource(DruidProperties properties){
         DruidDataSource dataSource = DruidDataSourceBuilder.create().build();
         Properties mySQLProperties = PropertyUtils.read(UnaBootConst.MYSQL_CONFIG_FILE_NAME);
         dataSource.setUrl(mySQLProperties.getProperty(UnaBootConst.MYSQL_URL_KEY));
         dataSource.setUsername(mySQLProperties.getProperty(UnaBootConst.MYSQL_USERNAME_KEY));
         dataSource.setPassword(mySQLProperties.getProperty(UnaBootConst.MYSQL_PASSWORD_KEY));
         return properties.druidDataSource(dataSource);
-    }
+    }*/
 
-    @Bean(name = "unaBootDataSource")
-    @Primary
-    public UnaBootDataSource unaBootDataSource(DataSource h2DataSource,DataSource mysqlDataSource){
+    /*@Bean(name = "unaBootDataSource")
+    @Primary*/
+    /*public UnaBootDataSource unaBootDataSource(DataSource h2DataSource,DataSource mysqlDataSource){
         Map<Object,Object> targetDataSource = new HashMap<>(2);
         targetDataSource.put(DBType.H2.name(),h2DataSource);
         targetDataSource.put(DBType.MYSQL.name(),mysqlDataSource);
@@ -63,7 +63,7 @@ public class UnaBootDataSourceConfiguration {
         }else{
             return new UnaBootDataSource(h2DataSource,targetDataSource);
         }
-    }
+    }*/
 
     @Bean
     public DruidStatInterceptor druidStatInterceptor(){

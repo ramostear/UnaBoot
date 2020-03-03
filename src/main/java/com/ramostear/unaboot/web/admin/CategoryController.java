@@ -107,7 +107,7 @@ public class CategoryController extends UnaBootController {
         if(target == null){
             return badRequest();
         }else{
-            BeanUtils.copyProperties(category,target,new String[]{"id","createTime"});
+            BeanUtils.copyProperties(category,target, "id","createTime");
             categoryService.update(target);
             return ok();
         }

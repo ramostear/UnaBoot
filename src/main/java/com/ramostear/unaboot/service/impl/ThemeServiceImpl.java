@@ -18,7 +18,6 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.util.*;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -49,7 +48,7 @@ public class ThemeServiceImpl extends UnaBootServiceImpl<Theme,Integer> implemen
     @Override
     public List<ThemeFile> loadThemeFile(String folder,boolean isPageData) {
         String fullFolderPath;
-        if(StringUtils.isBlank(folder) || folder.trim() == ""){
+        if(StringUtils.isBlank(folder) || folder.trim().equals("")){
             folder = "themes";
             fullFolderPath = UnaBootConst.FILE_UPLOAD_ROOT_DIR+"themes";
         }else{
@@ -113,7 +112,7 @@ public class ThemeServiceImpl extends UnaBootServiceImpl<Theme,Integer> implemen
         if(subFiles != null && subFiles.length >0){
             return Arrays.stream(subFiles)
                     .filter(f -> f.isFile() && f.getName().endsWith(".html"))
-                    .map(f->f.getName())
+                    .map(File::getName)
                     .collect(Collectors.toList());
         }else{
             return Collections.emptyList();
@@ -132,13 +131,13 @@ public class ThemeServiceImpl extends UnaBootServiceImpl<Theme,Integer> implemen
         }
         InputStreamReader inputStreamReader = null;
         BufferedReader bufferedReader = null;
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         String content;
         try {
             inputStreamReader = new InputStreamReader(new FileInputStream(targetFile),UnaBootConst.UTF_8);
             bufferedReader = new BufferedReader(inputStreamReader);
             while((content = bufferedReader.readLine()) != null){
-                buffer.append(content+"\n");
+                buffer.append(content).append("\n");
             }
             return buffer.toString();
         } catch (UnsupportedEncodingException e) {
@@ -233,5 +232,10 @@ public class ThemeServiceImpl extends UnaBootServiceImpl<Theme,Integer> implemen
         String fullPath = UnaBootConst.FILE_UPLOAD_ROOT_DIR+fullName;
         log.info("delete file from disk :[{}]",fullPath);
         return ThemeUtils.deleteFile(fullPath);
+    }
+
+    @Override
+    public void initDefaultTheme() throws IOException {
+            ThemeUtils.initDefaultTheme();
     }
 }

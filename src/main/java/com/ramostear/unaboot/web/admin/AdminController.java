@@ -4,10 +4,13 @@ import com.ramostear.unaboot.common.UnaBootConst;
 import com.ramostear.unaboot.common.exception.UnaBootException;
 import com.ramostear.unaboot.common.util.UnaBootUtils;
 import com.ramostear.unaboot.domain.dto.InstallDto;
+import com.ramostear.unaboot.domain.entity.Setting;
 import com.ramostear.unaboot.domain.entity.User;
 import com.ramostear.unaboot.domain.param.LoginParam;
 import com.ramostear.unaboot.domain.valueobject.VerifyCodeVo;
 import com.ramostear.unaboot.service.InstallService;
+import com.ramostear.unaboot.service.SettingService;
+import com.ramostear.unaboot.service.ThemeService;
 import com.ramostear.unaboot.service.VerifyCodeGenService;
 import com.ramostear.unaboot.web.UnaBootController;
 import lombok.extern.slf4j.Slf4j;
@@ -24,12 +27,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.SQLException;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @ClassName AdminController
@@ -44,6 +50,12 @@ public class AdminController extends UnaBootController {
 
     @Autowired
     private InstallService installService;
+    @Autowired
+    private SettingService settingService;
+    @Autowired
+    private ServletContext servletContext;
+    @Autowired
+    private ThemeService themeService;
     @Autowired
     private VerifyCodeGenService verifyCodeGenService;
     private static final String DEFAULT_MSG = "用户名或密码错误";
@@ -62,16 +74,11 @@ public class AdminController extends UnaBootController {
         boolean flag = false;
         try {
             installService.install(dto);
+            themeService.initDefaultTheme();
+            refreshContext();
+            UnaBootUtils.writeInstallFile();
             flag = true;
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (IOException | InstantiationException | SQLException | IllegalAccessException | ClassNotFoundException e) {
             e.printStackTrace();
         }
         if(flag){
@@ -147,6 +154,17 @@ public class AdminController extends UnaBootController {
             os.flush();
         }catch (IOException e){
             log.error("write verify code to page error :{}",e.getMessage());
+        }
+    }
+
+    private void refreshContext(){
+        if(UnaBootUtils.isInstall()){
+            Map<String, Setting> settings = settingService.convertTo();
+            Set<String> keys = settings.keySet();
+            keys.forEach((String key)->{
+                log.info("Refresh Application ServletContext info -- key:{},value:{}",key,settings.get(key).getValue());
+                servletContext.setAttribute(key,settings.get(key).getValue());
+            });
         }
     }
 }

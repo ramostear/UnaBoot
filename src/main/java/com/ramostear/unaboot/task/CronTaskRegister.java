@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @ClassName CronTaskRegister
- * @Description TODO
+ * @Description 定时任务注册中心
  * @Author 树下魅狐
  * @Date 2020/2/16 0016 18:46
  * @Version since UnaBoot-1.0
@@ -55,10 +55,8 @@ public class CronTaskRegister implements DisposableBean {
     }
     public void removeAll(){
         Set<Runnable> runnables = this.scheduledTasks.keySet();
-        if(runnables != null && runnables.size() > 0){
-            runnables.forEach(task->{
-                removeCronTask(task);
-            });
+        if(runnables.size() > 0){
+            runnables.forEach(this::removeCronTask);
         }
     }
 

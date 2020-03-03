@@ -3,11 +3,13 @@ package com.ramostear.unaboot.common.util;
 import com.ramostear.unaboot.common.UnaBootConst;
 import com.ramostear.unaboot.domain.entity.Theme;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 
 @Slf4j
 public class ThemeUtils {
@@ -87,5 +89,15 @@ public class ThemeUtils {
             }
         }
         return file.delete();
+    }
+
+    public static void initDefaultTheme() throws IOException {
+        String defaultThemePath = ThemeUtils.class.getClassLoader().getResource("theme/default").getPath();
+        log.info("Default theme file path :{}",defaultThemePath);
+        File srcFile = new File(defaultThemePath);
+        String destPath = UnaBootConst.FILE_UPLOAD_ROOT_DIR+"themes"+UnaBootConst.SEPARATOR+"default";
+        log.info("Target default theme path:{}",destPath);
+        File destFile = new File(destPath);
+        FileUtils.copyDirectory(srcFile,destFile);
     }
 }

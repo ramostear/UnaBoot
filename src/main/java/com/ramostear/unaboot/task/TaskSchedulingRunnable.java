@@ -11,7 +11,7 @@ import java.util.Objects;
 
 /**
  * @ClassName TaskSchedulingRunnable
- * @Description TODO
+ * @Description Task
  * @Author 树下魅狐
  * @Date 2020/2/16 0016 18:14
  * @Version since UnaBoot-1.0
@@ -41,7 +41,7 @@ public class TaskSchedulingRunnable implements Runnable{
         long startTime = System.currentTimeMillis();
         try {
             Object target = SpringContextUtils.getBean(beanName);
-            Method method = null;
+            Method method;
             if(StringUtils.isNotEmpty(params)){
                 method = target.getClass().getDeclaredMethod(methodName,String.class);
             }else{
@@ -53,11 +53,7 @@ public class TaskSchedulingRunnable implements Runnable{
             }else{
                 method.invoke(target);
             }
-        } catch (NoSuchMethodException e) {
-            log.error("Execute scheduling task error - bean:{},method:{},params:{},error message:{}",beanName,methodName,params,e.getMessage());
-        } catch (IllegalAccessException e) {
-            log.error("Execute scheduling task error - bean:{},method:{},params:{},error message:{}",beanName,methodName,params,e.getMessage());
-        } catch (InvocationTargetException e) {
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             log.error("Execute scheduling task error - bean:{},method:{},params:{},error message:{}",beanName,methodName,params,e.getMessage());
         }
         long times = System.currentTimeMillis() - startTime;

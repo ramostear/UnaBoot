@@ -19,7 +19,7 @@ import java.util.Map;
 
 /**
  * @ClassName InstallServiceImpl
- * @Description TODO
+ * @Description 初始化系统的基本数据
  * @Author 树下魅狐
  * @Date 2020/2/27 0027 14:05
  * @Version since UnaBoot-1.0
@@ -45,7 +45,6 @@ public class InstallServiceImpl implements InstallService {
         log.info("create tables into database `{}` is ok.",info.getDb());
         ScriptRunnerUtils.runSql(conn,initUserSql(dto));
         ScriptRunnerUtils.runSql(conn,initSettingSql(dto));
-        UnaBootUtils.writeInstallFile();
         Map<String,String> props = new HashMap<>();
         props.put("url",info.getUrl());
         props.put("username",info.getUsername());
@@ -75,17 +74,14 @@ public class InstallServiceImpl implements InstallService {
         user.setType(UnaBootConst.USER_DEFAULT);
         user.setCreateTime(DateTimeUtils.current());
         user.setPassword(EncryptUtils.simpleHash(dto.getAdminPassword(),dto.getAdminAccount()));
-        String sql = "insert into `user`(`id`,`create_time`,`update_time`,`nickname`,`password`,`role`,`username`,`type`) values ("+1
+
+        return "insert into `user`(`id`,`create_time`,`update_time`,`nickname`,`password`,`role`,`username`,`type`) values ("+1
                 +",'"+sdf.format(user.getCreateTime())+"','"+sdf.format(user.getUpdateTime())
                 +"','"+user.getNickname()+"','"+user.getPassword()+"','"+user.getRole()
                 +"','"+user.getUsername()+"',"+user.getType()+");";
-
-        return sql;
     }
 
     private String initSettingSql(InstallDto dto){
-        String dateTime = sdf.format(DateTimeUtils.current());
-        String sql = "insert  into `settings`(`id`,`create_time`,`update_time`,`_key`,`_value`) values (1,'2020-02-15 18:36:56','2020-02-15 18:36:56','title','"+dto.getSiteName()+"'),(2,'2020-02-15 18:36:56','2020-02-15 18:36:56','domain','"+dto.getSiteDomain()+"');";
-        return sql;
+        return "insert  into `settings`(`id`,`create_time`,`update_time`,`_key`,`_value`) values (1,'2020-02-15 18:36:56','2020-02-15 18:36:56','title','"+dto.getSiteName()+"'),(2,'2020-02-15 18:36:56','2020-02-15 18:36:56','domain','"+dto.getSiteDomain()+"'),(3,'2020-02-15 18:36:56','2020-02-15 18:36:56','theme','default');";
     }
 }
