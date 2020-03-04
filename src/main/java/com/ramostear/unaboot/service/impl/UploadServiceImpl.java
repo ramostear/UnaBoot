@@ -61,7 +61,7 @@ public class UploadServiceImpl implements UploadService {
                 + UUID.randomUUID().toString()
                 .replaceAll("-","").toLowerCase()
                 +suffix;
-        path = UnaBootConst.SEPARATOR+"store"+UnaBootConst.SEPARATOR+fileName;
+        path = UnaBootConst.SEPARATOR+fileName;
         File temp = new File(root+UnaBootConst.SEPARATOR+fileName);
         if(!temp.getParentFile().exists()){
             temp.getParentFile().mkdirs();

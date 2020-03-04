@@ -161,6 +161,18 @@ public class PostServiceImpl extends UnaBootServiceImpl<Post,Integer> implements
     }
 
     @Override
+    public List<PostSimpleVo> sticks(Integer size) {
+        List<Post> data = postRepository.sticks(size);
+        return convertToSimpleVo(data);
+    }
+
+    @Override
+    public List<PostSimpleVo> recommend(Integer size) {
+        List<Post> data = postRepository.recommends(size);
+        return convertToSimpleVo(data);
+    }
+
+    @Override
     public Post findBySlug(String slug) {
         if(StringUtils.isBlank(slug)){
             return null;
@@ -178,6 +190,11 @@ public class PostServiceImpl extends UnaBootServiceImpl<Post,Integer> implements
             return postRepository.save(post);
         }
         return null;
+    }
+
+    @Override
+    public List<Post> findAllActive() {
+        return postRepository.findAllByStatus(UnaBootConst.ACTIVE);
     }
 
     @NonNull
@@ -227,6 +244,20 @@ public class PostServiceImpl extends UnaBootServiceImpl<Post,Integer> implements
         postVo.setTagIds(tagSupplier == null? Collections.emptySet():tagSupplier.get());
         postVo.setCategory(category);
         return postVo;
+    }
+
+    private List<PostSimpleVo> convertToSimpleVo(List<Post> data){
+        Set<Integer> postIds = ServiceUtils.fetchProperty(data,Post::getId);
+        Map<Integer,List<Tag>> tagListMap = postTagService.convertTagToMapByPost(postIds);
+        Map<Integer,List<Category>> categoryListMap = postCategoryService.convertCategoryToMapByPostIds(postIds);
+        return data.stream().map(post->{
+            PostSimpleVo vo = new PostSimpleVo().convertFrom(post);
+            vo.setTags(tagListMap.get(post.getId()));
+            vo.setCategory(categoryListMap.get(post.getId()).get(0));
+            return vo;
+        }).collect(Collectors.toList());
+
+
     }
 
     private PostMinDto convert(List<Object[]> data){

@@ -4,6 +4,7 @@ import com.ramostear.unaboot.common.UnaBootConst;
 import com.ramostear.unaboot.common.util.QiniuUtils;
 import com.ramostear.unaboot.domain.entity.Setting;
 import com.ramostear.unaboot.domain.valueobject.Qiniu;
+import com.ramostear.unaboot.service.LuceneService;
 import com.ramostear.unaboot.service.SettingService;
 import com.ramostear.unaboot.service.ThemeService;
 import com.ramostear.unaboot.web.UnaBootController;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -40,11 +42,14 @@ public class SettingController extends UnaBootController {
     private final SettingService settingService;
     private final ThemeService themeService;
     private final ServletContext servletContext;
+    private final LuceneService luceneService;
 
-    public SettingController(SettingService settingService, ServletContext servletContext,ThemeService themeService){
+    public SettingController(SettingService settingService, ServletContext servletContext,
+                             ThemeService themeService,LuceneService luceneService){
         this.settingService = settingService;
         this.themeService = themeService;
         this.servletContext = servletContext;
+        this.luceneService = luceneService;
     }
 
     @GetMapping("/general")
@@ -102,9 +107,16 @@ public class SettingController extends UnaBootController {
         return "/admin/setting/log";
     }
 
-    @GetMapping("/freemarker")
-    public String freemarker(){
-        return "/default/index";
+    @ResponseBody
+    @GetMapping("/lucene")
+    public ResponseEntity<Object> lucene(){
+       try {
+           luceneService.addIndexs();
+           return ok("已经建立索引");
+       } catch (IOException e) {
+           log.error(e.getMessage());
+           return badRequest("文章索引建立失败");
+       }
     }
 
     private ResponseEntity<Object> updateSetting(HttpServletRequest request){

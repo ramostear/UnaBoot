@@ -20,12 +20,14 @@ import org.apache.shiro.authc.AccountException;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.apache.shiro.authz.annotation.RequiresUser;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -46,6 +48,7 @@ import java.util.Set;
  **/
 @Slf4j
 @Controller
+@ApiIgnore
 public class AdminController extends UnaBootController {
 
     @Autowired
@@ -138,6 +141,21 @@ public class AdminController extends UnaBootController {
         }
     }
 
+    @RequiresUser
+    @GetMapping("/admin/logout")
+    public String logout(HttpServletResponse response){
+        SecurityUtils.getSubject().logout();
+        response.setHeader("Cache-Control", "no-cache,no-store,must-revalidate");
+        response.setHeader("Pragma", "no-cache");
+        response.setDateHeader("Expires", 0);
+        return redirect("/admin/login");
+    }
+
+    @RequiresRoles(value = UnaBootConst.ROLE_ADMIN)
+    @GetMapping("/admin/swagger")
+    public String swagger(){
+        return "/admin/swagger";
+    }
     @GetMapping("/verifyCode")
     public void verifyCode(HttpServletRequest request, HttpServletResponse response){
         try{

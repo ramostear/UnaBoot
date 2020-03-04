@@ -111,6 +111,9 @@ public class ShiroConfiguration {
         filterChainDefinition.put("/admin/plugins/**","anon");
         filterChainDefinition.put("/admin/login","anon");
         filterChainDefinition.put("/admin/**","authc");
+        filterChainDefinition.put("/swagger-ui.html","authc");
+        filterChainDefinition.put("/v2/**","authc");
+        filterChainDefinition.put("/swagger-resources/**","authc");
         filterFactoryBean.setLoginUrl("/admin/login");
         filterFactoryBean.setSuccessUrl("/admin/index");
         filterFactoryBean.setFilterChainDefinitionMap(filterChainDefinition);

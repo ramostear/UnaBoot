@@ -1,10 +1,8 @@
 package com.ramostear.unaboot.domain.entity;
 
 import com.ramostear.unaboot.domain.UnaBootPO;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import io.swagger.annotations.ApiModel;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -16,12 +14,14 @@ import java.io.Serializable;
  * @Date 2020/2/14 0014 15:30
  * @Version since UnaBoot-1.0
  **/
+@ApiModel(value = "Category Entity")
 @Data
 @Entity
-@ToString
+@ToString(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "category")
+@EqualsAndHashCode(callSuper = true)
 public class Category extends UnaBootPO implements Serializable {
     private static final long serialVersionUID = -8774176816206473278L;
 

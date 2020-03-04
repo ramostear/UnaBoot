@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import javax.annotation.PostConstruct;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -44,8 +45,12 @@ public abstract class AbstractUnaBootDirectiveModel extends ApplicationObjectSup
 
     @Override
     public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body) {
-        execute(new DirectiveHandler(env,params,loopVars,body));
+        try {
+            execute(new DirectiveHandler(env,params,loopVars,body));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    abstract public  void execute(DirectiveHandler handler) throws UnaBootException;
+    abstract public  void execute(DirectiveHandler handler) throws Exception;
 }

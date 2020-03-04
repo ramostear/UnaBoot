@@ -32,4 +32,12 @@ public interface PostRepository extends UnaBootRepository<Post,Integer> , JpaSpe
 
     @Query(nativeQuery = true,value = "select p.* from posts as p where p.status=?1 order by p.create_time desc limit ?2")
     List<Post> latest(Integer status,Integer size);
+
+    @Query(nativeQuery = true,value="select p.* from posts as p where p.status=1 and p.stick=1 order by p.create_time desc limit ?1")
+    List<Post> sticks(Integer size);
+
+    @Query(nativeQuery = true,value = "select p.* from posts as p where p.status=1 and p.recommend = 1 order by p.create_time desc limit ?1")
+    List<Post> recommends(Integer size);
+
+    List<Post> findAllByStatus(int status);
 }

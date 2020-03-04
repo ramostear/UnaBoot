@@ -1,134 +1,60 @@
 <!-- Brand Logo -->
-<a href="index.html" class="brand-link">
+<a href="${una}/admin/index" class="brand-link">
     <img src="${una}/admin/img/logo-min.png" alt="UnaBoot Logo" class="brand-image img-circle elevation-2">
     <span class="brand-text font-weight-light">UnaBoot Pro</span>
 </a>
 <div class="sidebar ">
     <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column nav-legacy" data-widget="treeview" role="menu" data-accordion="false">
+        <ul id="una-boot-menu" class="nav nav-pills nav-sidebar flex-column nav-legacy" data-widget="treeview" role="menu" data-accordion="false">
             <li class="nav-item has-treeview">
-                <a href="#" class="nav-link">
+                <a href="${una}/admin/index" class="nav-link">
                     <i class="nav-icon fas fa-tachometer-alt"></i>
-                    <p>工作台</p>
+                    <p>Dashboard</p>
                 </a>
-            </li>
-            <li class="nav-item has-treeview  menu-open">
-                <a href="#" class="nav-link active">
-                    <i class="nav-icon fas fa fa-delicious"></i>
-                    <p>
-                        栏目
-                        <i class="right fas fa-angle-left"></i>
-                    </p>
-                </a>
-                <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                        <a href="#" class="nav-link active">
-                            <i class="far fa fa-list-ol nav-icon"></i>
-                            <p>列表</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="far fa fa-plus-circle nav-icon"></i>
-                            <p>新增</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="far fa fa-inbox nav-icon"></i>
-                            <p>导入</p>
-                        </a>
-                    </li>
-                </ul>
             </li>
             <li class="nav-item has-treeview">
                 <a href="#" class="nav-link">
-                    <i class="nav-icon fas fa-file-word"></i>
+                    <i class="nav-icon fas fa-pie-chart"></i>
                     <p>
-                        文章
+                        Contents
                         <i class="right fas fa-angle-left"></i>
                     </p>
                 </a>
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="${una}/admin/category/index" class="nav-link">
                             <i class="far fa fa-list-ol nav-icon"></i>
-                            <p>列表</p>
+                            <p>Category Panel</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="far fa fa-plus-circle nav-icon"></i>
-                            <p>新增</p>
+                        <a href="${una}/admin/post/index" class="nav-link">
+                            <i class="far fas fa-file-word nav-icon"></i>
+                            <p>Blog Panel</p>
                         </a>
                     </li>
-                </ul>
-            </li>
-            <li class="nav-item has-treeview">
-                <a href="#" class="nav-link">
-                    <i class="nav-icon fas fa-file-archive-o"></i>
-                    <p>
-                        主题
-                        <i class="right fas fa-angle-left"></i>
-                    </p>
-                </a>
-                <ul class="nav nav-treeview">
                     <li class="nav-item">
                         <a href="${una}/admin/theme/index" class="nav-link">
-                            <i class="far fa fa-list-ol nav-icon"></i>
-                            <p>列表</p>
+                            <i class="fas fa-file-archive-o nav-icon"></i>
+                            <p>Theme Panel</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="${una}/admin/link/index" class="nav-link">
+                            <i class="nav-icon fas fa-link"></i>
+                            <p>Links Panel</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="${una}/admin/tag/index" class="nav-link">
+                            <i class="nav-icon fas fa-tags"></i>
+                            <p>Tags Panel</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link">
-                            <i class="far fa fa-plus-circle nav-icon"></i>
-                            <p>新增</p>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li class="nav-item has-treeview">
-                <a href="#" class="nav-link">
-                    <i class="nav-icon fas fa-link"></i>
-                    <p>
-                        友链
-                        <i class="right fas fa-angle-left"></i>
-                    </p>
-                </a>
-                <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="far fa fa-list-ol nav-icon"></i>
-                            <p>列表</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="far fa fa-plus-circle nav-icon"></i>
-                            <p>新增</p>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li class="nav-item has-treeview">
-                <a href="#" class="nav-link">
-                    <i class="nav-icon fas fa-television"></i>
-                    <p>
-                        广告
-                        <i class="right fas fa-angle-left"></i>
-                    </p>
-                </a>
-                <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="far fa fa-list-ol nav-icon"></i>
-                            <p>列表</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="far fa fa-plus-circle nav-icon"></i>
-                            <p>新增</p>
+                            <i class="nav-icon fas fa-television"></i>
+                            <p>Advances Panel</p>
                         </a>
                     </li>
                 </ul>
@@ -137,84 +63,74 @@
                 <a href="#" class="nav-link">
                     <i class="nav-icon fas fa-sliders"></i>
                     <p>
-                        配置
+                        Settings
                         <i class="right fas fa-angle-left"></i>
                     </p>
                 </a>
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="${una}/admin/setting/general" class="nav-link">
                             <i class="far fa fa-wrench nav-icon"></i>
-                            <p>站点</p>
+                            <p>General Panel</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="far fa fa-internet-explorer nav-icon"></i>
-                            <p>SEO</p>
+                        <a href="${una}/admin/setting/cdn" class="nav-link">
+                            <i class="far fa fa-server nav-icon"></i>
+                            <p>Storage Panel</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="far fa fa-cube nav-icon"></i>
-                            <p>CDN</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="${una}/admin/setting/gitalk" class="nav-link">
                             <i class="far fa fa-comments-o nav-icon"></i>
-                            <p>评论</p>
+                            <p>Comment Panel</p>
                         </a>
                     </li>
                 </ul>
             </li>
+
             <li class="nav-item has-treeview">
                 <a href="#" class="nav-link">
-                    <i class="nav-icon fas fa-pie-chart"></i>
+                    <i class="nav-icon fas fa-cogs"></i>
                     <p>
-                        统计
+                        System & Documents
                         <i class="right fas fa-angle-left"></i>
                     </p>
                 </a>
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="${una}/admin/task/index" class="nav-link">
+                            <i class="nav-icon fas fa-hourglass-half"></i>
+                            <p>
+                                Jobs Panel
+                                <span class="right badge badge-danger">New</span>
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="${una}/admin/swagger" class="nav-link active">
+                            <i class="nav-icon fas fa-files-o"></i>
+                            <p>
+                                APIs Panel
+                                <span class="right badge badge-danger">New</span>
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="${una}/admin/setting/logging" class="nav-link">
+                            <i class="far fa fa-code nav-icon"></i>
+                            <p>System Logs <span class="right badge badge-danger">New</span></p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="${una}/admin/setting/druid" class="nav-link">
                             <i class="far fa fa-database nav-icon"></i>
-                            <p>SQL</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="far fa fa-clone nav-icon"></i>
-                            <p>缓存</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="far fa fa-files-o nav-icon"></i>
-                            <p>日志</p>
+                            <p>Druid SQL<span class="right badge badge-danger">New</span></p>
                         </a>
                     </li>
                 </ul>
             </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="nav-icon fas fa-hourglass-half"></i>
-                    <p>
-                        计划任务
-                        <span class="right badge badge-danger">New</span>
-                    </p>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="nav-icon fas fa-briefcase"></i>
-                    <p>
-                        数据备份
-                        <span class="right badge badge-danger">New</span>
-                    </p>
-                </a>
-            </li>
+
         </ul>
     </nav>
 </div>

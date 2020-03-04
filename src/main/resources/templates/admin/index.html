@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" href="${una}/admin/img/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="${una}/admin/img/favicon.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>工作台 - UnaBoot</title>
+    <link rel="stylesheet" href="${una}/admin/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="${una}/admin/css/font-awesome.css">
+    <link rel="stylesheet" href="${una}/admin/css/ionicons.css">
+    <link rel="stylesheet" href="${una}/admin/css/adminlte.min.css">
+    <link rel="stylesheet" href="${una}/admin/plugins/layer/skin/default/layer.css"/>
+    <link rel="stylesheet" href="${una}/admin/css/unaboot-admin.css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <#include "/admin/common/header.html"/>
+    </nav>
+    <aside class="main-sidebar sidebar-dark-teal  elevation-4 ">
+        <#include "/admin/common/menu.html"/>
+    </aside>
+    <div class="content-wrapper">
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h3 class="m-0 text-dark text-lg">工作台</h3>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-9 col-md-9 col-sm-12">
+                        <div class="row">
+                            <div class="col-8">
+                                <p><i class="fa fa-language"></i> 系统说明</p>
+                                <div class="card">
+                                    <div class="ribbon-wrapper">
+                                        <div class="ribbon bg-dark">
+                                            <a href="https://github.com/ramostear">
+                                                <i class="fa fa-github"></i> Forks
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <img src="${una}/admin/img/unaboot.svg">
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <p><i class="fa fa-file-word"></i> 接口文档</p>
+                                <div class="card">
+                                    <a href="${una}/admin/swagger">
+                                        <img src="${una}/admin/img/api.svg">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <p><i class="fa fa-keyboard"></i> 快捷入口</p>
+                                <div class="row">
+                                    <div class="col-lg-3 col-6">
+                                        <div class="info-box">
+                                                    <span class="info-box-icon bg-teal">
+                                                       <i class="fa fa-file-word"></i>
+                                                    </span>
+                                            <a href="${una}/admin/post/write" class="info-box-content text-dark">
+                                                <span class="info-box-text">写作</span>
+                                                <span class="info-box-number font-weight-normal">点击进入创作界面</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-6">
+                                        <div class="info-box">
+                                                    <span class="info-box-icon bg-teal">
+                                                       <i class="fa fa-list-ul"></i>
+                                                    </span>
+                                            <a href="${una}/admin/category/index" class="info-box-content text-dark">
+                                                <span class="info-box-text">栏目</span>
+                                                <span class="info-box-number font-weight-normal">管理博客栏目</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-6">
+                                        <div class="info-box">
+                                                    <span class="info-box-icon bg-teal">
+                                                       <i class="fa fa-sliders"></i>
+                                                    </span>
+                                            <a href="${una}/admin/setting/general" class="info-box-content text-dark">
+                                                <span class="info-box-text">设置</span>
+                                                <span class="info-box-number font-weight-normal">设置网站参数</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-6">
+                                        <div class="info-box">
+                                                    <span class="info-box-icon bg-teal">
+                                                       <i class="fa fa-file-zip-o"></i>
+                                                    </span>
+                                            <a href="${una}/admin/theme/index" class="info-box-content text-dark">
+                                                <span class="info-box-text">主题</span>
+                                                <span class="info-box-number font-weight-normal">管理网站主题</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-12">
+                        <div class="row">
+                            <div class="col-12">
+                                <p> <i class="far fa fa-info-circle"></i> 站点信息</p>
+                                <div class="card bg-light card-default">
+                                    <div class="card-body pb-0">
+                                        <form id="setting-form">
+                                            <div class="form-group row">
+                                                <lable class="col-3 col-form-label font-weight-normal">网站名称:</lable>
+                                                <div class="col-9">
+                                                    <input type="text" class="form-control" name="name" placeholder="name" value="${title!''}">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <lable class="col-3 col-form-label font-weight-normal">网站域名:</lable>
+                                                <div class="col-9">
+                                                    <input type="text" class="form-control" name="domain" placeholder="domain" value="${domain!''}">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <lable class="col-3 col-form-label font-weight-normal">ICP备案号:</lable>
+                                                <div class="col-9">
+                                                    <input type="text" class="form-control" name="icp" placeholder="ICP备案号" value="${icp!''}">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <lable class="col-3 col-form-label font-weight-normal">网安备案号:</lable>
+                                                <div class="col-9">
+                                                    <input type="text" class="form-control" name="isb" placeholder="互联网安全备案号" value="${iscp!''}">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <lable class="col-3 col-form-label font-weight-normal">版权信息:</lable>
+                                                <div class="col-9">
+                                                    <input type="text" class="form-control" name="copyright" value="${copyright!''}">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="card bg-light">
+                                    <div class="card-header text-muted">
+                                        <i class="far fa-user-circle"></i> 个人信息
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-7">
+                                                <h2 class="lead">
+                                                    <b>${profile.nickname}</b>
+                                                </h2>
+                                                <p class="text-muted text-sm">
+                                                    <#if profile.type == 1>
+                                                        <span class="badge badge-danger badge-circle">S</span> 超级管理员权限
+                                                    <#else>
+                                                        <span class="badge badge-primary badge-circle">U</span> 普通管理员权限
+                                                    </#if>
+                                                </p>
+                                                <ul class="ml-4 mb-0 fa-ul text-muted">
+                                                    <li class="small">
+                                               <span class="fa-li">
+                                                   <i class="fas fa-lg fa-calendar-alt"></i>
+                                               </span>
+                                                        ${profile.createTime?string("yyyy-MM-dd HH:mm")}
+                                                    </li>
+                                                    <li class="small">
+                                               <span class="fa-li">
+                                                   <i class="fas fa-lg fa-envelope"></i>
+                                               </span>
+                                                        ${profile.username}
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-5 text-center">
+                                                <img src="${una}/admin/img/avatar.gif" class="img-fluid img-circle">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="text-right">
+                                            <a href="javascript:void(0)" id="profile" class="btn btn-sm bg-teal">
+                                                <i class="fa fa-key"></i> 设置
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <#include "/admin/common/footer.html"/>
+</div>
+<script src="${una}/admin/plugins/jquery/jquery.min.js"></script>
+<script src="${una}/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="${una}/admin/plugins/layer/layer.js"></script>
+<script src="${una}/admin/js/adminlte.min.js"></script>
+<script src="${una}/admin/js/navigation.js"></script>
+<script type="text/javascript">
+    $("#profile").on("click",function(){
+        layer.open({
+            type:2,
+            title:"修改个人信息",
+            shadeClose:false,
+            shade:0.4,
+            offset:['55px'],
+            area:['550px','450px'],
+            content:"${una}/admin/user/profile",
+            resize:false,
+            anim:1
+        });
+    });
+</script>
+</body>
+</html>

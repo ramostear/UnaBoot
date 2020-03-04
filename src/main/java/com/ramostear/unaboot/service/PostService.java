@@ -50,8 +50,14 @@ public interface PostService extends UnaBootService<Post,Integer> {
 
     List<PostMinDto> latest(Integer size);
 
+    List<PostSimpleVo> sticks(Integer size);
+
+    List<PostSimpleVo> recommend(Integer size);
+
     Post findBySlug(String slug);
 
     @Transactional
     Post addVisits(Integer id);
+
+    List<Post> findAllActive();
 }
