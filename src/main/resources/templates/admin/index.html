@@ -109,6 +109,28 @@
                                             </a>
                                         </div>
                                     </div>
+                                    <div class="col-lg-3 col-6">
+                                        <div class="info-box">
+                                                    <span class="info-box-icon bg-teal">
+                                                       <i class="fa fa-list-ol"></i>
+                                                    </span>
+                                            <a href="javascript:void(0);" id="rebuild-index" class="info-box-content text-dark">
+                                                <span class="info-box-text">刷新索引</span>
+                                                <span class="info-box-number font-weight-normal">重建全文搜索数据(建议使用定时任务)</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-6">
+                                        <div class="info-box">
+                                                    <span class="info-box-icon bg-teal">
+                                                       <i class="fa fa-trash-o"></i>
+                                                    </span>
+                                            <a href="javascript:void(0);" id="clear-cache" class="info-box-content text-dark">
+                                                <span class="info-box-text">清理缓存</span>
+                                                <span class="info-box-number font-weight-normal">清除系统缓存数据(建议使用定时任务)</span>
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -226,6 +248,52 @@
             content:"${una}/admin/user/profile",
             resize:false,
             anim:1
+        });
+    });
+    $("#rebuild-index").on("click",function(){
+        layer.alert("你确定需要重建全文查询索引数据吗?",{
+            title:'系统提示',
+            icon:0,
+            btn:['是(Y)','否(N)']
+        },function(index){
+            var load = layer.load(2,{shade:[0.4,'#f0f0f0f0']});
+            $.ajax({
+                type:'GET',
+                url:'${una}/admin/cache/refreshindex',
+                success:function(){
+                    layer.close(load);
+                    layer.close(index);
+                    layer.msg("数据已经重建",{icon:1});
+                },
+                error:function(){
+                    layer.close(load);
+                    layer.close(index);
+                    layer.msg("数据重建失败",{icon:0});
+                }
+            });
+        });
+    });
+    $("#clear-cache").on("click",function(){
+        layer.alert("你确定要清理系统缓存数据吗？",{
+            title:'系统提示',
+            icon:0,
+            btn:['是(Y)','否(N)']
+        },function(index){
+            var load = layer.load(2,{shade:[0.4,'#f0f0f0f0']});
+            $.ajax({
+                type:'GET',
+                url:'${una}/admin/cache/clearcache',
+                success:function(){
+                    layer.close(load);
+                    layer.close(index);
+                    layer.msg("缓存数据已经清理",{icon:1});
+                },
+                error:function(){
+                    layer.close(load);
+                    layer.close(index);
+                    layer.msg("清理缓存数据失败",{icon:0});
+                }
+            });
         });
     });
 </script>

@@ -5,10 +5,13 @@ import com.ramostear.unaboot.domain.entity.Tag;
 import com.ramostear.unaboot.repository.TagRepository;
 import com.ramostear.unaboot.service.TagService;
 import com.ramostear.unaboot.service.base.UnaBootServiceImpl;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -29,6 +32,7 @@ public class TagServiceImpl extends UnaBootServiceImpl<Tag,Integer> implements T
     }
 
     @Override
+    @Cacheable(value = "tag",key = "#name")
     public Tag findByName(String name) {
         Assert.notNull(name,"Tag name must not be null.");
         return tagRepository.findByName(name);
@@ -52,5 +56,11 @@ public class TagServiceImpl extends UnaBootServiceImpl<Tag,Integer> implements T
             return tag;
         }
         return null;
+    }
+
+    @Override
+    @Cacheable(value = "tag")
+    public List<Tag> findAll(Sort sort) {
+        return super.findAll(sort);
     }
 }

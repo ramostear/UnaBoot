@@ -12,6 +12,7 @@ import com.ramostear.unaboot.service.PostTagService;
 import com.ramostear.unaboot.service.base.UnaBootServiceImpl;
 import org.apache.shiro.util.Assert;
 import org.apache.shiro.util.CollectionUtils;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -63,6 +64,7 @@ public class PostTagServiceImpl extends UnaBootServiceImpl<PostTag,Integer> impl
     }
 
     @Override
+    @Cacheable(value = "tag",key = "#id")
     public List<Post> findAllPostByTagIdAndPostStatus(Integer id, Integer status) {
         Assert.notNull(id,"Tag id is empty.");
         Set<Integer> postIds = postTagRepository.findAllPostByTagAndPostStatus(id,status);
@@ -83,6 +85,7 @@ public class PostTagServiceImpl extends UnaBootServiceImpl<PostTag,Integer> impl
     }
 
     @Override
+    @Cacheable(value = "tagPage",key = "#id")
     public Page<Post> findAllPostByTagIdAndPostStatus(Integer id, Integer status, Pageable pageable) {
         Assert.notNull(id,"Tag id is empty");
         Set<Integer> postIds = postTagRepository.findAllPostByTagAndPostStatus(id,status);

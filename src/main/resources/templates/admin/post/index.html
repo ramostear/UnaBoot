@@ -52,6 +52,12 @@
                                             <option value="0">未发布</option>
                                             <option value="-1">发布中</option>
                                         </select>
+                                        <label class="sr-only" for="status">类型</label>
+                                        <select class="form-control form-control-sm mb-2 mr-sm-2" name="style" id="style">
+                                            <option value="-1" selected>文章类型</option>
+                                            <option value="0">文章</option>
+                                            <option value="1">文档</option>
+                                        </select>
                                         <label class="sr-only" for="category">栏目</label>
                                         <select class="form-control form-control-sm mb-2 mr-sm-2" name="category" id="category">
                                             <option value="-1" selected>文章栏目</option>
@@ -77,8 +83,8 @@
                                         <#list data.content as post>
                                             <div class="post-item">
                                                 <div class="post-info has-img">
-                                                    <#if post.status == 1>
-                                                        <a href="${una}/post/${post.slug}" target="_blank" title="${post.title}">
+                                                    <#if post.status == 1 && post.style == 0>
+                                                        <a href="${una}/blog/${post.slug}" target="_blank" title="${post.title}">
                                                             <img src="${post.thumb!una+"/admin/img/thumb.jpg"}" class="post-thumb">
                                                         </a>
                                                     <#else>
@@ -89,8 +95,8 @@
                                                     <div class="post-bone">
                                                         <div class="title">
                                                             <div class="title-txt">
-                                                                <#if post.status == 1>
-                                                                    <a target="_blank" href="${una}/post/${post.slug}">${post.title}</a>
+                                                                <#if post.status == 1 && post.style==0>
+                                                                    <a target="_blank" href="${una}/blog/${post.slug}">${post.title}</a>
                                                                 <#else>
                                                                     <a href="javascript:void(0);">${post.title}</a>
                                                                 </#if>

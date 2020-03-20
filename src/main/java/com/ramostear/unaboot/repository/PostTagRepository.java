@@ -25,7 +25,7 @@ public interface PostTagRepository extends UnaBootRepository<PostTag,Integer> {
     @Query("select pt.pid from PostTag as pt where pt.tid = :tid")
     Set<Integer> findAllPostIdByTag(@NonNull @Param("tid")Integer tid);
 
-    @Query("select pt.pid from PostTag as pt,Post as p where pt.tid = :tid and p.status = :status and p.id = pt.pid")
+    @Query("select pt.pid from PostTag as pt,Post as p where pt.tid = :tid and p.status = :status and p.id = pt.pid and p.style = 0")
     Set<Integer> findAllPostByTagAndPostStatus(@NonNull @Param("tid")Integer tid,@NonNull @Param("status")Integer status);
 
     @NonNull

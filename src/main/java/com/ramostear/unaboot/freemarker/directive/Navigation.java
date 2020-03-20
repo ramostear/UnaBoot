@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,7 +28,7 @@ public class Navigation extends AbstractUnaBootDirectiveModel {
     public void execute(DirectiveHandler handler) throws Exception {
         List<Category> data = categoryService.navigation();
         if(CollectionUtils.isEmpty(data)){
-            handler.put(MULTI,null).render();
+            handler.put(MULTI,new ArrayList<Category>()).render();
         }else{
             handler.put(MULTI,data).render();
         }

@@ -125,6 +125,10 @@ public class CategoryController extends UnaBootController {
     }
 
 
+    @GetMapping("/thumb")
+    public String uploadThumb(){
+        return "/admin/category/thumb";
+    }
 
 
 

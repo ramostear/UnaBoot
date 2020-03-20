@@ -12,6 +12,7 @@ CREATE TABLE `category` (
   `slug` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `sort_id` int(11) DEFAULT NULL,
   `theme` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `thumb` longtext COLLATE utf8_bin,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
@@ -73,6 +74,7 @@ CREATE TABLE `posts` (
   `thumb` varchar(1024) COLLATE utf8_bin DEFAULT '',
   `title` varchar(128) COLLATE utf8_bin NOT NULL,
   `visits` int(11) DEFAULT '0',
+  `style` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 

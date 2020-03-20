@@ -24,14 +24,16 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class PostParam  implements ObjectInputConverter<Post> {
 
-    @Size(max = 64,min = 8,message = "Slug长度必须在{min}到{max}之间")
+    @Size(max = 64,min = 6,message = "Slug长度必须在{min}到{max}之间")
     private String slug;
 
     @NotBlank(message = "文章标题不能为空")
-    @Size(max = 64,min = 8,message = "标题长度必须在{min}到{max}之间")
+    @Size(max = 64,min = 2,message = "标题长度必须在{min}到{max}之间")
     private String title;
 
     private Integer status = 0;
+
+    private Integer style = 0;
 
     @NotBlank(message = "文章摘要不能为空")
     @Size(max = 128,message = "摘要长度不能超过{max}")

@@ -20,10 +20,10 @@ public class ReadTime extends AbstractMethodModel {
     public Object exec(List args) throws TemplateModelException {
         String content = getString(args,0);
         int length = UnaBootUtils.getWordCount(content);
-        if(length<400){
+        if(length<200){
             return 0;
         }else{
-            return length/400;
+            return length/200;
         }
     }
 }

@@ -13,6 +13,7 @@ import com.ramostear.unaboot.service.PostCategoryService;
 import com.ramostear.unaboot.service.PostTagService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
 
 /**
  * @ClassName ArchiveServiceImpl
- * @Description TODO
+ * @Description 文章归档
  * @Author 树下魅狐
  * @Date 2020/3/3 0003 16:47
  * @Version since UnaBoot-1.0
@@ -38,6 +39,7 @@ public class ArchiveServiceImpl implements ArchiveService {
     private PostCategoryService postCategoryService;
 
     @Override
+    @Cacheable(value="archives")
     public List<ArchiveVo> archives() {
         List<Object[]> data = postRepository.archives(UnaBootConst.ACTIVE);
         List<ArchiveVo> result = new ArrayList<>();
@@ -54,6 +56,7 @@ public class ArchiveServiceImpl implements ArchiveService {
     }
 
     @Override
+    @Cacheable(value = "archives",key = "#name")
     public List<PostSimpleVo> archivePosts(String name) {
         if(StringUtils.isBlank(name)){
             return Collections.emptyList();

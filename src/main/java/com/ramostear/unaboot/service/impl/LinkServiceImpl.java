@@ -4,7 +4,11 @@ import com.ramostear.unaboot.domain.entity.Link;
 import com.ramostear.unaboot.repository.LinkRepository;
 import com.ramostear.unaboot.service.LinkService;
 import com.ramostear.unaboot.service.base.UnaBootServiceImpl;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @ClassName LinkServiceImpl
@@ -19,5 +23,11 @@ public class LinkServiceImpl extends UnaBootServiceImpl<Link,Integer> implements
     public LinkServiceImpl(LinkRepository linkRepository) {
         super(linkRepository);
         this.linkRepository = linkRepository;
+    }
+
+    @Override
+    @Cacheable(value = "link")
+    public List<Link> findAll(Sort sort) {
+        return super.findAll(sort);
     }
 }

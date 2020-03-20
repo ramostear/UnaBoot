@@ -14,6 +14,7 @@ import com.ramostear.unaboot.service.base.UnaBootServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.util.Assert;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -124,20 +125,20 @@ public class PostServiceImpl extends UnaBootServiceImpl<Post,Integer> implements
     }
 
     @Override
-    public PostMinDto previous(Integer id, Integer category) {
+    public PostMinDto previous(Integer id, Integer category,Integer style) {
         if(id == null || category == null){
             return null;
         }
-        List<Object[]> data = postRepository.previous(id,UnaBootConst.ACTIVE,category);
+        List<Object[]> data = postRepository.previous(id,UnaBootConst.ACTIVE,category,style);
         return convert(data);
     }
 
     @Override
-    public PostMinDto next(Integer id, Integer category) {
+    public PostMinDto next(Integer id, Integer category,Integer style) {
         if(id == null || category == null){
             return null;
         }
-        List<Object[]> data = postRepository.next(id,UnaBootConst.ACTIVE,category);
+        List<Object[]> data = postRepository.next(id,UnaBootConst.ACTIVE,category,style);
         return convert(data);
     }
 
@@ -173,6 +174,7 @@ public class PostServiceImpl extends UnaBootServiceImpl<Post,Integer> implements
     }
 
     @Override
+    @Cacheable(value = "posts",key = "#slug")
     public Post findBySlug(String slug) {
         if(StringUtils.isBlank(slug)){
             return null;
@@ -194,7 +196,7 @@ public class PostServiceImpl extends UnaBootServiceImpl<Post,Integer> implements
 
     @Override
     public List<Post> findAllActive() {
-        return postRepository.findAllByStatus(UnaBootConst.ACTIVE);
+        return postRepository.findAllByStatusAndStyle(UnaBootConst.ACTIVE,UnaBootConst.BLOG);
     }
 
     @NonNull
@@ -204,6 +206,9 @@ public class PostServiceImpl extends UnaBootServiceImpl<Post,Integer> implements
             List<Predicate> predicates = new LinkedList<>();
             if(postQuery.getStatus() != null && postQuery.getStatus() > -2){
                 predicates.add(builder.equal(root.get("status"),postQuery.getStatus()));
+            }
+            if(postQuery.getStyle() != null && postQuery.getStyle() > -1){
+                predicates.add(builder.equal(root.get("style"),postQuery.getStyle()));
             }
             if(postQuery.getCategory() != null && postQuery.getCategory() > 0){
                 Subquery<Post> postSubquery = query.subquery(Post.class);

@@ -23,16 +23,16 @@ public class TaskSchedulingRunnable implements Runnable{
 
     private String methodName;
 
+    private String cronExpression;
+
     private String params;
 
-    public TaskSchedulingRunnable(String beanName,String methodName){
-        this(beanName,methodName,null);
-    }
 
-    public TaskSchedulingRunnable(String beanName,String methodName,String params){
+    public TaskSchedulingRunnable(String beanName,String methodName,String cronExpression,String params){
         this.beanName = beanName;
         this.methodName = methodName;
         this.params = params;
+        this.cronExpression = cronExpression;
     }
 
     @Override
@@ -63,9 +63,9 @@ public class TaskSchedulingRunnable implements Runnable{
     @Override
     public int hashCode() {
         if(params == null){
-            return Objects.hash(beanName,methodName);
+            return Objects.hash(beanName,methodName,cronExpression);
         }
-        return Objects.hash(beanName,methodName,params);
+        return Objects.hash(beanName,methodName,cronExpression,params);
     }
 
     @Override
@@ -80,10 +80,12 @@ public class TaskSchedulingRunnable implements Runnable{
         if(params == null){
             return beanName.equals(that.beanName)
                     && methodName.equals(that.methodName)
+                    && cronExpression.equals(that.cronExpression)
                     && that.params == null;
         }
         return beanName.equals(that.beanName)
                 && methodName.equals(that.methodName)
+                && cronExpression.equals(that.cronExpression)
                 && params.equals(that.params);
 
     }

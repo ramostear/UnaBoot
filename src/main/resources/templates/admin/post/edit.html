@@ -119,6 +119,16 @@
                             <div class="form-group row">
                                 <div class="col-12">
                                     <div class="custom-control custom-radio custom-control-inline pr-4">
+                                        <input type="radio" id="style-blog" name="style" value="0" <#if post.style == 0>checked</#if> class="custom-control-input">
+                                        <label class="custom-control-label font-weight-normal" for="style-blog">博客</label>
+                                    </div>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" id="style-doc" name="style" value="1" <#if post.style == 1>checked</#if> class="custom-control-input">
+                                        <label class="custom-control-label font-weight-normal" for="style-doc">文档</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="custom-control custom-radio custom-control-inline pr-4">
                                         <input type="radio" id="comment-on" name="comment" value="1" <#if post.comment == true>checked</#if> class="custom-control-input">
                                         <label class="custom-control-label font-weight-normal" for="comment-on">允许评论</label>
                                     </div>
@@ -140,11 +150,11 @@
                                 <div class="col-12 mt-2">
                                     <div class="custom-control custom-checkbox custom-control-inline pr-2">
                                         <input type="checkbox" class="custom-control-input" id="recommend" <#if post.recommend == true>checked</#if> name="recommend" value="1">
-                                        <label class="custom-control-label font-weight-normal" for="recommend">推荐到首页</label>
+                                        <label class="custom-control-label font-weight-normal" for="recommend">推荐</label>
                                     </div>
                                     <div class="custom-control custom-checkbox custom-control-inline">
                                         <input type="checkbox" class="custom-control-input" id="stick" <#if post.stick == true>checked</#if> name="stick" value="1">
-                                        <label class="custom-control-label font-weight-normal" for="stick">置顶为轮播</label>
+                                        <label class="custom-control-label font-weight-normal" for="stick">置顶</label>
                                     </div>
                                 </div>
                                 <div class="col-12 mt-2">
@@ -293,6 +303,7 @@
             flowChart:true,
             sequenceDiagram:true,
             imageUpload:true,
+            saveHTMLToTextarea:true,
             htmlDecode:'style,script,iframe|on*',
             imageFormats:['jpg','jpeg','gif','png','bmp','webp'],
             imageUploadURL:'${una}/admin/upload/editormd',

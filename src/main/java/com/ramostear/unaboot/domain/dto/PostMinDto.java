@@ -33,4 +33,8 @@ public class PostMinDto implements ObjectOutputConverter<PostMinDto, Post> {
     private Date updateTime;
 
     private Long visits;
+
+    private String thumb;
+
+    private Integer style;
 }

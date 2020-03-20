@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ehcache name="blog-cache">
+    <!--磁盘存储位置-->
+    <diskStore path="java.io.tmpdir"/>
+
+    <!-- 默认缓存 -->
+    <defaultCache
+            maxEntriesLocalHeap="2000"
+            eternal="false"
+            timeToIdleSeconds="3600"
+            timeToLiveSeconds="3600"
+            overflowToDisk="false">
+    </defaultCache>
+
+    <cache name="dayHits"
+           maxEntriesLocalHeap="500"
+           eternal="true"
+           overflowToDisk="true">
+    </cache>
+    <cache name="category"
+           maxEntriesLocalHeap="100"
+           eternal="true"
+           overflowToDisk="true">
+    </cache>
+    <cache name="link"
+           maxEntriesLocalHeap="100"
+           eternal="true"
+           overflowToDisk="true">
+    </cache>
+    <cache name="tag"
+           maxEntriesLocalHeap="500"
+           eternal="true"
+           overflowToDisk="true">
+    </cache>
+
+    <cache name="tagPage"
+           maxEntriesLocalHeap="500"
+           eternal="true"
+           overflowToDisk="true">
+    </cache>
+
+    <cache name="archives"
+           maxEntriesLocalHeap="100"
+           eternal="true"
+           overflowToDisk="true">
+    </cache>
+
+    <cache name="posts"
+           maxEntriesLocalHeap="500"
+           eternal="true"
+           overflowToDisk="true">
+    </cache>
+
+    <cache name="search"
+           maxEntriesLocalHeap="500"
+           eternal="true"
+           overflowToDisk="true">
+    </cache>
+
+</ehcache>

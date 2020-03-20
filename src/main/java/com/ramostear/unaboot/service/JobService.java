@@ -8,13 +8,15 @@ public interface JobService {
 
     UnaBootJob addJob(UnaBootJob job);
 
-    boolean removeJob(UnaBootJob job);
+    boolean onlyRemoveJob(UnaBootJob job);
 
     boolean removeJob(Integer jobId);
 
     UnaBootJob getJob(Integer jobId);
 
     UnaBootJob findByParam(String param);
+
+    UnaBootJob findByMethodNameAndCron(String methodName,String cronExpression);
 
     boolean editJob(UnaBootJob job);
 

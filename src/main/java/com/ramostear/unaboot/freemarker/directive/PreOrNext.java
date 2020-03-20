@@ -25,11 +25,12 @@ public class PreOrNext extends AbstractUnaBootDirectiveModel {
         Integer postId = handler.getInteger("current");
         Integer category = handler.getInteger("category");
         String type = handler.getString("type");
+        Integer style = handler.getInteger("style",0);
         PostMinDto data;
         if(type.equalsIgnoreCase(PREVIOUS)){
-            data = postService.previous(postId,category);
+            data = postService.previous(postId,category,style);
         }else if(type.equalsIgnoreCase(NEXT)){
-            data = postService.next(postId,category);
+            data = postService.next(postId,category,style);
         }else{
             data = null;
         }

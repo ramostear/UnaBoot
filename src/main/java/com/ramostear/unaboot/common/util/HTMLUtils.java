@@ -37,6 +37,7 @@ public class HTMLUtils {
                     String address = srcMatcher.group(3);
                     addressList.add(address);
                 }
+                isFound = imgMatcher.find();
             }
         }
         return addressList;

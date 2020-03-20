@@ -14,4 +14,6 @@ public interface UnaBootJobRepository extends UnaBootRepository<UnaBootJob,Integ
     UnaBootJob findByParams(String params);
 
     List<UnaBootJob> findAllByJobState(boolean jobState);
+
+    UnaBootJob findByMethodNameAndCronExpression(String methodName,String cronExpression);
 }

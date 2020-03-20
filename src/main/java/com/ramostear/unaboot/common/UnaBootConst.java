@@ -107,4 +107,7 @@ public class UnaBootConst {
     public static final int USER_NEW = 0;
     public static final int USER_DEFAULT = 1;
 
+    public static final int BLOG = 0;
+    public static final int DOC = 1;
+
 }

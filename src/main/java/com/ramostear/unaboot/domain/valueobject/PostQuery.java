@@ -18,4 +18,6 @@ public class PostQuery {
 
     private Integer category = -1;
 
+    private Integer style = -1;
+
 }

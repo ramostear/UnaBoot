@@ -50,6 +50,9 @@ public class Category extends UnaBootPO implements Serializable {
     @Column(name = "theme")
     private String theme;
 
+    @Column(name = "thumb")
+    private String thumb;
+
     @Column(name = "is_show",columnDefinition = "int default 0")
     private Integer show;
 

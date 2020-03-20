@@ -1,5 +1,6 @@
 package com.ramostear.unaboot.domain.entity;
 
+import com.ramostear.unaboot.common.UnaBootConst;
 import com.ramostear.unaboot.domain.UnaBootPO;
 import lombok.*;
 import org.apache.commons.lang3.StringUtils;
@@ -60,6 +61,9 @@ public class Post extends UnaBootPO implements Serializable {
 
     @Column(name = "comment",columnDefinition = "int default 0")
     private Boolean comment; //评论
+
+    @Column(name = "style",columnDefinition = "int default 0")
+    private Integer style;//文章类型
 
     @Column(name = "author",columnDefinition = "varchar(32) default ''")
     private String author;

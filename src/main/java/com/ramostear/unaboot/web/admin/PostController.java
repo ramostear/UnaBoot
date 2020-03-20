@@ -4,6 +4,7 @@ import com.ramostear.unaboot.common.UnaBootConst;
 import com.ramostear.unaboot.common.exception.UnaBootException;
 import com.ramostear.unaboot.common.util.CronUtils;
 import com.ramostear.unaboot.common.util.DateTimeUtils;
+import com.ramostear.unaboot.common.util.HTMLUtils;
 import com.ramostear.unaboot.common.util.RandomUtils;
 import com.ramostear.unaboot.domain.entity.Post;
 import com.ramostear.unaboot.domain.entity.UnaBootJob;
@@ -22,6 +23,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +31,7 @@ import javax.servlet.ServletContext;
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -149,7 +152,7 @@ public class PostController extends UnaBootController {
         jobService.addJob(job);
         if(job.getJobId() > 0){
             if(job.getJobState()){
-                TaskSchedulingRunnable task = new TaskSchedulingRunnable(job.getBeanName(),job.getMethodName(),job.getParams());
+                TaskSchedulingRunnable task = new TaskSchedulingRunnable(job.getBeanName(),job.getMethodName(),job.getCronExpression(),job.getParams());
                 cronTaskRegister.addCronTask(task,job.getCronExpression());
                 post.setStatus(UnaBootConst.WAIT);
                 postService.update(post);
@@ -205,6 +208,13 @@ public class PostController extends UnaBootController {
             return badRequest("文章不存在或正在发布中，暂不予删除！");
         }
         try {
+            List<String> imgUrls = HTMLUtils.matchImgAddr(post.getHtml());
+            if(!CollectionUtils.isEmpty(imgUrls)){
+                if(StringUtils.isNotBlank(post.getThumb())){
+                    imgUrls.add(post.getThumb());
+                }
+                uploadService.delete(imgUrls);
+            }
             postService.delete(post);
             postTagService.removeByPost(id);
             postCategoryService.removeByPostId(id);
@@ -243,6 +253,9 @@ public class PostController extends UnaBootController {
         String url = "";
         if(query.getStatus() != null && (query.getStatus() == 0 || query.getStatus() == 1)){
             url+="&status="+query.getStatus();
+        }
+        if(query.getStyle() != null && (query.getStyle() == 0 || query.getStyle() == 1)){
+            url+="&status="+query.getStyle();
         }
         if(StringUtils.isNotBlank(query.getKey())){
             url+= "&key="+query.getKey();

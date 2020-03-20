@@ -59,6 +59,9 @@ spring:
         wall:
           config:
             multi-statement-allow:  true
+  cache:
+    jcache:
+      config: classpath:ehcache.xml
 xss:
   enabled: false
   urlPatterns:  /monitor/*

@@ -41,6 +41,7 @@ public class ShiroConfiguration {
     @Bean
     public EhCacheManagerFactoryBean ehCacheManagerFactoryBean(){
         EhCacheManagerFactoryBean factoryBean = new EhCacheManagerFactoryBean();
+        factoryBean.setShared(true);
         return factoryBean;
     }
 

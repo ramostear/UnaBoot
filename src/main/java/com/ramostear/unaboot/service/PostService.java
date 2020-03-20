@@ -40,9 +40,9 @@ public interface PostService extends UnaBootService<Post,Integer> {
 
     Page<PostSimpleVo> convert(@NonNull Page<Post> posts);
 
-    PostMinDto previous(Integer id,Integer category);
+    PostMinDto previous(Integer id,Integer category,Integer style);
 
-    PostMinDto next(Integer id,Integer category);
+    PostMinDto next(Integer id,Integer category,Integer style);
 
     List<PostMinDto> associated(Integer id,Integer size);
 

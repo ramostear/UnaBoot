@@ -115,7 +115,7 @@
     var websocket = null;
     var load = layer.load(2,{shade:[0.4,'#f0f0f0f0']});
     if('WebSocket' in window){
-        websocket = new WebSocket("ws://localhost/admin/websocket/logging");
+        websocket = new WebSocket("ws://${domain}/admin/websocket/logging");
     }else{
         layer.msg("不支持WebSocket");
     }

@@ -4,6 +4,7 @@ import com.ramostear.unaboot.common.UnaBootConst;
 import com.ramostear.unaboot.domain.entity.Post;
 import com.ramostear.unaboot.domain.entity.UnaBootJob;
 import com.ramostear.unaboot.service.JobService;
+import com.ramostear.unaboot.service.LuceneService;
 import com.ramostear.unaboot.service.PostService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,8 @@ public class UnaBootTask {
     private JobService jobService;
     @Autowired
     private CronTaskRegister cronTaskRegister;
+    @Autowired
+    private LuceneService luceneService;
 
     /**
      * 定时发布文章
@@ -41,18 +44,22 @@ public class UnaBootTask {
             postService.update(post);
             UnaBootJob job = jobService.findByParam(params);
             if(job != null){
-                job.setJobState(false);
-                jobService.editJob(job);
-                TaskSchedulingRunnable runnable = new TaskSchedulingRunnable("unaBootTask","publishPostTask",params);
-                cronTaskRegister.removeCronTask(runnable);
+                jobService.onlyRemoveJob(job);
             }
         }
     }
 
     /**
-     * 重建构建系统任务
+     * 重新构建全文检索数据索引
      */
-    public void rebuildTask(){
+    public void rebuildSearchIndex(){
+        luceneService.resetIndex();
+    }
+
+    /**
+     * 刷新系统缓存
+     */
+    public void clearCache(){
 
     }
 }

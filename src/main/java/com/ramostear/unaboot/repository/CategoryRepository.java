@@ -19,5 +19,5 @@ public interface CategoryRepository extends UnaBootRepository<Category,Integer> 
 
     List<Category> findAllByShowOrderBySortIdAsc(Integer show);
 
-    List<Category> findAllByPidOrderBySortIdDesc(Integer pid);
+    List<Category> findAllByPidOrderBySortIdAsc(Integer pid);
 }

@@ -80,7 +80,7 @@ public class UploadServiceImpl implements UploadService {
             if(url.startsWith("http") || url.startsWith("https")){
                 return QiniuUtils.remove(url);
             }else{
-                String path = UnaBootConst.FILE_UPLOAD_ROOT_DIR+url;
+                String path = UnaBootConst.FILE_UPLOAD_ROOT_DIR+"store"+url;
                 File file = new File(path);
                 if(file.exists() && file.isFile()){
                     return file.delete();

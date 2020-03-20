@@ -66,6 +66,7 @@ public class UnaBootLauncher implements ApplicationRunner, Ordered, ServletConte
                     settingService.create(theme);
                     try {
                         themeService.initDefaultTheme();
+                        servletContext.setAttribute("theme",theme.getValue());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
