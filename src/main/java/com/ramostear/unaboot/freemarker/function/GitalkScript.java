@@ -34,14 +34,14 @@ public class GitalkScript extends AbstractMethodModel {
             String dom = getString(args,1);
             StringBuilder sb = new StringBuilder();
             sb.append("var gitalk = new Gitalk({");
-            sb.append("clientId:'").append(gitalk.getClientId()).append("',")
-              .append("clientSecret:'").append(gitalk.getClientSecret()).append("',")
-              .append("repo:'").append(gitalk.getRepo()).append("',")
-              .append("owner:'").append(gitalk.getOwner()).append("',")
-              .append("admin:'").append(gitalk.getAdmin()).append("',")
-              .append("id:'").append(EncryptUtils.MD5("post_"+id)).append("'")
-              .append("});")
-              .append("gitalk.render('").append(dom).append("');");
+            sb.append("clientID:'"+gitalk.getClientId()+"',")
+                    .append("clientSecret:'"+gitalk.getClientSecret()+"',")
+                    .append("repo:'"+gitalk.getRepo()+"',")
+                    .append("owner:'"+gitalk.getOwner()+"',")
+                    .append("admin:'"+gitalk.getAdmin()+"',")
+                    .append("id:'"+ EncryptUtils.MD5("post_"+id) +"'")
+                    .append("});");
+            sb.append("gitalk.render('"+dom+"');");
             return sb.toString();
         }
     }
