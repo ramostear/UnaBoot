@@ -1,10 +1,6 @@
-# 尤娜博客系统新的征程(una-boot-1.2.0已上线)
-
-<p style="text-align:right;">——是技术也是艺术</p>
-
 ![](https://camo.githubusercontent.com/6046932fae162f7487297a76d71c26e41ae14e23/68747470733a2f2f63646e2e72616d6f73746561722e636f6d2f756e61626f6f742e706e67)
 
-[![GitHub license](https://img.shields.io/github/license/ramostear/UnaBoot-Pro)](https://github.com/ramostear/UnaBoot-Pro/blob/master/LICENSE) ![](https://img.shields.io/badge/author-ramostear-brightgreen) ![](https://img.shields.io/badge/jdk-1.8-brightgreen) ![](https://img.shields.io/badge/spring boot-2.2.2-brightgreen) ![](https://img.shields.io/badge/maven-3.3.0-brightgreen) ![](https://img.shields.io/badge/IDE-IntelliJ IDEA-brightgreen) ![](https://img.shields.io/badge/version-1.2.0-brightgreen) [![](https://img.shields.io/badge/download-github-brightgreen)](https://github.com/ramostear/UnaBoot-Pro.git) [![](https://img.shields.io/badge/download-gitee-green)](https://gitee.com/ramostear/UnaBoot-Pro.git)
+[![GitHub license](https://img.shields.io/github/license/ramostear/UnaBoot-Pro)](https://github.com/ramostear/UnaBoot-Pro/blob/master/LICENSE) ![](https://img.shields.io/badge/author-ramostear-brightgreen) ![](https://img.shields.io/badge/jdk-1.8-brightgreen) ![](https://img.shields.io/badge/maven-3.3.0-brightgreen) ![](https://img.shields.io/badge/version-1.2.0-brightgreen) [![](https://img.shields.io/badge/download-github-brightgreen)](https://github.com/ramostear/UnaBoot-Pro.git) [![](https://img.shields.io/badge/download-gitee-green)](https://gitee.com/ramostear/UnaBoot-Pro.git)
 
 
 ----
