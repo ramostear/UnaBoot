@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="${favicon!''}" type="image/x-icon">
+    <link rel="shortcut icon" href="${favicon!''}" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>${blog.title} - ${title!''}</title>
+    <link rel="stylesheet" href="${una}/${theme}/css/font-awesome.css">
+    <link rel="stylesheet" href="${una}/${theme}/css/ionicons.css">
+    <link rel="stylesheet" href="${una}/${theme}/css/adminlte.css">
+    <link rel="stylesheet" href="${una}/${theme}/css/unaboot.css">
+    <link rel="stylesheet" href="${una}/${theme}/css/md-preview.css">
+    <link href="https://cdn.bootcss.com/gitalk/1.5.0/gitalk.css" rel="stylesheet"/>
+</head>
+<body>
+    <div class="sidebar animated fadeInDown">
+        <#include "./left.html"/>
+    </div>
+    <div class="main">
+        <div class="page-top animated fadeInDown">
+            <#include "./nav.html"/>
+        </div>
+        <div class="autopagerize_page_element">
+            <div class="content">
+                <div class="post-page">
+                    <div class="post animated fadeInDown">
+                        <div class="post-title mb-4">
+                            <h3><a>${blog.title}</a></h3>
+                        </div>
+                        <div class="post-meta">
+                            <div class="meta">
+                                <div class="info">
+                                    <i class="fa fa-calendar-o"></i>
+                                    <span class="date">${blog.createTime?string("yyyy-MM-dd HH:mm")}</span>
+                                    <i class="fa fa-user-circle-o"></i>
+                                    <a href="#">${blog.author}</a>
+                                    <i class="fa fa-tags"></i>
+                                    <@u_post_tags id=blog.id>
+                                        <#if results?? && results?size gt 0>
+                                            <#list results as tag>
+                                                <a href="${una}/tag/${tag.name}" class="tag"> ${tag.name}</a>
+                                            </#list>
+                                        </#if>
+                                    </@u_post_tags>
+                                    <i class="fa fa-info-circle"> 本文共${u_wordNumber(blog.html)}个字，预计阅读需要${u_readTime(blog.html)}分钟。</i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="post-content typo editormd-html-preview editormd-preview-theme-dark">
+                            ${blog.html!''}
+                        </div>
+                    </div>
+                    <div class="pre-next">
+                        <div class="row">
+                            <div class="col-12">
+                                <@u_pre_or_next current=blog.id category=blog.category type="previous">
+                                    <#if (result.slug??)>
+                                        <a href="${una}/blog/${result.slug}" class="pull-left">
+                                            <i class="fa fa-angle-double-left"></i>上一篇 : ${result.title}
+                                        </a>
+                                    <#else>
+                                        <a href="javascript:void(0);" class="pull-left">
+                                            <i class="fa fa-angle-double-left"></i>上一篇 : 没有了
+                                        </a>
+                                    </#if>
+                                </@u_pre_or_next>
+                               <@u_pre_or_next current=blog.id category=blog.category type="next">
+                                    <#if (result.slug??)>
+                                        <a href="${una}/blog/${result.slug}" class="pull-right">
+                                            ${result.title} :下一篇<i class="fa fa-angle-double-right"></i>
+                                        </a>
+                                    <#else>
+                                        <a href="javascript:void(0);" class="pull-right">
+                                            没有了 :下一篇<i class="fa fa-angle-double-right"></i>
+                                        </a>
+                                    </#if>
+                                </@u_pre_or_next>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="comments-container">
+                        <h3>评论</h3>
+                        <div id="gitalk-container"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="${una}/${theme}/js/jquery/jquery.min.js"></script>
+    <script src="${una}/${theme}/js/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="${una}/${theme}/js/adminlte.min.js"></script>
+    <script src="${una}/${theme}/js/highlight.pack.js"></script>
+    <script src="https://cdn.bootcss.com/gitalk/1.5.0/gitalk.js"></script>
+    <script type="text/javascript">
+        hljs.initHighlightingOnLoad();
+        ${u_gitalkScript(blog.id "gitalk-container")}
+        $(".post-content img").each(function(){
+           $(this).addClass("img-fluid");
+        });
+    </script>
+</body>
+</html>

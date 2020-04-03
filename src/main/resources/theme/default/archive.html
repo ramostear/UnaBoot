@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="${favicon!''}" type="image/x-icon">
+    <link rel="shortcut icon" href="${favicon!''}" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>文章归档 - ${title!''}</title>
+    <link rel="stylesheet" href="${una}/${theme}/css/font-awesome.css">
+    <link rel="stylesheet" href="${una}/${theme}/css/ionicons.css">
+    <link rel="stylesheet" href="${una}/${theme}/css/adminlte.css">
+    <link rel="stylesheet" href="${una}/${theme}/css/unaboot.css">
+</head>
+<body>
+    <div class="sidebar animated fadeInDown">
+        <#include "./left.html"/>
+    </div>
+    <div class="main">
+        <div class="page-top animated fadeInDown">
+            <#include "./nav.html"/>
+        </div>
+        <div class="autopagerize_page_element">
+            <div class="content">
+                <div class="archive animated fadeInDown">
+                    <h3 class="m-4">归档</h3>
+                    <ul class="list-with-title">
+                        <@u_archives>
+                            <#if results?? && results?size gt 0>
+                                <#list results as archive>
+                                    <div class="listing-title">${archive.name}</div>
+                                    <ul class="listing" style="padding-left:25px;">
+                                        <@u_archive_detail name=archive.name>
+                                            <#if results?? && results?size gt 0>
+                                                <#list results as post>
+                                                    <div class="listing-item">
+                                                        <div class="listing-post">
+                                                            <a href="${una}/blog/${post.slug}" title="${post.title}">${post.title}</a>
+                                                            <div class="post-time">
+                                                                <span class="date">${post.createTime?string("yyyy-MM-dd")}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </#list>
+                                            </#if>
+                                        </@u_archive_detail>
+                                    </ul>
+                                </#list>
+                            </#if>
+                        </@u_archives>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="${una}/${theme}/js/jquery/jquery.min.js"></script>
+    <script src="${una}/${theme}/js/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="${una}/${theme}/js/adminlte.min.js"></script>
+    <script type="text/javascript">
+
+    </script>
+</body>
+</html>

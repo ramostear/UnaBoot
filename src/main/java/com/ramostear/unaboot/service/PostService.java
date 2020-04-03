@@ -19,6 +19,8 @@ public interface PostService extends UnaBootService<Post,Integer> {
     @NonNull
     Page<Post> pageBy(@NonNull PostQuery query, @NonNull Pageable pageable);
 
+    Page<PostSimpleVo> findAllByStyle(int style,Pageable pageable);
+
     @NonNull
     Page<Post> search(@NonNull String key,@NonNull Pageable pageable);
 

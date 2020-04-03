@@ -61,6 +61,13 @@ public class PostServiceImpl extends UnaBootServiceImpl<Post,Integer> implements
     }
 
     @Override
+    public Page<PostSimpleVo> findAllByStyle(int style, Pageable pageable) {
+        Page<Post> posts = postRepository.findAllByStatusAndStyle(UnaBootConst.ACTIVE,style,pageable);
+        Page<PostSimpleVo> postSimpleVos = this.convert(posts);
+        return postSimpleVos;
+    }
+
+    @Override
     public Page<Post> search(String key, Pageable pageable) {
         PostQuery query = new PostQuery();
         query.setKey(key);

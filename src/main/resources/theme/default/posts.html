@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="${favicon}" type="image/x-icon">
+    <link rel="shortcut icon" href="${favicon}" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>${category.name!'栏目'} - ${title}</title>
+    <link rel="stylesheet" href="${una}/${theme}/css/font-awesome.css">
+    <link rel="stylesheet" href="${una}/${theme}/css/ionicons.css">
+    <link rel="stylesheet" href="${una}/${theme}/css/adminlte.css">
+    <link rel="stylesheet" href="${una}/${theme}/css/unaboot.css">
+</head>
+<body>
+    <div class="sidebar animated fadeInDown">
+        <#include "./left.html"/>
+    </div>
+    <div class="main">
+        <div class="page-top animated fadeInDown">
+            <#include "./nav.html"/>
+        </div>
+        <div class="autopagerize_page_element">
+            <div class="content">
+                <@u_category_page_detail id=category.id offset=offset size=15>
+                    <#if results?? && results.content?size gt 0>
+                        <#list results.content as post>
+                            <div class="post animated fadeInDown">
+                                <div class="post-title mb-2">
+                                    <h3>
+                                        <a href="${una}/blog/${post.slug}">${post.title}</a>
+                                    </h3>
+                                </div>
+                                <div class="post-content">
+                                    <div class="p_part">
+                                        <p>${post.summary}</p>
+                                    </div>
+                                </div>
+                                <div class="post-footer">
+                                    <div class="meta">
+                                        <div class="info">
+                                            <i class="fa fa-sun-o"></i>
+                                            <span class="date">${u_timeAgo(post.createTime)}</span>
+                                            <i class="fa fa-user-circle-o"></i>
+                                            <a href="#">${post.author}</a>
+                                            <i class="fa fa-eye"> ${post.visits!'0'}</i>
+                                            <i class="fa fa-list-ol"></i>
+                                            <a href="${una}/category/${category.slug}">${category.name}</a>
+                                            <i class="fa fa-tags"></i>
+                                            <@u_post_tags id=post.id>
+                                                <#if results?? && results?size gt 0>
+                                                    <#list results as tag>
+                                                        <a href="${una}/tag/${tag.name}" class="tag"> ${tag.name}</a>
+                                                    </#list>
+                                                </#if>
+                                            </@u_post_tags>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </#list>
+                    </#if>
+                </@u_category_page_detail>
+                <div class="pagination">
+                    ${u_categoryPage(una+"/category/"+category.slug category.id offset 5 15)}
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="${una}/${theme}/js/jquery/jquery.min.js"></script>
+    <script src="${una}/${theme}/js/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="${una}/${theme}/js/adminlte.min.js"></script>
+    <script type="text/javascript">
+
+    </script>
+</body>
+</html>

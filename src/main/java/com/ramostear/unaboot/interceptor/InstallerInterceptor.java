@@ -25,7 +25,7 @@ public class InstallerInterceptor extends HandlerInterceptorAdapter {
             return super.preHandle(request, response, handler);
         }else{
             log.info("UnaBoot System has not been install,Please install and init this application");
-            response.sendRedirect("/unaboot/install.html");
+            response.sendRedirect("/install.html");
             return false;
         }
     }

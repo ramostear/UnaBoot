@@ -63,7 +63,7 @@ public class AdminController extends UnaBootController {
     private VerifyCodeGenService verifyCodeGenService;
     private static final String DEFAULT_MSG = "用户名或密码错误";
 
-    @GetMapping("/unaboot/install.html")
+    @GetMapping("/install.html")
     public String install(){
         if(UnaBootUtils.isInstall()){
             return redirect("/admin/index");
@@ -72,7 +72,7 @@ public class AdminController extends UnaBootController {
     }
 
     @ResponseBody
-    @PostMapping("/unaboot/install.html")
+    @PostMapping("/install.html")
     public ResponseEntity<Object> install(InstallDto dto){
         boolean flag = false;
         try {

@@ -1,0 +1,878 @@
+.typo h1, .typo h2, .typo h3, .typo h4, .typo h5, .typo h6 {
+    word-spacing: 1px;
+    font-weight: bold
+}
+
+.typo h1 {
+    font-size: 28px;
+    line-height: 50px
+}
+
+.typo h2 {
+    font-size: 24px;
+    line-height: 46px
+}
+
+.typo h3 {
+    font-size: 20px;
+    line-height: 42px
+}
+
+.typo h4 {
+    font-size: 16px;
+    line-height: 38px
+}
+
+.typo h5 {
+    font-size: 14px;
+    line-height: 36px
+}
+
+.typo h6 {
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 24px
+}
+
+.typo h1, .typo h2, .typo h3, .typo h4, .typo h5, .typo h6, .typo blockquote, .typo ul, .typo ol, .typo dl, .typo table, .typo pre, .typo hr, .typo p {
+    position: relative;
+    margin-top: 24px;
+    margin-bottom: 24px
+}
+
+.typo ol, .typo ul {
+    padding-left: 2em
+}
+
+.typo ul ul, .typo ul ol, .typo ol ol, .typo ol ul {
+    margin-top: 0;
+    margin-bottom: 0
+}
+
+.typo ul {
+    list-style-type: disc
+}
+
+.typo ul ul {
+    list-style-type: circle
+}
+
+.typo ul ul ul {
+    list-style-type: square
+}
+
+.typo ul ul ol {
+    list-style-type: lower-alpha
+}
+
+.typo ul ol {
+    list-style-type: lower-roman
+}
+
+.typo ul ol ul {
+    list-style-type: square
+}
+
+.typo ul ol ol {
+    list-style-type: lower-alpha
+}
+
+.typo ol {
+    list-style-type: decimal
+}
+
+.typo ol ol {
+    list-style-type: lower-roman
+}
+
+.typo ol ol ul {
+    list-style-type: square
+}
+
+.typo ol ol ol {
+    list-style-type: lower-alpha
+}
+
+.typo ol ul {
+    list-style-type: circle
+}
+
+.typo ol ul ul {
+    list-style-type: square
+}
+
+.typo ol ul ol {
+    list-style-type: lower-alpha
+}
+
+.typo li > p {
+    margin-top: 0;
+    margin-bottom: 0
+}
+
+.typo hr {
+    position: relative;
+    height: 2px;
+    padding: 0;
+    background-color: #e8e8e8;
+    border: none;
+    margin-right: 0;
+    margin-left: 0
+}
+
+.typo blockquote {
+    margin: 0;
+    padding: 0 0 0 1em;
+    color: #8C8C8C;
+    border-left: 3px solid #e8e8e8
+}
+
+.typo blockquote:first-child {
+    margin-top: 0
+}
+
+.typo blockquote:last-child {
+    margin-bottom: 0
+}
+
+.typo code {
+    position: relative;
+    top: -1px;
+    display: inline-block;
+    font-family: Consolas, Menlo, Courier, monospace;
+    line-height: 18px;
+    font-size: 13px;
+    padding: 0 4px;
+    margin: 0 1px;
+    vertical-align: middle;
+    background: #f5f5f5;
+    border-radius: 2px;
+    border: 1px solid #e8e8e8;
+    word-wrap: break-word;
+    word-break: break-all;
+    hyphens: none;
+    text-indent: 0
+}
+
+.typo kbd {
+    position: relative;
+    top: -1px;
+    display: inline-block;
+    font-family: Consolas, Menlo, Courier, monospace;
+    line-height: 18px;
+    font-size: 13px;
+    padding: 0 4px;
+    margin: 0 1px;
+    border: 1px solid #e8e8e8;
+    border-bottom-color: #bbb;
+    border-radius: 3px 3px;
+    box-shadow: inset 0 -1px 0 #bbb
+}
+
+.typo pre {
+    font-family: Consolas, Menlo, Courier, monospace;
+    line-height: 21px;
+    font-size: 13px;
+    overflow: auto;
+    tab-size: 4;
+    margin: 5px 0;
+    color: #595959;
+    background: #fafafa;
+    border-radius: 2px 2px;
+    border: 1px solid #e8e8e8;
+    padding: 16px 16px
+}
+
+.typo pre code {
+    border: none;
+    background: none;
+    top: 0;
+    margin: 0;
+    font-size: inherit;
+    line-height: inherit
+}
+
+.typo pre code:before, .typo pre code:after {
+    content: normal
+}
+
+.typo video {
+    display: block;
+    max-width: 100%;
+    margin-top: 24px;
+    margin-bottom: 24px
+}
+
+.typo img {
+    border: none;
+    max-width: 100%;
+    box-sizing: content-box;
+    background-color: #fff;
+    cursor: zoom-in
+}
+
+.typo figure {
+    position: relative
+}
+
+.typo figcaption {
+    position: relative;
+    width: 100%;
+    text-align: center;
+    left: 0;
+    margin-top: 0px;
+    font-weight: 400;
+    font-size: 12px;
+    color: #8C8C8C
+}
+
+.typo table {
+    table-layout: fixed;
+    position: relative;
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    word-break: normal;
+    word-break: keep-all;
+    overflow: auto;
+    white-space: normal
+}
+
+.typo table tr {
+    background: #ffffff;
+    border-top: 1px solid #e8e8e8
+}
+
+.typo table tr:nth-child(2n+1) {
+    background-color: #fafafa
+}
+
+.typo table thead tr:nth-child(2n+1) {
+    background-color: #f5f5f5
+}
+
+.typo table td, .typo table th {
+    padding: 6px 8px;
+    border: 1px solid #e8e8e8;
+    white-space: normal;
+    word-wrap: break-word;
+    word-break: break-all
+}
+
+.typo table p {
+    margin-top: 0;
+    margin-bottom: 0
+}
+
+.hljs-comment, .hljs-quote {
+    color: #4caf50;
+}
+
+.hljs-variable, .hljs-template-variable, .hljs-tag, .hljs-name, .hljs-selector-id, .hljs-selector-class, .hljs-regexp, .hljs-deletion {
+    color: #03a9f4
+}
+
+.hljs-number, .hljs-built_in, .hljs-builtin-name, .hljs-literal, .hljs-type, .hljs-params, .hljs-meta, .hljs-link {
+    color: #f5871f
+}
+
+.hljs-attribute {
+    color: #eab700
+}
+
+.hljs-string, .hljs-symbol, .hljs-bullet, .hljs-addition {
+    color: #718c00
+}
+
+.hljs-title, .hljs-section {
+    color: #ffffff
+}
+
+.hljs-keyword, .hljs-selector-tag {
+    color: #8959a8
+}
+
+.hljs {
+    display: block;
+    overflow-x: auto;
+    background: white;
+    color: #e2e2a0;
+    padding: 0.5em
+}
+
+.hljs-emphasis {
+    font-style: italic
+}
+
+.hljs-strong {
+    font-weight: bold
+}
+.editormd-preview-container, .editormd-html-preview {
+  text-align: left;
+  font-size: 16px;
+  line-height: 1.6;
+  padding: 20px;
+  overflow: auto;
+  width: 100%;
+  background-color: rgba(255,255,255,0);
+}
+.editormd-preview-container blockquote, .editormd-html-preview blockquote {
+  color: #666;
+  border-left: 4px solid #ffca01;
+  padding-left: 20px;
+  margin-left: 0;
+  font-size: 14px;
+  font-style: italic;
+}
+.editormd-html-preview blockquote:before {
+  color: #fff;
+  margin-left: 0;
+  font-size: 28px;
+  font-style: italic;
+  content: "i";
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #ffca01;
+  display: block;
+  vertical-align: middle;
+  text-align: center;
+  line-height: 28px;
+  position: absolute;
+  left: -17px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.editormd-preview-container p code, .editormd-html-preview p code {
+  margin-left: 5px;
+  margin-right: 4px;
+}
+.editormd-preview-container abbr, .editormd-html-preview abbr {
+  background: #ffffdd;
+}
+.editormd-preview-container hr, .editormd-html-preview hr {
+  height: 1px;
+  border: none;
+  border-top: 1px solid #ddd;
+  background: none;
+}
+.editormd-preview-container code, .editormd-html-preview code {
+  border: 1px solid #ddd;
+  background: #f6f6f6;
+  padding: 3px;
+  border-radius: 3px;
+  font-size: 14px;
+}
+.editormd-preview-container pre, .editormd-html-preview pre {
+  border: 1px solid #ddd;
+  background: #f6f6f6;
+  padding: 10px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+}
+.editormd-preview-container pre code, .editormd-html-preview pre code {
+  padding: 0;
+}
+.editormd-preview-container pre, .editormd-preview-container code, .editormd-preview-container kbd, .editormd-html-preview pre, .editormd-html-preview code, .editormd-html-preview kbd {
+  font-family: "YaHei Consolas Hybrid", Consolas, "Meiryo UI", "Malgun Gothic", "Segoe UI", "Trebuchet MS", Helvetica, monospace, monospace;
+}
+.editormd-preview-container table thead tr, .editormd-html-preview table thead tr {
+  background-color: #F8F8F8;
+}
+.editormd-preview-container p.editormd-tex, .editormd-html-preview p.editormd-tex {
+  text-align: center;
+}
+.editormd-preview-container span.editormd-tex, .editormd-html-preview span.editormd-tex {
+  margin: 0 5px;
+}
+.editormd-preview-container .emoji, .editormd-html-preview .emoji {
+  width: 24px;
+  height: 24px;
+}
+.editormd-preview-container .katex, .editormd-html-preview .katex {
+  font-size: 1.4em;
+}
+.editormd-preview-container .sequence-diagram, .editormd-preview-container .flowchart, .editormd-html-preview .sequence-diagram, .editormd-html-preview .flowchart {
+  margin: 0 auto;
+  text-align: center;
+}
+.editormd-preview-container .sequence-diagram svg, .editormd-preview-container .flowchart svg, .editormd-html-preview .sequence-diagram svg, .editormd-html-preview .flowchart svg {
+  margin: 0 auto;
+}
+.editormd-preview-container .sequence-diagram text, .editormd-preview-container .flowchart text, .editormd-html-preview .sequence-diagram text, .editormd-html-preview .flowchart text {
+  font-size: 15px !important;
+  font-family: "YaHei Consolas Hybrid", Consolas, "Microsoft YaHei", "Malgun Gothic", "Segoe UI", Helvetica, Arial !important;
+}
+
+/*! Pretty printing styles. Used with prettify.js. */
+/* SPAN elements with the classes below are added by prettyprint. */
+.pln {
+  color: #000;
+}
+
+/* plain text */
+@media screen {
+  .str {
+    color: #080;
+  }
+
+  /* string content */
+  .kwd {
+    color: #008;
+  }
+
+  /* a keyword */
+  .com {
+    color: #800;
+  }
+
+  /* a comment */
+  .typ {
+    color: #606;
+  }
+
+  /* a type name */
+  .lit {
+    color: #066;
+  }
+
+  /* a literal value */
+  /* punctuation, lisp open bracket, lisp close bracket */
+  .pun, .opn, .clo {
+    color: #660;
+  }
+
+  .tag {
+    color: #008;
+  }
+
+  /* a markup tag name */
+  .atn {
+    color: #606;
+  }
+
+  /* a markup attribute name */
+  .atv {
+    color: #080;
+  }
+
+  /* a markup attribute value */
+  .dec, .var {
+    color: #606;
+  }
+
+  /* a declaration; a variable name */
+  .fun {
+    color: red;
+  }
+
+  /* a function name */
+}
+/* Use higher contrast and text-weight for printable form. */
+@media print, projection {
+  .str {
+    color: #060;
+  }
+
+  .kwd {
+    color: #006;
+    font-weight: bold;
+  }
+
+  .com {
+    color: #600;
+    font-style: italic;
+  }
+
+  .typ {
+    color: #404;
+    font-weight: bold;
+  }
+
+  .lit {
+    color: #044;
+  }
+
+  .pun, .opn, .clo {
+    color: #440;
+  }
+
+  .tag {
+    color: #006;
+    font-weight: bold;
+  }
+
+  .atn {
+    color: #404;
+  }
+
+  .atv {
+    color: #060;
+  }
+}
+/* Put a border around prettyprinted code snippets. */
+pre.prettyprint {
+  padding: 2px;
+  border: 1px solid #888;
+}
+
+/* Specify class=linenums on a pre to get line numbering */
+ol.linenums {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* IE indents via margin-left */
+li.L0,
+li.L1,
+li.L2,
+li.L3,
+li.L5,
+li.L6,
+li.L7,
+li.L8 {
+  list-style-type: none;
+}
+
+/* Alternate shading for lines */
+li.L1,
+li.L3,
+li.L5,
+li.L7,
+li.L9 {
+  background: #eee;
+}
+
+.editormd-preview-container pre.prettyprint, .editormd-html-preview pre.prettyprint {
+  padding: 10px;
+  border: 1px solid #ddd;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+.editormd-preview-container ol.linenums, .editormd-html-preview ol.linenums {
+  color: #999;
+  padding-left: 2.5em;
+}
+.editormd-preview-container ol.linenums li, .editormd-html-preview ol.linenums li {
+  list-style-type: decimal;
+}
+.editormd-preview-container ol.linenums li code, .editormd-html-preview ol.linenums li code {
+  border: none;
+  background: none;
+  padding: 0;
+}
+
+.editormd-preview-container .editormd-toc-menu, .editormd-html-preview .editormd-toc-menu {
+  margin: 8px 0 12px 0;
+  display: inline-block;
+}
+.editormd-preview-container .editormd-toc-menu > .markdown-toc, .editormd-html-preview .editormd-toc-menu > .markdown-toc {
+  position: relative;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  display: inline-block;
+  font-size: 1em;
+}
+.editormd-preview-container .editormd-toc-menu > .markdown-toc > ul, .editormd-html-preview .editormd-toc-menu > .markdown-toc > ul {
+  width: 160%;
+  min-width: 180px;
+  position: absolute;
+  left: -1px;
+  top: -2px;
+  z-index: 100;
+  padding: 0 10px 10px;
+  display: none;
+  background: #fff;
+  border: 1px solid #ddd;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+  /* Webkit browsers */
+  -moz-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+  /* Firefox */
+  -ms-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+  /* IE9 */
+  -o-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+  /* Opera(Old) */
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+  /* IE9+, News */
+}
+.editormd-preview-container .editormd-toc-menu > .markdown-toc > ul > li ul, .editormd-html-preview .editormd-toc-menu > .markdown-toc > ul > li ul {
+  width: 100%;
+  min-width: 180px;
+  border: 1px solid #ddd;
+  display: none;
+  background: #fff;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+}
+.editormd-preview-container .editormd-toc-menu > .markdown-toc > ul > li a, .editormd-html-preview .editormd-toc-menu > .markdown-toc > ul > li a {
+  color: #666;
+  padding: 6px 10px;
+  display: block;
+  -webkit-transition: background-color 500ms ease-out;
+  /* Safari, Chrome */
+  -moz-transition: background-color 500ms ease-out;
+  /* Firefox 4.0~16.0 */
+  transition: background-color 500ms ease-out;
+  /* IE >9, FF >15, Opera >12.0 */
+}
+.editormd-preview-container .editormd-toc-menu > .markdown-toc > ul > li a:hover, .editormd-html-preview .editormd-toc-menu > .markdown-toc > ul > li a:hover {
+  background-color: #f6f6f6;
+}
+.editormd-preview-container .editormd-toc-menu > .markdown-toc li, .editormd-html-preview .editormd-toc-menu > .markdown-toc li {
+  position: relative;
+}
+.editormd-preview-container .editormd-toc-menu > .markdown-toc li > ul, .editormd-html-preview .editormd-toc-menu > .markdown-toc li > ul {
+  position: absolute;
+  top: 32px;
+  left: 10%;
+  display: none;
+  -webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+  /* Webkit browsers */
+  -moz-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+  /* Firefox */
+  -ms-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+  /* IE9 */
+  -o-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+  /* Opera(Old) */
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+  /* IE9+, News */
+}
+.editormd-preview-container .editormd-toc-menu > .markdown-toc li > ul:before, .editormd-preview-container .editormd-toc-menu > .markdown-toc li > ul:after, .editormd-html-preview .editormd-toc-menu > .markdown-toc li > ul:before, .editormd-html-preview .editormd-toc-menu > .markdown-toc li > ul:after {
+  pointer-events: pointer-events;
+  position: absolute;
+  left: 15px;
+  top: -6px;
+  display: block;
+  content: "";
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-width: 0 6px 6px;
+  z-index: 10;
+}
+.editormd-preview-container .editormd-toc-menu > .markdown-toc li > ul:before, .editormd-html-preview .editormd-toc-menu > .markdown-toc li > ul:before {
+  border-bottom-color: #ccc;
+}
+.editormd-preview-container .editormd-toc-menu > .markdown-toc li > ul:after, .editormd-html-preview .editormd-toc-menu > .markdown-toc li > ul:after {
+  border-bottom-color: #ffffff;
+  top: -5px;
+}
+.editormd-preview-container .editormd-toc-menu ul, .editormd-html-preview .editormd-toc-menu ul {
+  list-style: none;
+}
+.editormd-preview-container .editormd-toc-menu a, .editormd-html-preview .editormd-toc-menu a {
+  text-decoration: none;
+}
+.editormd-preview-container .editormd-toc-menu h1, .editormd-html-preview .editormd-toc-menu h1 {
+  font-size: 16px;
+  padding: 5px 0 10px 10px;
+  line-height: 1;
+  border-bottom: 1px solid #eee;
+}
+.editormd-preview-container .editormd-toc-menu h1 .fa, .editormd-html-preview .editormd-toc-menu h1 .fa {
+  padding-left: 10px;
+}
+.editormd-preview-container .editormd-toc-menu .toc-menu-btn, .editormd-html-preview .editormd-toc-menu .toc-menu-btn {
+  color: #666;
+  min-width: 180px;
+  padding: 5px 10px;
+  border-radius: 4px;
+  display: inline-block;
+  -webkit-transition: background-color 500ms ease-out;
+  /* Safari, Chrome */
+  -moz-transition: background-color 500ms ease-out;
+  /* Firefox 4.0~16.0 */
+  transition: background-color 500ms ease-out;
+  /* IE >9, FF >15, Opera >12.0 */
+}
+.editormd-preview-container .editormd-toc-menu .toc-menu-btn:hover, .editormd-html-preview .editormd-toc-menu .toc-menu-btn:hover {
+  background-color: #f6f6f6;
+}
+.editormd-preview-container .editormd-toc-menu .toc-menu-btn .fa, .editormd-html-preview .editormd-toc-menu .toc-menu-btn .fa {
+  float: right;
+  padding: 3px 0 0 10px;
+  font-size: 1.3em;
+}
+
+.markdown-body .editormd-toc-menu ul {
+  padding-left: 0;
+}
+.markdown-body .highlight pre, .markdown-body pre {
+  line-height: 1.6;
+}
+
+hr.editormd-page-break {
+  border: 1px dotted #ccc;
+  font-size: 0;
+  height: 2px;
+}
+
+@media only print {
+  hr.editormd-page-break {
+    background: none;
+    border: none;
+    height: 0;
+  }
+}
+.editormd-html-preview textarea {
+  display: none;
+}
+.editormd-html-preview hr.editormd-page-break {
+  background: none;
+  border: none;
+  height: 0;
+}
+.editormd-preview-theme-dark {
+  color: #00316f;
+  background: rgba(255,255,255,0);
+}
+.editormd-preview-theme-dark .editormd-preview-container {
+  color: #888;
+  background-color: #2C2827;
+}
+.editormd-preview-theme-dark .editormd-preview-container pre.prettyprint {
+  border: none;
+}
+.editormd-preview-theme-dark .editormd-preview-container blockquote {
+  color: #555;
+  padding: 0.5em;
+  background: #222;
+  border-color: #333;
+}
+.editormd-preview-theme-dark .editormd-preview-container abbr {
+  color: #fff;
+  padding: 1px 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  background: #ff9900;
+}
+.editormd-preview-theme-dark .editormd-preview-container code {
+  color: #fff;
+  border: none;
+  padding: 1px 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  background: #5A9600;
+}
+.editormd-preview-theme-dark .editormd-preview-container table {
+  border: none;
+}
+.editormd-preview-theme-dark .editormd-preview-container .fa-emoji {
+  color: #B4BF42;
+}
+.editormd-preview-theme-dark .editormd-preview-container .katex {
+  color: #FEC93F;
+}
+.editormd-preview-theme-dark .editormd-toc-menu > .markdown-toc {
+  background: #fff;
+  border: none;
+}
+.editormd-preview-theme-dark .editormd-toc-menu > .markdown-toc h1 {
+  border-color: #ddd;
+}
+.editormd-preview-theme-dark .markdown-body h1, .editormd-preview-theme-dark .markdown-body h2, .editormd-preview-theme-dark .markdown-body hr {
+  border-color: #222;
+}
+.editormd-preview-theme-dark pre {
+  color: #ababab;
+  background-color: #012a3e;
+  /* plain text */
+}
+.editormd-preview-theme-dark pre .pln {
+  color: #999;
+}
+.editormd-preview-theme-dark li.L1, .editormd-preview-theme-dark li.L3, .editormd-preview-theme-dark li.L5, .editormd-preview-theme-dark li.L7, .editormd-preview-theme-dark li.L9 {
+  background: none;
+}
+.editormd-preview-theme-dark [class*=editormd-logo] {
+  color: #2196F3;
+}
+.editormd-preview-theme-dark .sequence-diagram text {
+  fill: #fff;
+}
+.editormd-preview-theme-dark .sequence-diagram rect, .editormd-preview-theme-dark .sequence-diagram path {
+  color: #fff;
+  fill: #64D1CB;
+  stroke: #64D1CB;
+}
+.editormd-preview-theme-dark .flowchart rect, .editormd-preview-theme-dark .flowchart path {
+  stroke: #A6C6FF;
+}
+.editormd-preview-theme-dark .flowchart rect {
+  fill: #A6C6FF;
+}
+.editormd-preview-theme-dark .flowchart text {
+  fill: #5879B4;
+}
+
+@media screen {
+  .editormd-preview-theme-dark {
+    /* string content */
+    /* a keyword */
+    /* a comment */
+    /* a type name */
+    /* a literal value */
+    /* punctuation, lisp open bracket, lisp close bracket */
+    /* a markup tag name */
+    /* a markup attribute name */
+    /* a markup attribute value */
+    /* a declaration; a variable name */
+    /* a function name */
+  }
+  .editormd-preview-theme-dark .str {
+    color: #080;
+  }
+  .editormd-preview-theme-dark .kwd {
+    color: #ff9900;
+  }
+  .editormd-preview-theme-dark .com {
+    color: #444444;
+  }
+  .editormd-preview-theme-dark .typ {
+    color: #606;
+  }
+  .editormd-preview-theme-dark .lit {
+    color: #066;
+  }
+  .editormd-preview-theme-dark .pun, .editormd-preview-theme-dark .opn, .editormd-preview-theme-dark .clo {
+    color: #660;
+  }
+  .editormd-preview-theme-dark .tag {
+    color: #ff9900;
+  }
+  .editormd-preview-theme-dark .atn {
+    color: #6C95F5;
+  }
+  .editormd-preview-theme-dark .atv {
+    color: #080;
+  }
+  .editormd-preview-theme-dark .dec, .editormd-preview-theme-dark .var {
+    color: #008BA7;
+  }
+  .editormd-preview-theme-dark .fun {
+    color: red;
+  }
+}
+
+

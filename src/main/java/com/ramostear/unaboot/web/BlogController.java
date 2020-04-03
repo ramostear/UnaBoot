@@ -51,7 +51,8 @@ public class BlogController extends UnaBootController {
      * @return
      */
     @GetMapping(value = {"/","/index","/index.html","/home","/home.html"})
-    public String index(){
+    public String index(@RequestParam(name = "offset",defaultValue = "1")Integer offset,Model model){
+        model.addAttribute("offset",offset);
         return blogView("/index.html");
     }
 
@@ -81,7 +82,8 @@ public class BlogController extends UnaBootController {
      * @return      tags.html
      */
     @GetMapping("/tags")
-    public String tags(){
+    public String tags(@RequestParam(name = "offset",defaultValue = "1")Integer offset,Model model){
+        model.addAttribute("offset",offset);
         return blogView("/tags.html");
     }
 
@@ -93,7 +95,7 @@ public class BlogController extends UnaBootController {
      * @return          tag.html
      */
     @GetMapping("/tag/{name}")
-    public String tag(@PathVariable("name")String name,@RequestParam(name = "offset",defaultValue = "15")Integer offset, Model model){
+    public String tag(@PathVariable("name")String name,@RequestParam(name = "offset",defaultValue = "1")Integer offset, Model model){
         Tag tag = tagService.findByName(name);
         if(tag != null){
             model.addAttribute("tag",tag)
@@ -109,7 +111,8 @@ public class BlogController extends UnaBootController {
      * @return      archives.html
      */
     @GetMapping("/archives")
-    public String archives(){
+    public String archives(@RequestParam(name = "offset",defaultValue = "1")Integer offset,Model model){
+        model.addAttribute("offset",offset);
         return blogView("/archives.html");
     }
 
@@ -120,11 +123,12 @@ public class BlogController extends UnaBootController {
      * @return              archive.html (模板文件中需要提供archive.html文件)
      */
     @GetMapping("/archive/{name}")
-    public String archive(@PathVariable("name")String name,Model model){
+    public String archive(@PathVariable("name")String name,@RequestParam(name = "offset",defaultValue = "1")Integer offset, Model model){
        if(StringUtils.isBlank(name)){
            throw new BlogNotFoundException("不存在的文章归档");
        }else{
            model.addAttribute("archive",name);
+           model.addAttribute("offset",offset);
            return blogView("/archive.html");
        }
     }

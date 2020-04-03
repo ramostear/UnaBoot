@@ -2,6 +2,8 @@ package com.ramostear.unaboot.repository;
 
 import com.ramostear.unaboot.domain.entity.Post;
 import com.ramostear.unaboot.repository.support.UnaBootRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
@@ -40,4 +42,6 @@ public interface PostRepository extends UnaBootRepository<Post,Integer> , JpaSpe
     List<Post> recommends(Integer size);
 
     List<Post> findAllByStatusAndStyle(int status,int style);
+
+    Page<Post> findAllByStatusAndStyle(int status, int style, Pageable pageable);
 }
