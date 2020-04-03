@@ -43,7 +43,7 @@ public class UnaBootWebMvcConfiguration extends WebMvcConfigurationSupport {
                 .addPathPatterns("/**");
         registry.addInterceptor(installerInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/unaboot/install.html","/admin/css/**","/admin/fonts/**","/admin/img/**","/admin/js/**","/admin/plugins/**");
+                .excludePathPatterns("/install.html","/admin/css/**","/admin/fonts/**","/admin/img/**","/admin/js/**","/admin/plugins/**");
     }
 
     @Override
