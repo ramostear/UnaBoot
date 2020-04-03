@@ -79,7 +79,7 @@ git clone https://github.com/ramostear/UnaBoot-Pro.git
 git clone https://gitee.com/ramostear/UnaBoot-Pro.git
 ```
 
-除此之外，我还提供了可在Tomcat中运行的war包，你可以访问https://gitee.com/ramostear/UnaBoot-Pro/releases/una-boot-v1.2.0或者https://github.com/ramostear/UnaBoot-Pro/releases/tag/una-boot-v1.2.0 下载最新的war到本地运行。
+除此之外，我还提供了可在Tomcat中运行的war包，你可以访问https://gitee.com/ramostear/UnaBoot-Pro/releases/una-boot-v1.2.0 ,或者https://github.com/ramostear/UnaBoot-Pro/releases/tag/una-boot-v1.2.0 下载最新的war到本地运行。
 
 ![](https://cdn.ramostear.com/20200322-1aa364ad59df433fb74e2f6bef1b8e9a.png)
 
