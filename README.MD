@@ -1,4 +1,8 @@
-![](https://github.com/ramostear/UnaBoot-Pro/blob/master/src/main/resources/static/admin/img/una-logo-max.svg)
+![](./src/main/resources/static/admin/img/una-logo-max.svg)
+<center>Una | 尤娜</center>
+<center>一个基于Spring Boot 2.0 构建的Java博客系统</center>
+
+----
 
 [![GitHub license](https://img.shields.io/github/license/ramostear/UnaBoot-Pro)](https://github.com/ramostear/UnaBoot-Pro/blob/master/LICENSE) ![](https://img.shields.io/badge/author-ramostear-brightgreen) ![](https://img.shields.io/badge/jdk-1.8-brightgreen) ![](https://img.shields.io/badge/maven-3.3.0-brightgreen) ![](https://img.shields.io/badge/version-1.2.0-brightgreen) [![](https://img.shields.io/badge/download-github-brightgreen)](https://github.com/ramostear/UnaBoot-Pro.git) [![](https://img.shields.io/badge/download-gitee-green)](https://gitee.com/ramostear/UnaBoot-Pro.git)
 
