@@ -34,6 +34,7 @@
                         <div class="col-12">
                             <div class="card mt-3" style="border-radius: 0px;">
                                 <div class="card-header text-right">
+                                    <input type="hidden" name="visits" value="${post.visits!'0'}" id="visits"/>
                                     <input type="text" name="title" value="${post.title}" placeholder="请在此处输入文章标题(标题长度为50个字符)" autocomplete="off" class="form-control post-title pull-left" maxlength="68"  style="width: 50%">
                                     <a href="${una}/admin/post/index" class="btn btn-sm btn-default"><i class="fa fa-angle-double-left"> 返回</i></a>
                                     <a href="#" class="btn btn-sm bg-teal pl-4 pr-4" data-widget="control-sidebar" data-slide="true">
