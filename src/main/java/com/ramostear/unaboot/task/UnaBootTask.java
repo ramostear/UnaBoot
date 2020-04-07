@@ -57,14 +57,16 @@ public class UnaBootTask {
     /**
      * 重新构建全文检索数据索引
      */
-    public void rebuildSearchIndex(){
+    public void rebuildSearchIndex(String param){
+        log.info("rebuild blog search index, param is :{}",param);
         luceneService.resetIndex();
     }
 
     /**
      * 刷新系统缓存
      */
-    public void clearCache(){
+    public void clearCache(String param){
+        log.info("clear blog cache data,param is :{}",param);
         String[] cacheNames = cacheManager.getCacheNames();
         if(cacheNames != null){
             for(String cacheName : cacheNames){
