@@ -1,0 +1,17 @@
+${AnsiColor.BRIGHT_YELLOW}
+ ██     ██                    ██████                       ██
+░██    ░██                   ░█░░░░██                     ░██
+░██    ░██ ███████   ██████  ░█   ░██   ██████   ██████  ██████
+░██    ░██░░██░░░██ ░░░░░░██ ░██████   ██░░░░██ ██░░░░██░░░██░
+░██    ░██ ░██  ░██  ███████ ░█░░░░ ██░██   ░██░██   ░██  ░██
+░██    ░██ ░██  ░██ ██░░░░██ ░█    ░██░██   ░██░██   ░██  ░██
+░░███████  ███  ░██░░████████░███████ ░░██████ ░░██████   ░░██
+ ░░░░░░░  ░░░   ░░  ░░░░░░░░ ░░░░░░░   ░░░░░░   ░░░░░░     ░░
+
+${AnsiColor.BRIGHT_RED}
+                                Application Name : UnaBoot
+                                Application Version: v1.3.0
+                                Author : 树下魅狐[ramostear]
+                                Email : ramostear@163.com
+                                URL : https://www.ramostear.com
+${AnsiColor.CYAN} :: Spring Boot${spring-boot.formatted-version} :: ${AnsiColor.CYAN}

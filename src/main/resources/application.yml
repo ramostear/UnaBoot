@@ -1,0 +1,54 @@
+server:
+  port: 80
+  servlet:
+    context-path: /
+logging:
+  level:
+    com.ramostear.unaboot: debug
+    org.springframework: info
+    org.pring.springboot: info
+spring:
+  freemarker:
+    suffix: .html
+    settings:
+      classic_compatible: true
+      template_exception_handler: rethrow
+      template_update_delay: 0
+      datetime_format: yyyy-MM-dd HH:mm:ss
+      number_format: 0.##
+  application:
+    name: UnaBoot
+  datasource:
+    druid:
+      initialSize:  5
+      minIdle:  10
+      maxActive:  20
+      maxWait:  60000
+      timeBetweenEvictionRunsMillis:  60000
+      minEvictableIdleTimeMillis: 300000
+      maxEvictableIdleTimeMillis: 900000
+      validationQuery:  SELECT 1 FROM DUAL
+      testWhileIdle:  true
+      testOnBorrow: false
+      testOnReturn: false
+      webStatFilter:
+        enabled:  true
+      statViewServlet:
+        enabled:  true
+        allow:
+        url-pattern: /admin/druid/*
+      filter:
+        stat:
+          enabled:  true
+          log-slow-sql: true
+          slow-sql-millis:  1000
+          merge-sql:  true
+        wall:
+          config:
+            multi-statement-allow:  true
+  cache:
+    jcache:
+      config: classpath:ehcache.xml
+xss:
+  enabled: false
+  urlPatterns: /monitor/*
