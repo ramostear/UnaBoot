@@ -44,4 +44,6 @@ public class Constants {
     public static final String ENCRYPT_SALT = "1VJOQ78GPCMPFMVD3E0PLDOL5Q";
 
     public static final DateFormat CRON_DATE_FORMAT = new SimpleDateFormat("ss mm HH dd MM ?");
+
+    public static final String UNABOOT_STORAGE_DIR = Constants.USER_HOME+SEPARATOR+".unaboot"+SEPARATOR;
 }

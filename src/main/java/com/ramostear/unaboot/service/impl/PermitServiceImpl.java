@@ -1,10 +1,15 @@
 package com.ramostear.unaboot.service.impl;
 
+import com.ramostear.unaboot.common.ObjectType;
 import com.ramostear.unaboot.domain.entity.Permit;
 import com.ramostear.unaboot.domain.entity.RolePermit;
+import com.ramostear.unaboot.domain.entity.User;
+import com.ramostear.unaboot.domain.entity.UserRole;
 import com.ramostear.unaboot.domain.vo.PermitVo;
 import com.ramostear.unaboot.repository.PermitRepository;
 import com.ramostear.unaboot.repository.RolePermitRepository;
+import com.ramostear.unaboot.repository.UserRepository;
+import com.ramostear.unaboot.repository.UserRoleRepository;
 import com.ramostear.unaboot.service.PermitService;
 import org.apache.shiro.util.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +32,17 @@ public class PermitServiceImpl extends BaseServiceImpl<Permit,Integer> implement
 
     private final PermitRepository permitRepository;
     private final RolePermitRepository rolePermitRepository;
+    private final UserRepository userRepository;
+    private final UserRoleRepository userRoleRepository;
 
     @Autowired
-    public PermitServiceImpl(PermitRepository permitRepository,RolePermitRepository rolePermitRepository) {
+    public PermitServiceImpl(PermitRepository permitRepository,RolePermitRepository rolePermitRepository,
+                             UserRepository userRepository,UserRoleRepository userRoleRepository) {
         super(permitRepository);
         this.permitRepository = permitRepository;
         this.rolePermitRepository = rolePermitRepository;
+        this.userRepository = userRepository;
+        this.userRoleRepository = userRoleRepository;
     }
 
     @Override
@@ -47,12 +57,48 @@ public class PermitServiceImpl extends BaseServiceImpl<Permit,Integer> implement
     }
 
     @Override
+    public PermitVo tree(Integer identifier, ObjectType type) {
+        PermitVo root = initializeRootNode();
+        List<Permit> permits;
+        if(type == ObjectType.ROLE){
+            permits = this.findAllByRoleId(identifier);
+        }else{
+            permits = this.findAllByUserId(identifier);
+        }
+        if(!CollectionUtils.isEmpty(permits)){
+            initializeTreeNodes(root,permits);
+        }
+        return root;
+    }
+
+    @Override
     public List<Permit> findAllByRoleId(Integer roleId) {
         List<RolePermit> rps = rolePermitRepository.findAllByRoleId(roleId);
         if(CollectionUtils.isEmpty(rps)){
             return Collections.emptyList();
         }
         return permitRepository.findAllById(rps.stream().map(RolePermit::getPermitId).collect(Collectors.toList()));
+    }
+
+    @Override
+    public List<Permit> findAllByUserId(Integer userId) {
+        //1.Get user`s data by user id.
+        User user = userRepository.findById(userId).orElse(null);
+        if(null == user){
+            return Collections.emptyList();
+        }
+        //2.Get user-role relationship by user`id
+        List<UserRole> urs = userRoleRepository.findAllByUserId(user.getId());
+        if(org.apache.shiro.util.CollectionUtils.isEmpty(urs)){
+            return Collections.emptyList();
+        }
+        //3.Get role-permit relationship by role`s id
+        List<RolePermit> rps = rolePermitRepository.findAllByRoleIdIn(urs.stream().map(UserRole::getRoleId).collect(Collectors.toList()));
+        if(org.apache.shiro.util.CollectionUtils.isEmpty(rps)){
+            return Collections.emptyList();
+        }
+        //4.Get user`a permit data and returned.
+        return permitRepository.findAllById(rps.stream().map(RolePermit::getPermitId).distinct().collect(Collectors.toList()));
     }
 
 

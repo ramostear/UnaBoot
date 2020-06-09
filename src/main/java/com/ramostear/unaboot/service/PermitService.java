@@ -1,5 +1,6 @@
 package com.ramostear.unaboot.service;
 
+import com.ramostear.unaboot.common.ObjectType;
 import com.ramostear.unaboot.domain.entity.Permit;
 import com.ramostear.unaboot.domain.vo.PermitVo;
 import org.springframework.data.domain.Sort;
@@ -18,6 +19,10 @@ public interface PermitService extends BaseService<Permit,Integer> {
 
     PermitVo tree(@NonNull Sort sort);
 
+    PermitVo tree(Integer identifier, ObjectType type);
+
     List<Permit> findAllByRoleId(Integer roleId);
+
+    List<Permit> findAllByUserId(Integer userId);
 
 }

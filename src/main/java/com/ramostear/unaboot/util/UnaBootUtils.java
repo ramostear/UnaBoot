@@ -130,6 +130,34 @@ public class UnaBootUtils {
         }
     }
 
+    public static String fileSize(long size){
+        if(size < 1024){
+            return size+"Bytes";
+        }else if (size >= 1024 && size < 1024*1024){
+            return (int)size/1024+"KB";
+        }else if(size >= 1024* 1024 && size < 1024*1024*1024){
+            return (int)size/(1024*1024)+"MB";
+        }else{
+            return size/(1024*1024*1024)+"TB";
+        }
+    }
+
+    public static String random(int len){
+        if(len<=0) len = 8;
+        String val = "";
+        Random random = new Random();
+        for (int i=0;i<len;i++){
+            String temp = random.nextInt(2)%2 == 0?"number":"char";
+            if(temp.equalsIgnoreCase("char")){
+                int nextInt = random.nextInt(2)%2 == 0?65:97;
+                val +=(char)(nextInt+random.nextInt(26));
+            }else{
+                val+= String.valueOf(random.nextInt(10));
+            }
+        }
+        return val.toLowerCase();
+    }
+
     /**
      * Obtain the file path under the classpath according to the file name.
      * @param name      file name

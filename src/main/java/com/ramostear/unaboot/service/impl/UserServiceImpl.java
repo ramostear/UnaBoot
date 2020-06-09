@@ -2,6 +2,7 @@ package com.ramostear.unaboot.service.impl;
 
 import com.ramostear.unaboot.domain.entity.*;
 import com.ramostear.unaboot.repository.*;
+import com.ramostear.unaboot.service.PermitService;
 import com.ramostear.unaboot.service.UserService;
 import com.ramostear.unaboot.util.AssertUtils;
 import com.ramostear.unaboot.util.DateTimeUtils;
@@ -30,20 +31,17 @@ public class UserServiceImpl extends BaseServiceImpl<User,Integer> implements Us
 
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
-    private final RolePermitRepository rolePermitRepository;
-    private final PermitRepository permitRepository;
     private final RoleRepository roleRepository;
+    private final PermitService permitService;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository,
-                           RolePermitRepository rolePermitRepository,PermitRepository permitRepository,
-                           RoleRepository roleRepository) {
+                           RoleRepository roleRepository,PermitService permitService) {
         super(userRepository);
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
-        this.rolePermitRepository = rolePermitRepository;
-        this.permitRepository = permitRepository;
         this.roleRepository = roleRepository;
+        this.permitService = permitService;
     }
 
     @Override
@@ -99,23 +97,7 @@ public class UserServiceImpl extends BaseServiceImpl<User,Integer> implements Us
 
     @Override
     public List<Permit> findAllPermitByUserId(Integer userId) {
-        //1.Get user`s data by user id.
-        User user = userRepository.findById(userId).orElse(null);
-        if(null == user){
-            return Collections.emptyList();
-        }
-        //2.Get user-role relationship by user`id
-        List<UserRole> urs = userRoleRepository.findAllByUserId(user.getId());
-        if(CollectionUtils.isEmpty(urs)){
-            return Collections.emptyList();
-        }
-        //3.Get role-permit relationship by role`s id
-        List<RolePermit> rps = rolePermitRepository.findAllByRoleIdIn(urs.stream().map(UserRole::getRoleId).collect(Collectors.toList()));
-        if(CollectionUtils.isEmpty(rps)){
-            return Collections.emptyList();
-        }
-        //4.Get user`a permit data and returned.
-        return permitRepository.findAllById(rps.stream().map(RolePermit::getPermitId).distinct().collect(Collectors.toList()));
+        return permitService.findAllByRoleId(userId);
     }
 
     @Override
