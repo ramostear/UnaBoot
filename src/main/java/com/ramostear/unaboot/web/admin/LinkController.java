@@ -32,7 +32,7 @@ public class LinkController extends UnaBootController {
 
     @GetMapping("/")
     public String links(Model model){
-        Page<Link> data = linkService.findAll(pageable("sortId", SortType.ASC));
+        Page<Link> data = linkService.findAll(pageable("sortId", SortType.ASC,8));
         model.addAttribute("data",data);
         return "/admin/link/list";
     }

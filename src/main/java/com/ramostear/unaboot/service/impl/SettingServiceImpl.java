@@ -33,7 +33,7 @@ public class SettingServiceImpl extends BaseServiceImpl<Setting,Integer> impleme
 
     @Override
     public Map<String, Setting> toMap() {
-        List<Setting> list = findAll();
+        List<Setting> list = settingRepository.findAll();
         if(CollectionUtils.isEmpty(list)){
             return Collections.emptyMap();
         }

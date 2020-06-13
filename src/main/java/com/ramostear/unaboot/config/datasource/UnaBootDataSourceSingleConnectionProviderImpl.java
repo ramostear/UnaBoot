@@ -4,8 +4,8 @@ import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import com.ramostear.unaboot.common.Constants;
 import com.ramostear.unaboot.config.support.DruidProperties;
-import com.ramostear.unaboot.domain.vo.H2Property;
-import com.ramostear.unaboot.sql.DataBase;
+import com.ramostear.unaboot.config.support.H2Property;
+import com.ramostear.unaboot.common.DataBase;
 import com.ramostear.unaboot.util.UnaBootUtils;
 import org.hibernate.engine.jdbc.connections.spi.AbstractDataSourceBasedMultiTenantConnectionProviderImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ import java.util.TreeMap;
  * <p>description:</p>
  */
 @Configuration
-public class DataSourceSingleConnectionProviderImpl extends AbstractDataSourceBasedMultiTenantConnectionProviderImpl {
+public class UnaBootDataSourceSingleConnectionProviderImpl extends AbstractDataSourceBasedMultiTenantConnectionProviderImpl {
     private static final long serialVersionUID = 5622735918937000949L;
 
     @Autowired
@@ -35,30 +35,35 @@ public class DataSourceSingleConnectionProviderImpl extends AbstractDataSourceBa
     protected DataSource selectAnyDataSource() {
         if(dataSourceMap.isEmpty()){
             if(UnaBootUtils.isInstalled()){
-                dataSourceMap.put(DataBase.MYSQL.name(),wrapper(DataBase.MYSQL));
+                dataSourceMap.put(DataBase.MYSQL.name(),wrapper(DataBase.MYSQL.name()));
             }else{
-                dataSourceMap.put(DataBase.H2.name(),wrapper(DataBase.H2));
+                dataSourceMap.put(DataBase.H2.name(),wrapper(DataBase.H2.name()));
             }
         }
         return dataSourceMap.values().iterator().next();
     }
 
     @Override
-    protected DataSource selectDataSource(String tenantIdentifier) {
-        DruidDataSource dataSource = wrapper(DataBase.H2);
-        if(!dataSourceMap.containsKey(tenantIdentifier)){
-            dataSourceMap.put(DataBase.H2.name(),wrapper(DataBase.H2));
-            if(DataBase.MYSQL.name().equals(tenantIdentifier) && UnaBootUtils.isInstalled()){
-                dataSourceMap.put(tenantIdentifier,wrapper(DataBase.MYSQL));
-                dataSource = wrapper(DataBase.MYSQL);
+    protected DataSource selectDataSource(String key) {
+        if(!dataSourceMap.containsKey(key)){
+            dataSourceMap.put(DataBase.H2.name(),wrapper(DataBase.H2.name()));
+            if(DataBase.MYSQL.name().equals(key)){
+                if(UnaBootUtils.isInstalled()){
+                    dataSourceMap.put(key,wrapper(key));
+                    return wrapper(key);
+                }else{
+                    return wrapper(DataBase.H2.name());
+                }
+            }else{
+                return wrapper(DataBase.H2.name());
             }
         }
-        return dataSource;
+        return dataSourceMap.get(key);
     }
 
-    private DruidDataSource wrapper(DataBase dataBase){
+    private DruidDataSource wrapper(String key){
         DruidDataSource dataSource = DruidDataSourceBuilder.create().build();
-        if (dataBase == DataBase.MYSQL) {
+        if (key.equals(DataBase.MYSQL.name())) {
             initializeMySQL(dataSource);
         } else {
             initializeH2(dataSource);

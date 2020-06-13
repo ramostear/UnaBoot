@@ -2,22 +2,17 @@ package com.ramostear.unaboot.service.impl;
 
 import com.ramostear.unaboot.domain.entity.*;
 import com.ramostear.unaboot.repository.*;
-import com.ramostear.unaboot.service.PermitService;
 import com.ramostear.unaboot.service.UserService;
 import com.ramostear.unaboot.util.AssertUtils;
 import com.ramostear.unaboot.util.DateTimeUtils;
 import com.ramostear.unaboot.util.UnaBootUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.util.Assert;
-import org.apache.shiro.util.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * @author :       ramostear/树下魅狐
@@ -30,18 +25,11 @@ import java.util.stream.Collectors;
 public class UserServiceImpl extends BaseServiceImpl<User,Integer> implements UserService {
 
     private final UserRepository userRepository;
-    private final UserRoleRepository userRoleRepository;
-    private final RoleRepository roleRepository;
-    private final PermitService permitService;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository,
-                           RoleRepository roleRepository,PermitService permitService) {
+    public UserServiceImpl(UserRepository userRepository) {
         super(userRepository);
         this.userRepository = userRepository;
-        this.userRoleRepository = userRoleRepository;
-        this.roleRepository = roleRepository;
-        this.permitService = permitService;
     }
 
     @Override
@@ -80,24 +68,6 @@ public class UserServiceImpl extends BaseServiceImpl<User,Integer> implements Us
         Assert.isTrue(AssertUtils.isEmail(email),"email address is incorrect.");
         User user = userRepository.findByEmail(email);
         return user == null;
-    }
-
-    @Override
-    public List<Role> findAllRoleByUserId(Integer userId) {
-        User user = userRepository.findById(userId).orElse(null);
-        if(null == user){
-            return Collections.emptyList();
-        }
-        List<UserRole> urs = userRoleRepository.findAllByUserId(user.getId());
-        if(CollectionUtils.isEmpty(urs)){
-            return Collections.emptyList();
-        }
-        return roleRepository.findAllById(urs.stream().map(UserRole::getRoleId).collect(Collectors.toList()));
-    }
-
-    @Override
-    public List<Permit> findAllPermitByUserId(Integer userId) {
-        return permitService.findAllByRoleId(userId);
     }
 
     @Override

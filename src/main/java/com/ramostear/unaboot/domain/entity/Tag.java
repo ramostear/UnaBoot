@@ -30,6 +30,9 @@ public class Tag extends AbstractEntity implements Serializable {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "slug")
+    private String slug;
+
     @Column(name = "introduce")
     private String introduce;
 

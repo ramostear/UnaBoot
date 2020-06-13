@@ -48,7 +48,7 @@ public class CategoryController extends UnaBootController {
         return "/admin/category/list";
     }
 
-    @GetMapping(value = "/",consumes = {"type=tree"})
+    @GetMapping(value = "/",params = {"type=tree"})
     @ResponseBody
     public CategoryVo nodes(){
         return categoryService.tree(Sort.by(Sort.Direction.ASC,"sortId"));

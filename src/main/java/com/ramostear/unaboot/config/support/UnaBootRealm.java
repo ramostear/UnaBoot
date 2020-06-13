@@ -2,10 +2,8 @@ package com.ramostear.unaboot.config.support;
 
 import com.ramostear.unaboot.common.Constants;
 import com.ramostear.unaboot.common.State;
-import com.ramostear.unaboot.domain.entity.Permit;
 import com.ramostear.unaboot.domain.entity.User;
 import com.ramostear.unaboot.service.UserService;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
@@ -15,10 +13,8 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
-import org.apache.shiro.util.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -47,16 +43,8 @@ public class UnaBootRealm extends AuthorizingRealm {
         User user = (User) principals.getPrimaryPrincipal();
         assert user != null;
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        List<Permit> permits = userService.findAllPermitByUserId(user.getId());
-        if(!CollectionUtils.isEmpty(permits)){
-            permits.forEach(permit -> {
-                if(StringUtils.isNotBlank(permit.getCode())){
-                    info.addStringPermission(permit.getCode());
-                }
-            });
-            return info;
-        }
-        return null;
+        info.addRole(user.getRole());
+        return info;
     }
 
     /**

@@ -57,11 +57,6 @@ public class SettingController extends UnaBootController {
         return "/admin/setting/gitalk";
     }
 
-    @GetMapping("/druid")
-    public String druid(){
-        return "/admin/setting/druid";
-    }
-
     @ResponseBody
     @PostMapping("/update")
     public ResponseEntity<Object> update(HttpServletRequest request){

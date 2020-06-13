@@ -1,4 +1,4 @@
-package com.ramostear.unaboot.sql;
+package com.ramostear.unaboot.common;
 
 /**
  * @author :    ramostear/树下魅狐

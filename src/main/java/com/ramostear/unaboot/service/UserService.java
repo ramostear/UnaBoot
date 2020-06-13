@@ -1,10 +1,7 @@
 package com.ramostear.unaboot.service;
 
-import com.ramostear.unaboot.domain.entity.Permit;
-import com.ramostear.unaboot.domain.entity.Role;
 import com.ramostear.unaboot.domain.entity.User;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -29,9 +26,6 @@ public interface UserService extends BaseService<User,Integer>{
      */
     boolean emailNotExists(String email);
 
-    List<Role> findAllRoleByUserId(Integer userId);
-
-    List<Permit> findAllPermitByUserId(Integer userId);
 
     Optional<User> findByPrincipal(String principal);
 }

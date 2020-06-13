@@ -1,9 +1,12 @@
 package com.ramostear.unaboot.domain.entity;
 
+import com.ramostear.unaboot.common.Authorized;
+import com.ramostear.unaboot.common.Locked;
 import com.ramostear.unaboot.common.State;
 import com.ramostear.unaboot.domain.AbstractEntity;
 import com.ramostear.unaboot.util.DateTimeUtils;
 import lombok.*;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -49,12 +52,23 @@ public class User extends AbstractEntity implements Serializable {
     @Column(name = "state")
     private Integer state = State.OPEN.getCode();
 
+    @Column(name = "role")
+    private String role;
+
+    private Integer locked;
+
     @Override
     protected void prePersist() {
         Date now = DateTimeUtils.now();
         id = null;
         createTime = createTime==null?now:createTime;
         updateTime = now;
+        if(StringUtils.isBlank(role)){
+            role = Authorized.GUEST.getName();
+        }
+        if(locked == null){
+            locked = Locked.NO.getCode();
+        }
     }
 
     @Override
@@ -85,6 +99,8 @@ public class User extends AbstractEntity implements Serializable {
                 ", avatar='" + avatar + '\'' +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
+                ",role=" + role +
+                ",locked=" + locked +
                 '}';
     }
 }

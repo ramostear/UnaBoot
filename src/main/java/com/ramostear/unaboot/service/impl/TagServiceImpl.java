@@ -2,8 +2,10 @@ package com.ramostear.unaboot.service.impl;
 
 import com.ramostear.unaboot.domain.entity.Tag;
 import com.ramostear.unaboot.repository.TagRepository;
+import com.ramostear.unaboot.service.PostTagService;
 import com.ramostear.unaboot.service.TagService;
 import com.ramostear.unaboot.util.DateTimeUtils;
+import org.apache.shiro.util.Assert;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,11 +22,21 @@ import org.springframework.transaction.annotation.Transactional;
 public class TagServiceImpl extends BaseServiceImpl<Tag,Integer> implements TagService {
 
     private final TagRepository tagRepository;
+    private final PostTagService postTagService;
 
     @Autowired
-    public TagServiceImpl(TagRepository tagRepository) {
+    public TagServiceImpl(TagRepository tagRepository,PostTagService postTagService) {
         super(tagRepository);
         this.tagRepository = tagRepository;
+        this.postTagService = postTagService;
+    }
+
+    @Override
+    @Transactional
+    public Tag create(Tag tag) {
+        Tag t = tagRepository.findBySlug(tag.getSlug());
+        Assert.isNull(t,"标签已经存在");
+        return tagRepository.save(tag);
     }
 
     @Override
@@ -41,8 +53,9 @@ public class TagServiceImpl extends BaseServiceImpl<Tag,Integer> implements TagS
     }
 
     @Override
-    public Tag delete(Integer integer) {
-        //TODO 解除标签和文章的关系
-        return super.delete(integer);
+    @Transactional
+    public Tag delete(Integer id) {
+        postTagService.removeByTagId(id);
+        return super.delete(id);
     }
 }

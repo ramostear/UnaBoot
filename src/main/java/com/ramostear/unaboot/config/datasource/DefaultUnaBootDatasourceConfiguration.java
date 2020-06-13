@@ -3,7 +3,7 @@ package com.ramostear.unaboot.config.datasource;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import com.ramostear.unaboot.config.support.DruidProperties;
-import com.ramostear.unaboot.domain.vo.H2Property;
+import com.ramostear.unaboot.config.support.H2Property;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +18,7 @@ import javax.sql.DataSource;
  * <p>description:</p>
  */
 @Configuration
-public class DefaultDataSourceConfiguration {
+public class DefaultUnaBootDatasourceConfiguration {
 
     @Autowired
     private DruidProperties druidProperties;

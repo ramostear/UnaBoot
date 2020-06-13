@@ -1,6 +1,6 @@
 package com.ramostear.unaboot.config.datasource;
 
-import com.ramostear.unaboot.config.support.CurrentTenantIdentifierResolverImpl;
+import com.ramostear.unaboot.config.support.CurrentUnaBootDataSourceIdentifierResolverImpl;
 import com.ramostear.unaboot.repository.impl.BaseRepositoryImpl;
 import com.ramostear.unaboot.util.UnaBootUtils;
 import org.hibernate.MultiTenancyStrategy;
@@ -34,55 +34,55 @@ import java.util.Map;
 @EnableTransactionManagement
 @ComponentScan(basePackages = {"com.ramostear.unaboot"})
 @EnableJpaRepositories(basePackages = {"com.ramostear.unaboot"},
-entityManagerFactoryRef = "unaBootEntityManagerFactory",transactionManagerRef = "unaBootTransactionManager",
-        repositoryBaseClass = BaseRepositoryImpl.class
-)
-public class DataSourceConfiguration {
+        entityManagerFactoryRef = "unaBootEntityManagerFactory",
+        transactionManagerRef = "unaBootTransactionManager",
+        repositoryBaseClass = BaseRepositoryImpl.class)
+public class UnaBootDatasourceConfiguration {
 
     @Bean("jpaVendorAdapter")
     public JpaVendorAdapter jpaVendorAdapter(){
         return new HibernateJpaVendorAdapter();
     }
 
-    @Bean(name="unaBootTransactionManager")
+    @Bean(name = "unaBootTransactionManager")
     public JpaTransactionManager transactionManager(EntityManagerFactory entityManagerFactory){
         JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
         jpaTransactionManager.setEntityManagerFactory(entityManagerFactory);
         return jpaTransactionManager;
     }
 
-    @Bean(name = "dataSourceSingleConnectionProvider")
+    @Bean(name = "unaBootDataSourceSingleConnectionProvider")
     public MultiTenantConnectionProvider multiTenantConnectionProvider(){
-        return new DataSourceSingleConnectionProviderImpl();
+        return new UnaBootDataSourceSingleConnectionProviderImpl();
     }
-
-    @Bean(name = "currentTenantIdentifierResolver")
+    @Bean(name = "unaBootIdentifierResolver")
     public CurrentTenantIdentifierResolver currentTenantIdentifierResolver(){
-        return new CurrentTenantIdentifierResolverImpl();
+        return new CurrentUnaBootDataSourceIdentifierResolverImpl();
     }
 
-    @Bean(name = "unaBootEntityManagerFactory")
-    @ConditionalOnBean(name = "dataSourceSingleConnectionProvider")
-    public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean(@Qualifier("dataSourceSingleConnectionProvider") MultiTenantConnectionProvider multiTenantConnectionProvider,
-                                                                           @Qualifier("currentTenantIdentifierResolver")CurrentTenantIdentifierResolver currentTenantIdentifierResolver){
-        LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
-        entityManagerFactory.setPackagesToScan("com.ramostear.unaboot");
-        entityManagerFactory.setJpaVendorAdapter(jpaVendorAdapter());
-        entityManagerFactory.setPersistenceUnitName("unaboot-persistence-unit");
-        Map<String,Object> prop = new HashMap<>();
-        prop.put(Environment.MULTI_TENANT, MultiTenancyStrategy.SCHEMA);
-        prop.put(Environment.MULTI_TENANT_CONNECTION_PROVIDER,multiTenantConnectionProvider);
-        prop.put(Environment.MULTI_TENANT_IDENTIFIER_RESOLVER,currentTenantIdentifierResolver);
+    @Bean(name ="unaBootEntityManagerFactory")
+    @ConditionalOnBean(name = "unaBootDataSourceSingleConnectionProvider")
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(@Qualifier("unaBootDataSourceSingleConnectionProvider")MultiTenantConnectionProvider connectionProvider,
+                                                                       @Qualifier("unaBootIdentifierResolver")CurrentTenantIdentifierResolver tenantIdentifierResolver){
+        LocalContainerEntityManagerFactoryBean local = new LocalContainerEntityManagerFactoryBean();
+        local.setPackagesToScan("com.ramostear.unaboot");
+        local.setJpaVendorAdapter(jpaVendorAdapter());
+        local.setPersistenceUnitName("una-boot-persistence-unit");
+        Map<String,Object> props = new HashMap<>();
+        props.put(Environment.MULTI_TENANT, MultiTenancyStrategy.SCHEMA);
+        props.put(Environment.MULTI_TENANT_CONNECTION_PROVIDER,connectionProvider);
+        props.put(Environment.MULTI_TENANT_IDENTIFIER_RESOLVER,tenantIdentifierResolver);
         if(UnaBootUtils.isInstalled()){
-            prop.put(Environment.DIALECT,"org.hibernate.dialect.MySQL5Dialect");
-            prop.put(Environment.HBM2DDL_AUTO,"update");
+            props.put(Environment.DIALECT,"org.hibernate.dialect.MySQL5Dialect");
+            props.put(Environment.HBM2DDL_AUTO,"update");
         }else{
-            prop.put(Environment.DIALECT,"org.hibernate.dialect.H2Dialect");
-            prop.put(Environment.HBM2DDL_AUTO,"none");
+            props.put(Environment.DIALECT,"org.hibernate.dialect.H2Dialect");
+            props.put(Environment.HBM2DDL_AUTO,"none");
         }
-        prop.put(Environment.SHOW_SQL,true);
-        prop.put(Environment.FORMAT_SQL,true);
-        entityManagerFactory.setJpaPropertyMap(prop);
-        return entityManagerFactory;
+        props.put(Environment.SHOW_SQL,true);
+        props.put(Environment.FORMAT_SQL,true);
+
+        local.setJpaPropertyMap(props);
+        return local;
     }
 }

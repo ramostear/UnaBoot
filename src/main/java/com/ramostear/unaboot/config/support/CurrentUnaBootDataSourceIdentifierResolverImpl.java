@@ -1,7 +1,6 @@
 package com.ramostear.unaboot.config.support;
 
-import com.ramostear.unaboot.sql.DataBase;
-import com.ramostear.unaboot.sql.DataSourceHolder;
+import com.ramostear.unaboot.common.DataBase;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.context.spi.CurrentTenantIdentifierResolver;
 
@@ -12,15 +11,13 @@ import org.hibernate.context.spi.CurrentTenantIdentifierResolver;
  * The following is the description information about this file:</p>
  * <p>description:</p>
  */
-public class CurrentTenantIdentifierResolverImpl implements CurrentTenantIdentifierResolver {
+public class CurrentUnaBootDataSourceIdentifierResolverImpl implements CurrentTenantIdentifierResolver {
+    private static final String DEFAULT_DATASOURCE_IDENTIFIER = DataBase.H2.name();
+
     @Override
     public String resolveCurrentTenantIdentifier() {
-        String identifier = DataSourceHolder.getCurrentDatasource();
-        if(StringUtils.isNotBlank(identifier)){
-            return identifier;
-        }else{
-            return DataBase.H2.name();
-        }
+        String identifier = UnaBootDatasourceContextHolder.getIdentifiler();
+        return StringUtils.isNotBlank(identifier)?identifier:DEFAULT_DATASOURCE_IDENTIFIER;
     }
 
     @Override

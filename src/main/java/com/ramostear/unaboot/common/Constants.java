@@ -46,4 +46,6 @@ public class Constants {
     public static final DateFormat CRON_DATE_FORMAT = new SimpleDateFormat("ss mm HH dd MM ?");
 
     public static final String UNABOOT_STORAGE_DIR = Constants.USER_HOME+SEPARATOR+".unaboot"+SEPARATOR;
+
+    public static final String INITIAL_SCHEMA_FILE = "initialize.sql";
 }

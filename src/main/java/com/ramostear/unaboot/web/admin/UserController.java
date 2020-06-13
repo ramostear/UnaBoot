@@ -1,5 +1,6 @@
 package com.ramostear.unaboot.web.admin;
 
+import com.ramostear.unaboot.common.Authorized;
 import com.ramostear.unaboot.common.SortType;
 import com.ramostear.unaboot.common.State;
 import com.ramostear.unaboot.domain.entity.User;
@@ -46,7 +47,8 @@ public class UserController extends UnaBootController {
     }
 
     @GetMapping("/create")
-    public String create(){
+    public String create(Model model){
+        model.addAttribute("roles", Authorized.values());
         return "/admin/user/create";
     }
 
@@ -64,7 +66,8 @@ public class UserController extends UnaBootController {
     @GetMapping("/{id:\\d+}")
     public String user(@PathVariable("id") Integer id,Model model){
         User user = userService.findById(id);
-        model.addAttribute("user",user);
+        model.addAttribute("user",user)
+             .addAttribute("roles",Authorized.values());
         return "/admin/user/view";
     }
 

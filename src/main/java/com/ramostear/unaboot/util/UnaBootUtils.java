@@ -33,6 +33,15 @@ public class UnaBootUtils {
         return file.exists();
     }
 
+    public static void marked() throws IOException {
+        String markFile = UnaBootUtils.class.getResource("/")
+                .getPath()+Constants.SEPARATOR+Constants.MARK_FILE;
+        File file = new File(markFile);
+        if(!file.exists()){
+            file.createNewFile();
+        }
+    }
+
     /**
      * Load the properties file under the classpath according to the file name.
      * @param fileName          filename

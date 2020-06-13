@@ -1,5 +1,6 @@
-package com.ramostear.unaboot.sql;
+package com.ramostear.unaboot.config.support;
 
+import com.ramostear.unaboot.common.DataBase;
 import com.ramostear.unaboot.util.UnaBootUtils;
 
 /**

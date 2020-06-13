@@ -1,4 +1,4 @@
-package com.ramostear.unaboot.sql;
+package com.ramostear.unaboot.config.support;
 
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 

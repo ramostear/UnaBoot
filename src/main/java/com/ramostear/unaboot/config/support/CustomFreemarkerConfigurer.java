@@ -5,6 +5,8 @@ import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.TemplateException;
 import freemarker.template.Version;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import java.io.IOException;
@@ -16,7 +18,7 @@ import java.io.IOException;
  * The following is the description information about this file:</p>
  * <p>description:</p>
  */
-public class ShiroFreemarkerTagsConfigurer extends FreeMarkerConfigurer {
+public class CustomFreemarkerConfigurer extends FreeMarkerConfigurer {
 
     @Override
     public void afterPropertiesSet() throws IOException, TemplateException {

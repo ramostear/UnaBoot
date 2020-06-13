@@ -1,4 +1,4 @@
-package com.ramostear.unaboot.domain.vo;
+package com.ramostear.unaboot.config.support;
 
 /**
  * @author :       ramostear/树下魅狐
@@ -9,8 +9,8 @@ package com.ramostear.unaboot.domain.vo;
  */
 public class H2Property {
     private H2Property(){}
-    public static String url = "jdbc:h2:mem:unaboot_db";
-    public static String username = "unaboot";
-    public static String password = "unaboot";
+    public static String url = "jdbc:h2:mem:test_db";
+    public static String username = "sa";
+    public static String password = "unaboot123456";
     public static String driverClassName = "org.h2.Driver";
 }

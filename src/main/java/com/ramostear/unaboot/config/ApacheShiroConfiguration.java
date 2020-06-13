@@ -1,10 +1,11 @@
 package com.ramostear.unaboot.config;
 
 import com.ramostear.unaboot.common.Constants;
-import com.ramostear.unaboot.config.support.ShiroFreemarkerTagsConfigurer;
+import com.ramostear.unaboot.config.support.CustomFreemarkerConfigurer;
 import com.ramostear.unaboot.config.support.UnaBootRealm;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
+import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
@@ -33,11 +34,6 @@ import java.util.Properties;
  */
 @Configuration
 public class ApacheShiroConfiguration {
-
-    @Bean
-    public ShiroFreemarkerTagsConfigurer shiroFreemarkerTagsConfigurer(){
-        return new ShiroFreemarkerTagsConfigurer();
-    }
 
     @Bean
     public EhCacheManager ehCacheManager(){
@@ -73,13 +69,14 @@ public class ApacheShiroConfiguration {
     @Bean
     public SimpleCookie simpleCookie(){
         SimpleCookie cookie = new SimpleCookie("rememberMe");
-        cookie.setMaxAge(30*60);
+        cookie.setMaxAge(604800);//记住七天
         return cookie;
     }
     @Bean
     public CookieRememberMeManager cookieRememberMeManager(){
         CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
         cookieRememberMeManager.setCookie(simpleCookie());
+        cookieRememberMeManager.setCipherKey(Base64.decode("2AvVCXsxUs0FSA7SYFjdQg=="));
         return cookieRememberMeManager;
     }
     @Bean
@@ -112,17 +109,14 @@ public class ApacheShiroConfiguration {
         ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
         shiroFilter.setSecurityManager(securityManager);
         Map<String,String> filterChain = new LinkedHashMap<>();
-        filterChain.put("/admin/css/**","anon");
-        filterChain.put("/admin/fonts/**","anon");
-        filterChain.put("/admin/img/**","anon");
-        filterChain.put("/admin/js/**","anon");
-        filterChain.put("/admin/plugins/**","anon");
+        filterChain.put("/**","anon");
+        /*filterChain.put("/ub-admin/**","anon");
         filterChain.put("/admin/login","anon");
         filterChain.put("/admin/**","authc");
         filterChain.put("/swagger-ui.html","authc");
         filterChain.put("/v2/**","authc");
         filterChain.put("/swagger-resources/**","authc");
-        filterChain.put("/h2-console/**","authc");
+        filterChain.put("/h2-console/**","authc");*/
         shiroFilter.setFilterChainDefinitionMap(filterChain);
         shiroFilter.setLoginUrl("/admin/login");
         shiroFilter.setSuccessUrl("/admin/index");
