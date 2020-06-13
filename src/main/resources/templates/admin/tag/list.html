@@ -1,0 +1,280 @@
+<#include "/admin/inc/page.html">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>标签 - UnaBoot</title>
+    <link rel="icon" href="${una}/ub-admin/img/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="${una}/ub-admin/img/favicon.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <link rel="stylesheet" href="${una}/ub-admin/plugin/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="${una}/ub-admin/css/font-awesome.css">
+    <link rel="stylesheet" href="${una}/ub-admin/css/ionicons.css">
+    <link rel="stylesheet" href="${una}/ub-admin/css/adminlte.css">
+    <link rel="stylesheet" href="${una}/ub-admin/plugin/layer/skin/default/layer.css">
+    <link rel="stylesheet" href="${una}/ub-admin/css/unaboot-admin.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700">
+</head>
+<body class="sidebar-mini layout-fixed layout-navbar-fixed text-md <!--sidebar-collapse-->">
+<div class="wrapper">
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <#include "/admin/inc/header.html">
+    </nav>
+    <aside class="main-sidebar sidebar-dark-primary ">
+        <#include "/admin/inc/aside.html">
+    </aside>
+    <div class="content-wrapper bg-gray-custom">
+        <div class="content-header pb-0">
+            <div class="row mb-2">
+                <div class="col-12">
+                    <h4 class="ml-2 mb-0 text-dark">标签</h4>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12 text-sm  mt-2">
+                        <div class="tag-left">
+                            <div class="menu-head">
+                                <h6 class="text-sm font-weight-bold">添加新标签</h6>
+                            </div>
+                            <div class="tag-form">
+                                <form id="tag-form">
+                                    <div class="form-group">
+                                        <label class="col-form-label font-weight-light" for="name">名称</label>
+                                        <input type="text" name="name" class="form-control" id="name" autocomplete="off">
+                                        <p class="font-weight-light text-sm text-secondary">这将是它在站点上显示的名字</p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-form-label font-weight-light" for="slug">别名</label>
+                                        <input type="text" name="slug" class="form-control" id="slug" autocomplete="off">
+                                        <p class="font-weight-light text-sm text-secondary">“别名”是在URL中使用的别称，它可以令URL更美观。通常使用小写，只能包含字母，数字和连字符（-）</p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-form-label font-weight-light" for="introduce">标签描述</label>
+                                        <textarea class="form-control" name="introduce" id="introduce" rows="5" style="resize: none;"></textarea>
+                                        <p class="font-weight-light text-sm text-secondary">使用一段文字对标签进行介绍。</p>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="button" id="new-tag-btn" class="btn btn-sm btn-primary">添加新标签</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="tag-right mt-5 pl-4">
+                            <table class="table post-datatable table-striped table-hover" style="border: 1px solid #ddd">
+                                <thead>
+                                <tr class="bg-white">
+                                    <td width="30%">名称</td><td>别名</td><td width="40%">简介</td><td width="180px">日期</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <#if data?? && data.content?size gt 0>
+                                        <#list data.content as tag>
+                                            <tr>
+                                                <td>
+                                                    <a href="javascript:void(0);" target="_blank">${tag.name}</a>
+                                                    <div class="row-actions">
+                                                        <span class="edit">
+                                                            <a href="javascript:void(0);" aria-id="${tag.id}"><i class="fa fa-edit"></i>编辑</a> |
+                                                        </span>
+                                                        <span class="trash">
+                                                            <a href="javascript:void(0);" aria-id="${tag.id}"><i class="fa fa-trash-o"></i>移除</a> |
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <a href="${tag.slug}" target="_blank">${tag.slug}</a>
+                                                </td>
+                                                <td>
+                                                    ${tag.introduce}
+                                                </td>
+                                                <td>
+                                                    创建于<br>
+                                                    <span class="post-time"><i class="fa fa-calendar-o"></i> ${tag.createTime?string("yyyy-MM-dd")}</span>
+                                                </td>
+                                            </tr>
+                                        </#list>
+                                    <#else>
+                                        <tr><td colspan="4" class="text-center text-secondary">暂无可用数据!</td></tr>
+                                    </#if>
+                                </tbody>
+                                <tfoot>
+                                <tr class="bg-white">
+                                    <td width="30%">名称</td><td>别名</td><td width="40%">简介</td><td width="180px">日期</td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                            <#if data?? && data.content?size gt 0 && data.totalPages gt 1>
+                                <div>
+                                    <nav aria-label="..." class="pull-right">
+                                        <@pagination una+"/admin/tags/" data 9/>
+                                    </nav>
+                                </div>
+                            </#if>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="main-footer">
+        <#include "/admin/inc/footer.html">
+    </footer>
+</div>
+<script src="${una}/ub-admin/plugin/jquery/jquery.min.js" type="text/javascript"></script>
+<script src="${una}/ub-admin/plugin/jquery/jquery.serialize.js"></script>
+<script src="${una}/ub-admin/plugin/jquery/jquery.form.js"></script>
+<script src="${una}/ub-admin/plugin/bootstrap/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+<script src="${una}/ub-admin/js/adminlte.js" type="text/javascript"></script>
+<script src="${una}/ub-admin/js/unaboot-admin.core.js" type="text/javascript"></script>
+<script src="${una}/ub-admin/plugin/layer/layer.js" type="text/javascript"></script>
+<script src="${una}/ub-admin/js/jquery.validate.min.js"></script>
+<script type="text/javascript">
+    jQuery.validator.addMethod("en",function(value,element){
+        var reg = /^([a-zA-Z]+)$/;
+        return this.optional(element) || (reg.test(value));
+    },"只能使用英文字母");
+    var form = $("#tag-form");
+    form.validate({
+        errorPlacement: function errorPlacement(error, element) {
+            element.after(error);
+        },
+        rules:{
+           name:{
+               required:true
+           },
+           slug:{
+               required:true,
+               en:true
+           },
+           introduce:{
+               maxlength:128
+           }
+        },
+        messages:{
+            name:{
+                required:'请定义标签的名字'
+            },
+            slug:{
+                required:'请填写标签的别名',
+                en:'请使用英文大小写字母定义别名'
+            },
+            introduce:{
+                maxlength:'简介长度不能超过128个字符'
+            }
+        }
+    });
+    /**
+     * create new link function
+     */
+    $("#new-tag-btn").on("click",function(){
+       var isOk = form.valid();
+       if(isOk){
+           var data = $("#tag-form").serialize();
+           var load = layer.load(2,{
+              shade:[0.4,'#f0f0f0'],
+              shadeClose:false
+           });
+           $.ajax({
+               type:'POST',
+               url:"${una}/admin/tags/create",
+               data:data,
+               success:function(){
+                   layer.close(load);
+                   layer.alert("当前操作已成功执行!",{
+                       title:"<i class='fa fa-info'></i> 提示",
+                       icon:1,
+                       shade:[0.4,"#fff"],
+                       shadeClose:false,
+                       time:0,
+                       btn:['OK'],
+                       yes:function(index){
+                           layer.close(index);
+                           window.location.href="${una}/admin/tags/?offset=${data.number+1}";
+                       }
+                   });
+               }
+           });
+       }else{
+           return false;
+       }
+    });
+    /**
+     * edit link function
+     */
+    $(".edit a").on("click",function(){
+        var id = $(this).attr("aria-id");
+        if(id == null || typeof(id) == 'undefined' ){
+            return false;
+        }else{
+            layer.open({
+                type:2,
+                title:"<i class=\"fa fa-edit\"></i> 修改标签",
+                shadeClose:false,
+                shade:0.4,
+                offset:['55px'],
+                area:['400px','550px'],
+                content:"${una}/admin/tags/"+id,
+                resize:false,
+                anim:1
+            });
+        }
+    });
+    $(".trash a").on("click",function(){
+        var id = $(this).attr("aria-id");
+        if(id == null || typeof(id) == 'undefined' ){
+            return false;
+        }else{
+            layer.alert("确定删除该标签吗？该操作不可逆",{
+                title:"<i class='fa fa-info-circle'></i> 提示",
+                icon:0,
+                btn:['是(Y)','否(N)'],
+                shadeClose: false,
+                shade:[0.4,'#fff'],
+                anim: 1
+            },function(){
+                var load = layer.load(2,{shade:[0.4,'#f0f0f0']});
+                $.ajax({
+                   type:'DELETE',
+                   url:"${una}/admin/tags/"+id,
+                   success:function(){
+                       layer.close(load);
+                       layer.alert("当前操作已成功执行!",{
+                           title:"<i class='fa fa-info'></i> 提示",
+                           icon:1,
+                           shade:[0.4,"#fff"],
+                           shadeClose:false,
+                           time:0,
+                           btn:['OK'],
+                           yes:function(index){
+                               layer.close(index);
+                               window.location.href="${una}/admin/tags/?offset=${data.number+1}";
+                           }
+                       });
+                   },
+                   error:function(){
+                       layer.close(load);
+                       layer.alert("当前操作失败!请稍后再试。",{
+                           title:"<i class='fa fa-info'></i> 提示",
+                           icon:1,
+                           shade:[0.4,"#fff"],
+                           shadeClose:false,
+                           time:0,
+                           btn:['Close'],
+                           yes:function(newIndex){
+                               layer.close(newIndex);
+                           }
+                       });
+                   }
+                });
+            },function(index){
+                layer.close(index);
+            });
+        }
+    });
+</script>
+</body>
+</html>

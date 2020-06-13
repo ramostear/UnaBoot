@@ -49,6 +49,8 @@ spring:
   cache:
     jcache:
       config: classpath:ehcache.xml
+  jpa:
+    open-in-view: false
 xss:
   enabled: false
   urlPatterns: /monitor/*

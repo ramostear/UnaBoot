@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="${una}/ub-admin/img/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="${una}/ub-admin/img/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="${una}/ub-admin/plugin/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="${una}/ub-admin/css/font-awesome.css">
+    <link rel="stylesheet" href="${una}/ub-admin/css/ionicons.css">
+    <link rel="stylesheet" href="${una}/ub-admin/css/adminlte.min.css">
+    <link rel="stylesheet" href="${una}/ub-admin/plugin/layer/skin/default/layer.css">
+    <link rel="stylesheet" href="${una}/ub-admin/css/nouislider.min.css">
+    <link rel="stylesheet" href="${una}/ub-admin/css/unaboot-install.css" />
+    <title>安装向导 - UnaBoot</title>
+</head>
+<body>
+<div class="background-box">
+    <div id="background-img">
+        <img src="${una}/ub-admin/img/login_background.svg">
+    </div>
+</div>
+<div class="main">
+    <form id="install-form" class="signup-form">
+        <div>
+            <h3>许可协议</h3>
+            <fieldset>
+                <div class="alert alert-default-primary alert-dismissible text-sm">
+                    <button type="button" class="close text-secondary text-sm" data-dismiss="alert" aria-hidden="true"><i class="fa fa-times-circle-o"></i></button>
+                    <h6 class="text-primary">
+                        <i class="fa fa-info-circle"> 提示 !</i>
+                    </h6>
+                    <p class="text-secondary text-sm">
+                        请您在安装使用UnaBoot软件前认真阅读并理解以下协议:
+                    </p>
+                </div>
+                <div class="install-txt">
+                    <p  class="text-center">版权所有 &copy; 2015-2020,ramostear.com保留所有权利。</p>
+                    <p>
+                        &nbsp;&nbsp;非常感谢您安装并使用UnaBoot系统，UnaBoot是一款基于Java 8并使用SpringBoot-2.2.2.RELEASE进行构建的博客管理系统，
+                        系统默认使用MySQL数据库，内置Markdown文本编辑器，是一款小巧，易用的国产博客平台，现已开放全部源代码，官方网址:
+                        <a href="https://www.ramostear.com" target="_blank">https://www.ramostear.com</a>
+                    </p>
+                    <h5 class="text-blue text-bold">一、许可</h5>
+                    <p>&nbsp;&nbsp;1.1 如果您是个人用户，可将本软件用于非商业用途，而不必支付软件授权许可费，商业网站则需获得UnaBoot商业授权，
+                        例如：政府单位、教育机构、协会团体、企业、以赢利为目的的站点等。<br>
+                        &nbsp;&nbsp;1.2 您可以在本协议的许可范围内，修改UnaBoot源代码和界面风格以适应您的网站要求。<br>
+                        &nbsp;&nbsp;1.3 您拥有使用本软件构建的网站全部内容所有权，并独立承担与这些内容的相关法律义务。<br>
+                        &nbsp;&nbsp;1.4 在获得商业授权之后，您可以将本软件用于商业用途。<br>
+                    </p>
+                    <h5 class="text-blue text-bold">二、约束和限制</h5>
+                    <p>
+                        &nbsp;&nbsp; 2.1 任何在使用了UnaBoot的非盈利网站主页上必须加上UnaBoot官方网址(https://www.ramostear.com/)的链接。<br>
+                        &nbsp;&nbsp; 2.2 在未获取商业授权之前。任何单位和个人均不得将本“软件”用于商业用途（包括但不限于企业网站、政府单位网站、经营性网站、以盈利为目的的网站）
+                        和任何非个人所有的项目中。<br>
+                        &nbsp;&nbsp; 2.3 任何非盈利的个人、单位或组织可自行在本软件的基础上进行二次开发，而无需获取任何授权许可。<br>
+                    </p>
+                    <h5 class="text-blue text-bold">三、测试版（Beta）</h5>
+                    <p>&nbsp;&nbsp; 3.1 测试版“软件”其性能和兼容性均未能达到最终稳定版本级别，将来也存在对“软件”进行重大改进的可能，其仅供测试“软件”使用，请勿用于正式生产环境。</p>
+                    <h5 class="text-blue text-bold">四、免责声明</h5>
+                    <p>
+                        &nbsp;&nbsp; 4.1 用户完全自愿使用本软件，您必须了解使用本软件的风险，且愿意承担使用本软件的风险。<br>
+                        &nbsp;&nbsp; 4.2  任何情况下，我们不就因使用或不能使用本软件所发生的特殊的、意外的、
+                        非直接或间接的损失承担赔偿责任（包括但不限于，资料损失，资料执行不精确，或因由您或第三人承担的损失，
+                        或本程序无法与其他程序运作等）。即使已经被事先告知该损害发生的可能性。
+                    </p>
+                    <p class="text-danger text-bold">
+                    <div class="custom-control custom-checkbox custom-control-inline">
+                        <input type="checkbox" class="custom-control-input" id="agree" name="agree" value="1">
+                        <label class="custom-control-label font-weight-normal text-primary pt-1 mr-5" for="agree">我同意以上协议</label>
+                    </div>
+                    </p>
+                </div>
+            </fieldset>
+            <h3>数据库</h3>
+            <fieldset>
+                <div class="alert alert-default-primary alert-dismissible text-sm">
+                    <button type="button" class="close text-secondary text-sm" data-dismiss="alert" aria-hidden="true"><i class="fa fa-times-circle-o"></i></button>
+                    <h6 class="text-primary">
+                        <i class="fa fa-info-circle"> 提示 !</i>
+                    </h6>
+                    <p class="text-secondary text-sm">
+                        请根据实际情况填写您的MySQL数据库连接信息，如有疑问，请联系您的网站管理员。
+                    </p>
+                </div>
+                <div class="fieldset-content">
+                    <div class="form-group row mb-4">
+                        <label for="host" class="col-form-label col-2 text-right font-weight-light">Host:</label>
+                        <div class="col-3">
+                            <input class="form-control form-control-sm" type="text" name="host" id="host" placeholder="localhost | 127.0.0.1">
+                        </div>
+                    </div>
+                    <div class="form-group row mb-4">
+                        <label for="port" class="col-form-label col-2 text-right font-weight-light">Port:</label>
+                        <div class="col-2">
+                            <input class="form-control form-control-sm" style="width: 50px" type="number" name="port" id="port" value="3306">
+                        </div>
+                    </div>
+                    <div class="form-group row mb-4">
+                        <label for="db" class="col-form-label col-2 text-right font-weight-light">Name:</label>
+                        <div class="col-3">
+                            <input class="form-control form-control-sm" type="text" name="db" id="db" placeholder="请输入数据库名称">
+                        </div>
+                    </div>
+                    <div class="form-group row mb-4">
+                        <label for="db_username" class="col-form-label col-2 text-right font-weight-light">Username:</label>
+                        <div class="col-3">
+                            <input class="form-control form-control-sm" type="text" name="username" id="db_username" placeholder="请输入数据库管理员名称">
+                        </div>
+                    </div>
+                    <div class="form-group row mb-4">
+                        <label for="db_password" class="col-form-label col-2 text-right font-weight-light">Password:</label>
+                        <div class="col-3">
+                            <input class="form-control form-control-sm" type="password" name="password" id="db_password" placeholder="请输入数据库管理员密码">
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <h3>站点信息</h3>
+            <fieldset>
+                <div class="alert alert-default-primary alert-dismissible text-sm">
+                    <button type="button" class="close text-secondary text-sm" data-dismiss="alert" aria-hidden="true"><i class="fa fa-times-circle-o"></i></button>
+                    <h6 class="text-primary">
+                        <i class="fa fa-info-circle"> 提示 !</i>
+                    </h6>
+                    <p class="text-secondary text-sm">
+                        请填写您的站点信息以及用于管理UnaBoot后台系统的管理员账户信息。
+                    </p>
+                </div>
+                <div class="fieldset-content">
+                    <div class="form-group row">
+                        <label for="site_name" class="col-form-label col-2 text-right font-weight-light">站点名字:</label>
+                        <div class="col-5">
+                            <input class="form-control form-control-sm" type="text" name="title" id="site_name" autocomplete="off" placeholder="请给您的站点取一个名字">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="site_url" class="col-form-label col-2 text-right font-weight-light">站点域名:</label>
+                        <div class="col-5">
+                            <input class="form-control form-control-sm" type="text" name="domain" id="site_url" autocomplete="off" placeholder="站点域名，例:https://www.ramostear.com">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="adminAccount" class="col-form-label col-2 text-right font-weight-light">Admin:</label>
+                        <div class="col-5">
+                            <input class="form-control form-control-sm" type="text" name="adminAccount" id="adminAccount" autocomplete="off" placeholder="管理员用户名">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="adminEmail" class="col-form-label col-2 text-right font-weight-light">Email:</label>
+                        <div class="col-5">
+                            <input class="form-control form-control-sm" type="email" name="adminEmail" id="adminEmail" autocomplete="off" placeholder="管理员电子邮箱">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="adminPassword" class="col-form-label col-2 text-right font-weight-light">密码:</label>
+                        <div class="col-5">
+                            <input class="form-control form-control-sm" type="password" name="adminPassword" autocomplete="off" id="adminPassword" placeholder="请输入Admin账户密码">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="pwd" class="col-form-label col-2 text-right font-weight-light">确认密码:</label>
+                        <div class="col-5">
+                            <input class="form-control form-control-sm" autocomplete="off" type="password" name="pwd" id="pwd" placeholder="请再次输入Admin账户密码">
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </form>
+</div>
+<script src="${una}/ub-admin/plugin/jquery/jquery.min.js"></script>
+<script src="${una}/ub-admin/plugin/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="${una}/ub-admin/plugin/jquery/jquery.serialize.js"></script>
+<script src="${una}/ub-admin/plugin/jquery/jquery.form.js"></script>
+<script src="${una}/ub-admin/js/adminlte.js"></script>
+<script src="${una}/ub-admin/plugin/layer/layer.js"></script>
+<script src="${una}/ub-admin/js/jquery.validate.min.js"></script>
+<script src="${una}/ub-admin/js/jquery.steps.min.js"></script>
+<script src="${una}/ub-admin/js/dobpicker.js"></script>
+<script src="${una}/ub-admin/js/nouislider.min.js"></script>
+<script src="${una}/ub-admin/js/wNumb.js"></script>
+<script type="text/javascript">
+
+    (function($) {
+        var form = $("#install-form");
+        form.validate({
+            errorPlacement: function errorPlacement(error, element) {
+                element.after(error);
+            },
+            rules: {
+                agree:{
+                    required:true
+                },
+                host:{
+                    required:true
+                },
+                port:{
+                    required:true
+                },
+                db:{
+                    required:true
+                },
+                username:{
+                    required:true
+                },
+                password:{
+                    required:true
+                },
+                title:{
+                    required:true
+                },
+                domain:{
+                    required:true,
+                    url:true
+                },
+                adminAccount:{
+                    required:true
+                },
+                adminEmail:{
+                    required:true,
+                    email:true
+                },
+                adminPassword:{
+                    required:true,
+                    rangelength:[6,12]
+                },
+                pwd:{
+                    required:true,
+                    rangelength:[6,12],
+                    equalTo:"#adminPassword"
+                }
+
+
+
+
+
+            },
+            messages:{
+                agree:"请了解许可协议",
+                host:"请输入数据库主机地址",
+                port:"端口号不能为空",
+                db:"数据库名称不能为空",
+                username:"请输入数据库管理员账号",
+                password:{
+                    required:'请输入数据库登录密码'
+                },
+                title:"请填写您的网站名称",
+                domain:{
+                    required:'请填写您的网站域名',
+                    url:'请填写合法的域名地址'
+                },
+                adminAccount:{
+                    required:'请填写一个默认的管理员账号',
+                },
+                adminEmail:{
+                    required:'请填写一个默认的管理员邮箱',
+                    email:'管理员账号必须为合法的邮箱'
+                },
+                adminPassword:{
+                    required:'请设置初始的管理员登录密码',
+                    rangelength:'密码长度须在6-12个字符之间'
+                },
+                pwd:{
+                    required:'请再次输入管理员登录密码',
+                    rangelength:'密码长度须在6-12个字符之间',
+                    equalTo:"两次密码输入不一致"
+                }
+            },
+            onfocusout: function(element) {
+                $(element).valid();
+            },
+        });
+        form.children("div").steps({
+            headerTag: "h3",
+            bodyTag: "fieldset",
+            transitionEffect: "fade",
+            stepsOrientation: "vertical",
+            titleTemplate: '<div class="title"><span class="step-number">#index#</span><span class="step-text">#title#</span></div>',
+            labels: {
+                previous: "<i class='fa fa-angle-double-left'></i>&nbsp;&nbsp;上一步",
+                next: "下一步&nbsp;&nbsp;<i class='fa fa-angle-double-right'></i>",
+                finish: "<i class='fa fa-cogs'></i>&nbsp;&nbsp;安装",
+                current: ''
+            },
+            onStepChanging: function(event, currentIndex, newIndex) {
+                if (currentIndex === 0) {
+
+                    form.parent().parent().parent().append('<div class="footer footer-' + currentIndex + '"></div>');
+                }
+                if (currentIndex === 1) {
+                    form.parent().parent().parent().find('.footer').removeClass('footer-0').addClass('footer-' + currentIndex + '');
+                }
+                if (currentIndex === 2) {
+                    form.parent().parent().parent().find('.footer').removeClass('footer-1').addClass('footer-' + currentIndex + '');
+                }
+                if (currentIndex === 3) {
+                    form.parent().parent().parent().find('.footer').removeClass('footer-2').addClass('footer-' + currentIndex + '');
+                }
+                form.validate().settings.ignore = ":disabled,:hidden";
+                return form.valid();
+            },
+            onFinishing: function(event, currentIndex) {
+                form.validate().settings.ignore = ":disabled";
+                return form.valid();
+            },
+            onFinished: function(event, currentIndex) {
+                var data = $("#install-form").serialize();
+                var load = layer.load(2,{
+                   shade:[0.4,'#f0f0f0'],
+                   shadeClose:false
+                });
+                $.ajax({
+                    type:'POST',
+                    url:"${una}/install.html",
+                    data:data,
+                    success:function(){
+                        layer.close(load);
+                        layer.msg("恭喜！您已成功安装并初始化尤娜系统。",{
+                           time:0,
+                           icon:1,
+                           shade:[0.4,"#fff"],
+                           shadeClose:false,
+                           btn:["开始探索"],
+                           yes:function(index){
+                               layer.close(index);
+                               window.location.href = "${una}/admin/login";
+                           }
+                        });
+                    },
+                    error:function(){
+                        layer.close(load);
+                        layer.alert("安装失败",{
+                            title:"<i class='fa fa-info'></i> 提示",
+                            icon:0,
+                            shade:[0.4,'#f0f0f0'],
+                            shadeClose:false
+                        });
+                    }
+                })
+            },
+            onStepChanged: function(event, currentIndex, priorIndex) {
+
+                return true;
+            }
+        });
+
+        jQuery.extend(jQuery.validator.messages, {
+            required: "",
+            remote: "",
+            email: "",
+            url: "",
+            date: "",
+            dateISO: "",
+            number: "",
+            digits: "",
+            creditcard: "",
+            equalTo: ""
+        });
+
+        $.dobPicker({
+            daySelector: '#birth_date',
+            monthSelector: '#birth_month',
+            yearSelector: '#birth_year',
+            dayDefault: '',
+            monthDefault: '',
+            yearDefault: '',
+            minimumAge: 0,
+            maximumAge: 120
+        });
+        var marginSlider = document.getElementById('slider-margin');
+        if (marginSlider != undefined) {
+            noUiSlider.create(marginSlider, {
+                start: [1100],
+                step: 100,
+                connect: [true, false],
+                tooltips: [true],
+                range: {
+                    'min': 100,
+                    'max': 2000
+                },
+                pips: {
+                    mode: 'values',
+                    values: [100, 2000],
+                    density: 4
+                },
+                format: wNumb({
+                    decimals: 0,
+                    thousand: '',
+                    prefix: '$ ',
+                })
+            });
+            var marginMin = document.getElementById('value-lower'),
+                marginMax = document.getElementById('value-upper');
+
+            marginSlider.noUiSlider.on('update', function ( values, handle ) {
+                if ( handle ) {
+                    marginMax.innerHTML = values[handle];
+                } else {
+                    marginMin.innerHTML = values[handle];
+                }
+            });
+        }
+    })(jQuery);
+</script>
+</body>
+</html>

@@ -1,0 +1,392 @@
+html,body{
+    background: #f1f1f1;
+    min-width: 0;
+    color: #444444;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    font-size: 16px;
+    line-height: 1.4;
+}
+body::-webkit-scrollbar{
+    width: 8px;
+    height: 4px;
+}
+body::-webkit-scrollbar-thumb{
+    border-radius: 5px;
+    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,.2);
+    background: rgba(0,0,0,.2);
+}
+body::-webkit-scrollbar-track{
+    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    border-radius: 0;
+    background: rgba(0,0,0,0.1);
+}
+body{
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.bg-gray-custom{
+    background: #f1f1f1;
+}
+.main-sidebar, .main-sidebar::before {
+    transition: margin-left 0.3s ease-in-out, width 0.3s ease-in-out;
+    width: 180px;
+}
+.nav-link {
+    display: block;
+    padding: 0.5rem 0.5rem;
+}
+.layout-navbar-fixed .wrapper .brand-link {
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    transition: width 0.3s ease-in-out;
+    width: 180px;
+    z-index: 1035;
+}
+.layout-navbar-fixed .wrapper .main-sidebar:hover .brand-link {
+    transition: width 0.3s ease-in-out;
+    width: 180px;
+}
+@media (min-width: 768px) {
+    body:not(.sidebar-mini-md) .content-wrapper, body:not(.sidebar-mini-md) .main-footer, body:not(.sidebar-mini-md) .main-header {
+        transition: margin-left 0.3s ease-in-out;
+        margin-left: 180px;
+    }
+}
+@media  (min-width: 992px){
+    .sidebar-mini.sidebar-collapse .main-sidebar:hover, .sidebar-mini.sidebar-collapse .main-sidebar.sidebar-focused {
+        width: 180px;
+    }
+}
+@media (min-width: 992px) {
+    .sidebar-mini.sidebar-collapse.layout-fixed .main-sidebar:hover .brand-link {
+        width: 180px;
+    }
+}
+.dropdown.user-menu>a{
+    color: #555d66;
+    font-size: 14px;
+}
+.profile-wrapper{
+    padding: 0;
+    box-shadow: 0 3px 5px rgba(0,0,0,.2);
+    background: #494e53;
+    height: 120px;
+    margin: 10px 0px 0px 0px;
+}
+.profile-wrapper> li{
+    margin-left: 98px;
+    padding: 5px 0;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+.profile-wrapper .user-info{
+    margin-top: 6px;
+    background: 0 0;
+}
+.profile-wrapper li .ab-item{
+    line-height: 2;
+    white-space: nowrap;
+    min-width: 140px;
+}
+.profile-wrapper li a{
+    color: rgba(240,245,250,.7);
+    font-size: 14px;
+}
+.profile-wrapper li a:hover{
+    color: #5b9dd9;
+}
+.profile-wrapper .user-info .avatar{
+    position: absolute;
+    left: 20px;
+    top: 23px;
+    width: 64px;
+    height: 64px;
+}
+.text-decoration-under-line{
+    text-decoration: underline;
+}
+.quick-menu{
+    list-style: none;
+}
+.quick-menu li{
+    margin: 15px 0;
+}
+.quick-menu li:first-child{
+    margin-top: 0;
+}
+.quick-menu li:last-child{
+    margin-bottom: 0;
+}
+.quick-menu li >i{
+    width: 16px;
+}
+.quick-menu li > a{
+    margin-left: 5px;
+}
+.form-control:disabled, .form-control[readonly] {
+    background-color: #ffffff !important;
+    opacity: 1;
+}
+.form-control:disabled:hover, .form-control[readonly]:hover {
+    cursor: not-allowed;
+}
+ul.info-view{
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    display: inline-block;
+    width: 100%;
+}
+.info-view li{
+    width: 50%;
+    float: left;
+    margin-bottom: 10px;
+}
+.post-select{
+    line-height: 31px;
+}
+a.post-current{
+    color: #000;
+    font-weight: 600;
+}
+a.post-current .count{
+    color: #555d66;
+    font-weight: 400;
+}
+table.post-datatable .post-thumb{
+    height: 50px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+table.post-datatable .post-thumb:hover{
+    position: absolute;
+    top: 50%;
+    left: 45%;
+    transform: translate(-50%,-45%);
+    zoom: 700%;
+    z-index: 999;
+    border-radius: 2px;
+    box-shadow: 5px 10px 15px rgba(0,0,0,.5);
+    cursor: zoom-in;
+}
+.post-datatable .row-actions{
+    color: #ddd;
+    font-size: 13px;
+    padding: 4px 0 0 ;
+    position: relative;
+    left: 0;
+    display: none;
+    transition: all 1s;
+}
+.row-actions span.trash a{
+    color: #a00;
+}
+.post-datatable tbody tr{
+    min-height: 70px;
+    max-height: 120px;
+    height: 70px;
+}
+.post-datatable tbody tr:hover .row-actions{
+    position: static;
+    display: block;
+}
+.post-datatable .tag{
+    margin-right: 2px;
+    font-size: 12px;
+    padding: 0 6px;
+    height: 20px;
+    display: inline-block;
+    color: #ddd;
+    background: hsla(0,0%,56%,.05);
+    border-radius: 2px;
+    cursor: pointer;
+}
+.post-datatable .tag.tag-blue{
+    background: rgba(56,151,240,.09);
+    color: #3897f0;
+}
+.post-datatable .tag.tag-red{
+    background: rgba(244, 67, 54, .09);
+    color: #f44336;
+}
+.post-datatable .post-time{
+    text-decoration: dotted underline;
+}
+.page-item.disabled:hover{
+    cursor: not-allowed!important;
+}
+a.disabled,a.disabled:hover{
+    cursor: not-allowed!important;
+    color: gray;
+}
+/*创建文章页面*/
+.new-post .header{
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px solid #ddd;
+    background: white;
+}
+.logo-menu{
+    width: 57px;
+    height: 57px;
+    background: #343a40;
+    padding: 5px;
+}
+.post-title{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 50%;
+}
+.post-title input{
+    outline: none!important;
+    border: none;
+    border-radius: 0;
+    border-bottom: 2px dashed #ddd;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+.post-title input::-webkit-input-placeholder{
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+.post-title input::-moz-placeholder{
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+.post-title input::-ms-input-placeholder{
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+.new-post .actions{
+    display: block;
+    margin: 13px 10px;
+}
+#markdown-editor-wrapper,#ck-editor-wrapper{
+    display: none;
+}
+#markdown-editor-wrapper.current,#ck-editor-wrapper.current{
+    display: block;
+}
+.control-sidebar{
+    top: 1px!important;
+}
+.control-sidebar, .control-sidebar::before {
+    width: 380px!important;
+}
+#setting-aside-card .card-body{
+    overflow-y: scroll;
+}
+
+.mark-line-left,.mark-line-right{
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 1px solid hsl(0, 0%, 77%);
+    z-index: 999;
+    top: 44px;
+}
+.mark-line-left{
+    border-top: 0;
+    border-left: 0;
+    left: 174px;
+}
+.mark-line-right{
+    border-top: 0;
+    border-right: 0;
+    right: 174px;
+}
+
+/*栏目部分*/
+.category-left{
+    float: left;
+    border-right: 1px solid #ddd;
+    overflow: hidden;
+    width: 20%;
+    min-height: 750px;
+}
+.category-left .menu-head{
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+.category-left .menu-tree{
+    max-height: 640px;
+    overflow: auto;
+}
+.ztree *{
+    font-size: 14px;
+    font-weight: normal;
+}
+.ztree li{
+    letter-spacing: 1px;
+    line-height: 26px;
+    color: #343a40;
+}
+.ztree li a.curSelectedNode{
+    background-color: white;
+    color: #1ec6df!important;
+    height: 26px;
+    border: none;
+}
+.category-right{
+    margin-left: 20%;
+    padding: 0 10px;
+}
+.category-right .category-tools{
+    width: 30%;
+}
+/*标签页面*/
+.tag-left{
+    float: left;
+    overflow: hidden;
+    width: 30%;
+}
+.tag-left .menu-head{
+    text-align: left;
+}
+.tag-right{
+    margin-left: 30%;
+    padding: 0 10px;
+}
+.layui-layer-btn .layui-layer-btn0{
+    border-color: rgba(255,255,255,0);
+    color:#fff !important;
+}
+/*主题页面*/
+table.theme-table tbody{
+    display: block;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+}
+table.theme-table thead,table.theme-table tbody tr{
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    text-align: left;
+}
+table.theme-table tr td:nth-child(1){
+    width: 2%;
+}
+table.theme-table tr td:nth-child(2){
+    width: 60%;
+}
+table.theme-table tr td:nth-child(3){
+    width: 20%;
+}
+table.theme-table tr td:nth-child(4){
+    width: 18%;
+}
+/*常规设置页面*/
+.no-resize{
+    resize: none;
+}

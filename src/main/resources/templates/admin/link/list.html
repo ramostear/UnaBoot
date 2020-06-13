@@ -1,0 +1,281 @@
+<#include "/admin/inc/page.html">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>静态链接 - UnaBoot</title>
+    <link rel="icon" href="${una}/ub-admin/img/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="${una}/ub-admin/img/favicon.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <link rel="stylesheet" href="${una}/ub-admin/plugin/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="${una}/ub-admin/css/font-awesome.css">
+    <link rel="stylesheet" href="${una}/ub-admin/css/ionicons.css">
+    <link rel="stylesheet" href="${una}/ub-admin/css/adminlte.css">
+    <link rel="stylesheet" href="${una}/ub-admin/plugin/layer/skin/default/layer.css">
+    <link rel="stylesheet" href="${una}/ub-admin/css/unaboot-admin.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700">
+</head>
+<body class="sidebar-mini layout-fixed layout-navbar-fixed text-md <!--sidebar-collapse-->">
+<div class="wrapper">
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <#include "/admin/inc/header.html">
+    </nav>
+    <aside class="main-sidebar sidebar-dark-primary ">
+        <#include "/admin/inc/aside.html">
+    </aside>
+    <div class="content-wrapper bg-gray-custom">
+        <div class="content-header pb-0">
+            <div class="row mb-2">
+                <div class="col-12">
+                    <h4 class="ml-2 mb-0 text-dark">静态链接</h4>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12 text-sm  mt-2">
+                        <div class="tag-left">
+                            <div class="menu-head">
+                                <h6 class="text-sm font-weight-bold">添加新链接</h6>
+                            </div>
+                            <div class="tag-form">
+                                <form id="link-form">
+                                    <div class="form-group">
+                                        <label class="col-form-label font-weight-light" for="name">名称</label>
+                                        <input type="text" name="name" class="form-control" id="name" autocomplete="off">
+                                        <p class="font-weight-light text-sm text-secondary">给连接定义一个用于显示的名称</p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-form-label font-weight-light" for="url">地址</label>
+                                        <input type="url" name="url" class="form-control" id="url" autocomplete="off">
+                                        <p class="font-weight-light text-sm text-secondary">请填写静态链接的URL地址，例如：<i>https://www.ramostear.com</i></p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-form-label font-weight-light" for="sortId">排序号</label>
+                                        <input style="width: 100px" value="1" type="number" min="1" step="1" class="form-control" name="sortId" id="sortId">
+                                        <p class="font-weight-light text-sm text-secondary">在页面中显示静态链接时，系统根据排序号对链接进行升序排列。</p>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="button" id="new-link-btn" class="btn btn-sm btn-primary">添加新链接</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="tag-right mt-5 pl-4">
+                            <table class="table post-datatable table-striped table-hover" style="border: 1px solid #ddd">
+                                <thead>
+                                <tr class="bg-white">
+                                    <td width="80px">序号</td><td width="30%">名称</td><td>url</td><td width="180px">日期</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <#if data?? && data.content?size gt 0>
+                                        <#list data.content as link>
+                                            <tr>
+                                                <td>${link.sortId}</td>
+                                                <td>
+                                                    <a href="${link.url}" target="_blank">${link.name}</a>
+                                                    <div class="row-actions">
+                                                        <span class="edit">
+                                                            <a href="javascript:void(0);" aria-id="${link.id}"><i class="fa fa-edit"></i>编辑</a> |
+                                                        </span>
+                                                        <span class="trash">
+                                                            <a href="javascript:void(0);" aria-id="${link.id}"><i class="fa fa-trash-o"></i>移除</a> |
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <a href="${link.url}" target="_blank">${link.url}</a>
+                                                </td>
+                                                <td>
+                                                    创建于<br>
+                                                    <span class="post-time"><i class="fa fa-calendar-o"></i> ${link.createTime?string("yyyy-MM-dd")}</span>
+                                                </td>
+                                            </tr>
+                                        </#list>
+                                    <#else>
+                                        <tr><td colspan="4" class="text-center text-secondary">暂无可用数据!</td></tr>
+                                    </#if>
+                                </tbody>
+                                <tfoot>
+                                <tr class="bg-white">
+                                    <td width="80px">序号</td><td width="30%">名称</td><td>url</td><td width="180px">日期</td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                            <#if data?? && data.content?size gt 0 && data.totalPages gt 1>
+                                <div>
+                                    <nav aria-label="..." class="pull-right">
+                                        <@pagination una+"/admin/links/" data 9/>
+                                    </nav>
+                                </div>
+                            </#if>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="main-footer">
+        <#include "/admin/inc/footer.html">
+    </footer>
+</div>
+<script src="${una}/ub-admin/plugin/jquery/jquery.min.js" type="text/javascript"></script>
+<script src="${una}/ub-admin/plugin/jquery/jquery.serialize.js"></script>
+<script src="${una}/ub-admin/plugin/jquery/jquery.form.js"></script>
+<script src="${una}/ub-admin/plugin/bootstrap/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+<script src="${una}/ub-admin/js/adminlte.js" type="text/javascript"></script>
+<script src="${una}/ub-admin/js/unaboot-admin.core.js" type="text/javascript"></script>
+<script src="${una}/ub-admin/plugin/layer/layer.js" type="text/javascript"></script>
+<script src="${una}/ub-admin/js/jquery.validate.min.js"></script>
+<script type="text/javascript">
+    var form = $("#link-form");
+    form.validate({
+        errorPlacement: function errorPlacement(error, element) {
+            element.after(error);
+        },
+        rules:{
+           name:{
+               required:true
+           },
+           url:{
+               required:true,
+               url:true
+           },
+           sortId:{
+               required:true,
+               digits:true,
+               min:1
+           }
+        },
+        messages:{
+            name:{
+                required:'请定义链接的名字'
+            },
+            url:{
+                required:'请填写链接的url地址',
+                url:'请检查链接地址格式是否正确'
+            },
+            sortId:{
+                required:'请为链接设置一个排序号',
+                digits:'排序号只能为整数',
+                min:'排序号的值不能小于1'
+            }
+        }
+    });
+    /**
+     * create new link function
+     */
+    $("#new-link-btn").on("click",function(){
+       var isOk = form.valid();
+       if(isOk){
+           var data = $("#link-form").serialize();
+           var load = layer.load(2,{
+              shade:[0.4,'#f0f0f0'],
+              shadeClose:false
+           });
+           $.ajax({
+               type:'POST',
+               url:"${una}/admin/links/create",
+               data:data,
+               success:function(){
+                   layer.close(load);
+                   layer.alert("当前操作已成功执行!",{
+                       title:"<i class='fa fa-info'></i> 提示",
+                       icon:1,
+                       shade:[0.4,"#fff"],
+                       shadeClose:false,
+                       time:0,
+                       btn:['OK'],
+                       yes:function(index){
+                           layer.close(index);
+                           window.location.href="${una}/admin/links/?offset=${data.number+1}";
+                       }
+                   });
+               }
+           });
+       }else{
+           return false;
+       }
+    });
+    /**
+     * edit link function
+     */
+    $(".edit a").on("click",function(){
+        var id = $(this).attr("aria-id");
+        if(id == null || typeof(id) == 'undefined' ){
+            return false;
+        }else{
+            layer.open({
+                type:2,
+                title:"<i class=\"fa fa-edit\"></i> 修改链接",
+                shadeClose:false,
+                shade:0.4,
+                offset:['55px'],
+                area:['400px','550px'],
+                content:"${una}/admin/links/"+id,
+                resize:false,
+                anim:1
+            });
+        }
+    });
+    function reload(){
+        window.location.href="${una}/admin/links/?offset=${data.number+1}";
+    }
+    $(".trash a").on("click",function(){
+        var id = $(this).attr("aria-id");
+        if(id == null || typeof(id) == 'undefined' ){
+            return false;
+        }else{
+            layer.alert("确定删除该链接吗？该操作不可逆",{
+                title:"<i class='fa fa-info-circle'></i> 提示",
+                icon:0,
+                btn:['是(Y)','否(N)'],
+                shadeClose: false,
+                shade:[0.4,'#fff'],
+                anim: 1
+            },function(){
+                var load = layer.load(2,{shade:[0.4,'#f0f0f0']});
+                $.ajax({
+                   type:'DELETE',
+                   url:"${una}/admin/links/"+id,
+                   success:function(){
+                       layer.close(load);
+                       layer.alert("当前操作已成功执行!",{
+                           title:"<i class='fa fa-info'></i> 提示",
+                           icon:1,
+                           shade:[0.4,"#fff"],
+                           shadeClose:false,
+                           time:0,
+                           btn:['OK'],
+                           yes:function(index){
+                               layer.close(index);
+                               window.location.href="${una}/admin/links/?offset=${data.number+1}";
+                           }
+                       });
+                   },
+                   error:function(){
+                       layer.close(load);
+                       layer.alert("当前操作失败!请稍后再试。",{
+                           title:"<i class='fa fa-info'></i> 提示",
+                           icon:1,
+                           shade:[0.4,"#fff"],
+                           shadeClose:false,
+                           time:0,
+                           btn:['Close'],
+                           yes:function(newIndex){
+                               layer.close(newIndex);
+                           }
+                       });
+                   }
+                });
+            },function(index){
+                layer.close(index);
+            });
+        }
+    });
+</script>
+</body>
+</html>

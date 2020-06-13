@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AIPs - UnaBoot</title>
+    <link rel="icon" href="${una}/ub-admin/img/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="${una}/ub-admin/img/favicon.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <link rel="stylesheet" href="${una}/ub-admin/plugin/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="${una}/ub-admin/css/font-awesome.css">
+    <link rel="stylesheet" href="${una}/ub-admin/css/ionicons.css">
+    <link rel="stylesheet" href="${una}/ub-admin/css/adminlte.css">
+    <link rel="stylesheet" href="${una}/ub-admin/css/unaboot-admin.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700">
+</head>
+<body class="sidebar-mini layout-fixed layout-navbar-fixed text-md <!--sidebar-collapse-->">
+<div class="wrapper">
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <#include "/admin/inc/header.html">
+    </nav>
+    <aside class="main-sidebar sidebar-dark-primary ">
+        <#include "/admin/inc/aside.html">
+    </aside>
+    <div class="content-wrapper bg-gray-custom">
+        <div class="content">
+            <div class="container-fluid p-0">
+                <div class="row text-sm mt-4">
+                    <div class="col-12 p-0">
+                        <iframe id="druidFrame" name="druidFrame" src="${una}/admin/druid/index" frameborder="0" scrolling="auto" width="100%"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="main-footer">
+        <#include "/admin/inc/footer.html">
+    </footer>
+</div>
+<script src="${una}/ub-admin/plugin/jquery/jquery.min.js" type="text/javascript"></script>
+<script src="${una}/ub-admin/plugin/bootstrap/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+<script src="${una}/ub-admin/js/adminlte.js" type="text/javascript"></script>
+<script src="${una}/ub-admin/js/unaboot-admin.core.js" type="text/javascript"></script>
+<script type="text/javascript">
+    var iframe = $("#druidFrame")[0];
+    if(iframe.attachEvent){
+        iframe.attachEvent("onload",function(){
+            $("#druidFrame").contents().find(".footer").hide();
+            $("#druidFrame").contents().find(".container").removeClass("container").addClass("container-fluid");
+        });
+    }else{
+        iframe.onload = function(){
+            $("#druidFrame").contents().find(".footer").hide();
+            $("#druidFrame").contents().find(".navbar-inner>div").removeClass("container").addClass("container-fluid");
+            $("#druidFrame").contents().find("a.brand");
+        }
+    }
+    initialFrameHeight();
+    function initialFrameHeight(){
+        scale();
+    }
+    window.onresize = function(){
+        scale();
+    };
+    function scale(){
+        var h = document.documentElement.clientHeight;
+        $("#druidFrame").height(h-130);
+    }
+</script>
+</body>
+</html>
