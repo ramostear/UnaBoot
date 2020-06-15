@@ -1,7 +1,9 @@
 package com.ramostear.unaboot.domain.vo;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author :       ramostear/树下魅狐
@@ -12,6 +14,8 @@ import lombok.Data;
  */
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class QiniuProperty {
     private String domain;
     private String secretKey;

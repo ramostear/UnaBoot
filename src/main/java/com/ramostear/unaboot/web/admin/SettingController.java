@@ -1,8 +1,11 @@
 package com.ramostear.unaboot.web.admin;
 
+import com.ramostear.unaboot.common.QiniuZone;
 import com.ramostear.unaboot.domain.entity.Setting;
+import com.ramostear.unaboot.domain.vo.QiniuProperty;
 import com.ramostear.unaboot.service.SettingService;
 import com.ramostear.unaboot.service.ThemeService;
+import com.ramostear.unaboot.util.QiniuUtils;
 import com.ramostear.unaboot.web.UnaBootController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,5 +76,18 @@ public class SettingController extends UnaBootController {
            log.info("General setting key : {} ,value : {}",key,setting.getValue());
         });
         return ok();
+    }
+
+    @GetMapping("/qiniu")
+    public String qiniu(Model model){
+        model.addAttribute("qiniu", QiniuUtils.getProperties());
+        model.addAttribute("zones", QiniuZone.values());
+        return "/admin/setting/qiniu";
+    }
+    @PostMapping("/qiniu")
+    @ResponseBody
+    public ResponseEntity<Object> qiniu(QiniuProperty qiniu){
+        boolean res = QiniuUtils.setProperties(qiniu);
+        return res?ok():bad();
     }
 }
