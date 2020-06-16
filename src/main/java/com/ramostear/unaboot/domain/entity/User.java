@@ -46,7 +46,7 @@ public class User extends AbstractEntity implements Serializable {
     @Column(name = "nickname")
     private String nickname;
 
-    @Column(name = "avatar")
+    @Column(name = "avatar",columnDefinition = "longtext")
     private String avatar;
 
     @Column(name = "state")
@@ -68,6 +68,9 @@ public class User extends AbstractEntity implements Serializable {
         }
         if(locked == null){
             locked = Locked.NO.getCode();
+        }
+        if(StringUtils.isBlank(nickname)){
+            nickname = "Unnamed";
         }
     }
 

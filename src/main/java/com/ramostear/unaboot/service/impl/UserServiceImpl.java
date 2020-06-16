@@ -9,6 +9,8 @@ import com.ramostear.unaboot.util.UnaBootUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.util.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -82,5 +84,15 @@ public class UserServiceImpl extends BaseServiceImpl<User,Integer> implements Us
             user = userRepository.findByUsername(principal);
         }
         return (user == null)?Optional.empty():Optional.of(user);
+    }
+
+    @Override
+    public Long countByRole(String role) {
+        return userRepository.countByRole(role);
+    }
+
+    @Override
+    public Page<User> findAllByRole(String role, Pageable pageable) {
+        return userRepository.findAllByRole(role,pageable);
     }
 }

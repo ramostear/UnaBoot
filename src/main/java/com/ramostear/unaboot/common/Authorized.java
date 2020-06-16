@@ -10,10 +10,10 @@ import org.springframework.util.StringUtils;
  * <p>Authorize names</p>
  */
 public enum Authorized {
-    GUEST("guest","来宾"),
     ADMIN("admin","管理员"),
     EDITOR("editor","小编"),
-    MEMBER("member","会员");
+    MEMBER("member","会员"),
+    GUEST("guest","来宾");
 
     private final String name;
     private final String alias;

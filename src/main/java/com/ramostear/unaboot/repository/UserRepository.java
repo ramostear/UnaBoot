@@ -1,6 +1,8 @@
 package com.ramostear.unaboot.repository;
 
 import com.ramostear.unaboot.domain.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * @author :     ramostear/树下魅狐
@@ -14,4 +16,8 @@ public interface UserRepository extends BaseRepository<User,Integer> {
     User findByUsername(String username);
 
     User findByEmail(String email);
+
+    Long countByRole(String role);
+
+    Page<User> findAllByRole(String role, Pageable pageable);
 }

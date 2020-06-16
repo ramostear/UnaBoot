@@ -1,6 +1,8 @@
 package com.ramostear.unaboot.domain.vo;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author :       ramostear/树下魅狐
@@ -10,6 +12,8 @@ import lombok.Data;
  * <p>description:</p>
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserVo {
     private String username;
     private String email;

@@ -67,25 +67,25 @@
                             <table class="table post-datatable table-striped table-hover" style="border: 1px solid #ddd">
                                 <thead>
                                 <tr class="bg-white">
-                                    <td width="80px">序号</td><td width="30%">名称</td><td>url</td><td width="180px">日期</td>
+                                    <td width="30%">名称</td><td width="80px">序号</td><td>url</td><td width="180px">日期</td>
                                 </tr>
                                 </thead>
                                 <tbody>
                                     <#if data?? && data.content?size gt 0>
                                         <#list data.content as link>
                                             <tr>
-                                                <td>${link.sortId}</td>
                                                 <td>
                                                     <a href="${link.url}" target="_blank">${link.name}</a>
                                                     <div class="row-actions">
                                                         <span class="edit">
-                                                            <a href="javascript:void(0);" aria-id="${link.id}"><i class="fa fa-edit"></i>编辑</a> |
+                                                            <a href="javascript:void(0);" aria-id="${link.id}"><i class="fa fa-edit"></i>编辑</a> <small class="text-secondary"> |</small>
                                                         </span>
                                                         <span class="trash">
-                                                            <a href="javascript:void(0);" aria-id="${link.id}"><i class="fa fa-trash-o"></i>移除</a> |
+                                                            <a href="javascript:void(0);" aria-id="${link.id}"><i class="fa fa-trash-o"></i>移除</a>
                                                         </span>
                                                     </div>
                                                 </td>
+                                                <td>${link.sortId}</td>
                                                 <td>
                                                     <a href="${link.url}" target="_blank">${link.url}</a>
                                                 </td>
@@ -101,7 +101,7 @@
                                 </tbody>
                                 <tfoot>
                                 <tr class="bg-white">
-                                    <td width="80px">序号</td><td width="30%">名称</td><td>url</td><td width="180px">日期</td>
+                                    <td width="30%">名称</td><td width="80px">序号</td><td>url</td><td width="180px">日期</td>
                                 </tr>
                                 </tfoot>
                             </table>

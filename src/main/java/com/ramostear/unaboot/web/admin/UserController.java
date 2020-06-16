@@ -42,7 +42,21 @@ public class UserController extends UnaBootController {
     @GetMapping("/")
     public String users(Model model){
         Page<User> data = userService.findAll(pageable("updateTime", SortType.DESC));
-        model.addAttribute("data",data);
+        model.addAttribute("data",data)
+             .addAttribute("roles",Authorized.values())
+             .addAttribute("all",userService.totalCount())
+             .addAttribute("admin",userService.countByRole(Authorized.ADMIN.getName()));
+        return "/admin/user/list";
+    }
+
+    @GetMapping("/role/{role}")
+    public String usersByRole(@PathVariable("role")String role, Model model){
+        Page<User> data = userService.findAllByRole(role,pageable("updateTime", SortType.DESC));
+        model.addAttribute("data",data)
+                .addAttribute("roles",Authorized.values())
+                .addAttribute("all",userService.totalCount())
+                .addAttribute("admin",userService.countByRole(Authorized.ADMIN.getName()))
+                .addAttribute("current",role);
         return "/admin/user/list";
     }
 
@@ -141,25 +155,25 @@ public class UserController extends UnaBootController {
     }
 
     @ResponseBody
-    @GetMapping(value = "/{param}/notExist")
-    public ResponseEntity<Object> notExist(@PathVariable("param")String param){
-        if(StringUtils.isBlank(param)){
-            return bad();
-        }else if(userService.usernameNotExists(param)){
-            return ok();
+    @GetMapping(value = "/validate/username")
+    public boolean notExist(@RequestParam("username") String username){
+        if(StringUtils.isBlank(username)){
+            return false;
+        }else if(userService.usernameNotExists(username)){
+            return true;
         }else{
-            return bad();
+            return false;
         }
     }
     @ResponseBody
-    @GetMapping(value = "/{param}/notExist",params = {"pattern=email"})
-    public ResponseEntity<Object> emailNotExist(@PathVariable("param")String param){
-        if(StringUtils.isBlank(param)){
-            return bad();
-        }else if(AssertUtils.isEmail(param) && userService.emailNotExists(param)){
-            return ok();
+    @GetMapping(value = "/validate/email")
+    public boolean emailNotExist(@RequestParam("email")String email){
+        if(StringUtils.isBlank(email)){
+            return false;
+        }else if(AssertUtils.isEmail(email) && userService.emailNotExists(email)){
+            return true;
         }else{
-            return bad();
+            return false;
         }
     }
     /**
