@@ -1,0 +1,50 @@
+<table class="table post-datatable table-striped table-hover" style="border: 1px solid #ddd">
+    <thead>
+    <tr class="bg-white">
+        <td width="20%">名称</td><td>别名</td><td>模板</td><td>文章模板</td><td>导航栏目</td><td>序号</td><td>日期</td>
+    </tr>
+    </thead>
+    <tbody>
+    <#if data?? && data?size gt 0>
+        <#list data as category>
+            <tr>
+                <td>
+                    <a href="#">${category.name}</a>
+                    <div class="row-actions">
+                        <span class="edit">
+                            <a href="javascript:void(0);" aria-id="${category.id}"><i class="fa fa-edit"></i>编辑</a><small class="text-secondary"> |</small>
+                        </span>
+                        <span class="trash">
+                            <a href="javascript:void(0);" aria-id="${category.id}"><i class="fa fa-trash-o"></i>移除</a>
+                        </span>
+                    </div>
+                </td>
+                <td>${category.slug}</td>
+                <td>${category.theme}</td>
+                <td>${category.postTheme}</td>
+                <td>
+                    <#if category.navShow == 0>
+                        <span class="badge badge-secondary">N</span>
+                    <#else>
+                        <span class="badge badge-success">Y</span>
+                    </#if>
+                </td>
+                <td>
+                    <span class="badge badge-secondary">${category.sortId}</span>
+                </td>
+                <td>
+                    已发布<br>
+                    <span class="post-time"><i class="fa fa-calendar-o"></i> ${category.createTime?string("yyyy-MM-dd")}</span>
+                </td>
+            </tr>
+        </#list>
+    <#else>
+        <tr><td colspan="7" class="text-center text-secondary">该栏目下暂无子目录!</td></tr>
+    </#if>
+    </tbody>
+    <tfoot>
+    <tr class="bg-white">
+        <td width="20%">名称</td><td>别名</td><td>模板</td><td>文章模板</td><td>导航栏目</td><td>序号</td><td>日期</td>
+    </tr>
+    </tfoot>
+</table>

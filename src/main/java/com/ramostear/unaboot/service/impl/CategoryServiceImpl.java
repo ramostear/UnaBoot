@@ -1,20 +1,22 @@
 package com.ramostear.unaboot.service.impl;
 
+import com.ramostear.unaboot.component.FileManager;
 import com.ramostear.unaboot.domain.entity.Category;
 import com.ramostear.unaboot.domain.vo.CategoryVo;
+import com.ramostear.unaboot.exception.ForbiddenException;
 import com.ramostear.unaboot.repository.CategoryRepository;
+import com.ramostear.unaboot.repository.PostCategoryRepository;
 import com.ramostear.unaboot.service.CategoryService;
+import com.ramostear.unaboot.service.PostCategoryService;
 import com.ramostear.unaboot.util.DateTimeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -28,11 +30,17 @@ import java.util.stream.Collectors;
 public class CategoryServiceImpl extends BaseServiceImpl<Category,Integer> implements CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final PostCategoryRepository postCategoryRepository;
+    private final FileManager fileManager;
 
     @Autowired
-    public CategoryServiceImpl(CategoryRepository categoryRepository) {
+    public CategoryServiceImpl(CategoryRepository categoryRepository,
+                               PostCategoryRepository postCategoryRepository,
+                               FileManager fileManager) {
         super(categoryRepository);
         this.categoryRepository = categoryRepository;
+        this.postCategoryRepository = postCategoryRepository;
+        this.fileManager = fileManager;
     }
 
     @Override
@@ -69,9 +77,27 @@ public class CategoryServiceImpl extends BaseServiceImpl<Category,Integer> imple
     }
 
     @Override
+    @Transactional
     public Category delete(Integer id) {
-        //TODO 需要解除关联关系
-        return super.delete(id);
+        Optional<Category> optional = categoryRepository.findById(id);
+        if(!optional.isPresent()){
+            throw new ForbiddenException("栏目不存在");
+        }
+        Category category = optional.get();
+        List<Category> categories = this.findAllByPid(id);
+        if(categories != null && categories.size()>0){
+            throw new ForbiddenException("目录下还存在子目录，不允许删除");
+        }
+        Set<Integer> postIds = postCategoryRepository.findAllPostIdByCategory(id);
+        if(postIds != null && postIds.size() > 0){
+            throw new ForbiddenException("目录下还有文章，不允许删除");
+        }
+        String thumb = category.getThumb();
+        if(StringUtils.isNotBlank(thumb)){
+            fileManager.remove(thumb);
+        }
+        categoryRepository.delete(category);
+        return category;
     }
 
     private Category defaultCategory(){

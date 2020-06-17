@@ -1,6 +1,10 @@
 package com.ramostear.unaboot.common;
 
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+
 import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
@@ -17,7 +21,9 @@ public class Constants {
     /**
      * User home dir path.
      */
-    public static String USER_HOME = System.getProperties().getProperty(USER_HOME_KEY);
+    //public static String USER_HOME = System.getProperties().getProperty(USER_HOME_KEY);
+
+    public static String USER_HOME = rootPath();
     /**
      * Path separator.
      */
@@ -48,4 +54,14 @@ public class Constants {
     public static final String UNABOOT_STORAGE_DIR = Constants.USER_HOME+SEPARATOR+".unaboot"+SEPARATOR;
 
     public static final String INITIAL_SCHEMA_FILE = "initialize.sql";
+
+    private static String rootPath(){
+        try {
+            Resource resource = new ClassPathResource("");
+            return resource.getFile().getAbsolutePath();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

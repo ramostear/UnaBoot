@@ -291,6 +291,24 @@
                 });
             }
         });
+        $(".reset a").on("click",function(){
+            var id = $(this).attr("aria-id");
+            if(id == null || typeof(id) == 'undefined' ){
+                return false;
+            }else{
+                layer.open({
+                    type:2,
+                    title:"<i class=\"fa fa-undo\"></i> 重置账号",
+                    shadeClose:false,
+                    shade:0.4,
+                    offset:['55px'],
+                    area:['400px','350px'],
+                    content:"${una}/admin/users/"+id+"/pwd",
+                    resize:false,
+                    anim:1
+                });
+            }
+        });
     </script>
 </body>
 </html>

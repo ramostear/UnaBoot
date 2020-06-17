@@ -14,7 +14,7 @@
         <!--设置日志策略-->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!--设置日志文件输出路径-->
-            <FileNamePattern>${LOG_HOME}/.unaboot/logs/%d{yyyyMMdd}/${APP_NAME}.log</FileNamePattern>
+            <FileNamePattern>./.unaboot/logs/%d{yyyyMMdd}/${APP_NAME}.log</FileNamePattern>
             <!--日志保存天数-->
             <MaxHistory>15</MaxHistory>
         </rollingPolicy>

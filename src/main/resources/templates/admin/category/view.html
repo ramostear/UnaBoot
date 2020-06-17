@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>修改分类目录 - UnaBoot</title>
+    <link rel="icon" href="${una}/ub-admin/img/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="${una}/ub-admin/img/favicon.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <link rel="stylesheet" href="${una}/ub-admin/plugin/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="${una}/ub-admin/css/font-awesome.css">
+    <link rel="stylesheet" href="${una}/ub-admin/css/ionicons.css">
+    <link rel="stylesheet" href="${una}/ub-admin/css/adminlte.css">
+    <link rel="stylesheet" href="${una}/ub-admin/plugin/layer/skin/default/layer.css">
+    <link rel="stylesheet" href="${una}/ub-admin/css/unaboot-admin.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700">
+</head>
+<body >
+<div class="container text-sm">
+    <div class="row">
+        <div class="col-12 pt-2">
+            <form id="category-form" novalidate="novalidate">
+                <input type="hidden" name="pid" id="parent-id" value="${category.pid}">
+                <div class="form-group row">
+                    <label class="col-3 col-form-label font-weight-normal text-right" for="name">名称<small class="text-danger">(*必填)</small></label>
+                    <div class="col-8">
+                        <input type="text" class="form-control input-sm" name="name" id="name" value="${category.name}" autocomplete="off">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-3 col-form-label font-weight-normal text-right" for="thumb">封面<span class="text-secondary">(选填)</span></label>
+                    <div class="col-8">
+                        <#if category.thumb?? && category.thumb != ''>
+                            <img id="thumb-preview" src="${category.thumb}" style="width: 120px;border-radius: 4px" class="img-fluid mb-2 mr-1 img-thumb" alt="logo">
+                        <#else>
+                            <img id="thumb-preview" src="${una}/ub-admin/img/thumb.jpg" style="width: 120px;border-radius: 4px" class="img-fluid mb-2 mr-1 img-thumb" alt="logo">
+                        </#if>
+
+                        <input type="hidden" class="form-control" name="thumb" id="thumb" value="${category.thumb}">
+                        <button type="button" id="upload-thumb" class="btn btn-primary"><i class="fa fa-upload"></i> 上传</button>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-3 col-form-label font-weight-normal text-right" for="slug">别名<small class="text-danger">(*必填)</small></label>
+                    <div class="col-8">
+                        <input type="text" class="form-control" name="slug" value="${category.slug}" id="slug" placeholder="URL自定义名称">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-3 col-form-label font-weight-normal text-right" for="theme">模板<small class="text-danger">(*必填)</small></label>
+                    <div class="col-8">
+                        <select class="form-control" name="theme" id="theme">
+                            <option style="display:none;">请选择模板</option>
+                            <#if tpls?? && tpls?size gt 0>
+                                <#list tpls as tpl>
+                                    <#if category.theme == tpl>
+                                        <option value="${tpl}" selected>${tpl}</option>
+                                    <#else>
+                                        <option value="${tpl}">${tpl}</option>
+                                    </#if>
+                                </#list>
+                            </#if>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-3 col-form-label font-weight-normal text-right" for="postTheme">内容模板<small class="text-danger">(*必填)</small></label>
+                    <div class="col-8">
+                        <select class="form-control" name="postTheme" id="postTheme">
+                            <option style="display:none;">请选择文章模板</option>
+                            <#if tpls?? && tpls?size gt 0>
+                                <#list tpls as tpl>
+                                    <#if category.theme == tpl>
+                                        <option value="${tpl}" selected>${tpl}</option>
+                                    <#else>
+                                        <option value="${tpl}">${tpl}</option>
+                                    </#if>
+                                </#list>
+                            </#if>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-3 col-form-label font-weight-normal text-right" for="sortId">序号<small class="text-danger">(*必填)</small></label>
+                    <div class="col-8">
+                        <input type="number" class="form-control" name="sortId" id="sortId" min="0" step="1" value="0">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-3 col-form-label font-weight-normal text-right">导航栏目</label>
+                    <div class="col-9 pt-2">
+                        <div class="custom-control custom-radio custom-control-inline pr-4">
+                            <input type="radio" id="show-on" name="navShow" value="1" <#if category.navShow == 1>checked</#if> class="custom-control-input">
+                            <label class="custom-control-label font-weight-normal" for="show-on">是(Y)</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" id="show-off" name="navShow" value="0" <#if category.navShow == 0>checked</#if> class="custom-control-input">
+                            <label class="custom-control-label font-weight-normal" for="show-off">否(N)</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="fixed-bottom pl-4 pt-2 pr-4 pb-2 bg-gray-light text-right border-top">
+                    <button type="button" class="btn btn-sm btn-primary" id="save-data"><i class="fa fa-save"></i> 保存</button>
+                    <button type="button" class="btn btn-sm btn-default" id="close"><i class="fa fa-times-circle-o"></i> 取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="${una}/ub-admin/plugin/jquery/jquery.min.js" type="text/javascript"></script>
+<script src="${una}/ub-admin/plugin/jquery/jquery.serialize.js" type="text/javascript"></script>
+<script src="${una}/ub-admin/plugin/jquery/jquery.form.js" type="text/javascript"></script>
+<script src="${una}/ub-admin/plugin/bootstrap/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+<script src="${una}/ub-admin/js/adminlte.js" type="text/javascript"></script>
+<script src="${una}/ub-admin/js/unaboot-admin.core.js" type="text/javascript"></script>
+<script src="${una}/ub-admin/plugin/layer/layer.js" type="text/javascript"></script>
+<script src="${una}/ub-admin/js/jquery.validate.min.js"></script>
+<script type="text/javascript">
+    var form = $("#category-form");
+    form.validate({
+        errorPlacement: function errorPlacement(error, element) {
+            element.after(error);
+        },
+        rules:{
+            name:{
+                required:true
+            },
+            slug:{
+                required:true
+            },
+            theme:{
+                required:true
+            },
+            postTheme:{
+                required:true
+            },
+        },
+        messages:{
+            name:{
+                required:'请输入栏目名称'
+            },
+            slug: {
+                required:'请输入栏目slug(作为访问地址)'
+            },
+            theme: {
+                required:'请设置栏目的渲染模板'
+            },
+            postTheme:{
+                required:'请设置栏目下文章的渲染模板'
+            }
+        }
+    });
+
+
+
+    $("#close").on("click",function(){
+        var index = parent.layer.getFrameIndex(window.name);
+        parent.layer.close(index);
+    });
+
+    $("#upload-thumb").on("click",function(){
+        layer.open({
+            type:2,
+            title:"<i class='fa fa-upload'> 上传图片</i>",
+            shadeClose:false,
+            shade:0.4,
+            area:['450px','200px'],
+            content:'${una}/admin/categories/thumb',
+            resize:false,
+            anim:2
+        });
+    });
+    $("#save-data").on("click",function(){
+       var isOk = form.valid();
+       if(isOk){
+           var data = $("#category-form").serialize();
+           var load = layer.load(2,{shade:[0.4,'#f0f0f0']});
+           $.ajax({
+               type:'POST',
+               url:"${una}/admin/categories/${category.id}/update",
+               data:data,
+               success:function(){
+                   layer.close(load);
+                   var index = parent.layer.getFrameIndex(window.name);
+                   layer.alert("当前操作已成功执行!",{
+                       title:"<i class='fa fa-info'></i> 提示",
+                       icon:1,
+                       shade:[0.4,"#fff"],
+                       shadeClose:false,
+                       time:0,
+                       btn:['OK'],
+                       yes:function(newIndex){
+                           parent.layer.close(index);
+                           parent.layer.close(newIndex);
+                           parent.location.reload();
+                       }
+                   });
+               },
+               error:function(){
+                   layer.close(load);
+                   var index = parent.layer.getFrameIndex(window.name);
+                   parent.layer.alert("当前操作失败!请稍后再试。",{
+                       title:"<i class='fa fa-info'></i> 提示",
+                       icon:1,
+                       shade:[0.4,"#fff"],
+                       shadeClose:false,
+                       time:0,
+                       btn:['OK'],
+                       yes:function(newIndex){
+                           parent.layer.close(index);
+                           parent.layer.close(newIndex);
+                       }
+                   });
+               }
+           });
+       }else{
+           return false;
+       }
+    });
+</script>
+</body>
+</html>

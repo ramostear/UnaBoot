@@ -1,5 +1,6 @@
 package com.ramostear.unaboot.web.admin;
 
+import com.ramostear.unaboot.component.FileManager;
 import com.ramostear.unaboot.domain.entity.Category;
 import com.ramostear.unaboot.domain.vo.CategoryVo;
 import com.ramostear.unaboot.exception.UnaBootException;
@@ -35,12 +36,15 @@ public class CategoryController extends UnaBootController {
 
     private final ThemeService themeService;
 
+    private final FileManager fileManager;
+
     @Autowired
     CategoryController(CategoryService categoryService,ServletContext servletContext,
-                       ThemeService themeService){
+                       ThemeService themeService,FileManager fileManager){
         this.categoryService = categoryService;
         this.servletContext = servletContext;
         this.themeService = themeService;
+        this.fileManager = fileManager;
     }
 
     @GetMapping("/")
@@ -103,8 +107,12 @@ public class CategoryController extends UnaBootController {
         if(original == null){
             return bad();
         }else{
+            String thumb = original.getThumb();
             BeanUtils.copyProperties(category,original,"id","createTime","updateTime");
             categoryService.update(original);
+            if(StringUtils.isNotBlank(thumb)){
+                fileManager.remove(thumb);
+            }
             return ok();
         }
     }
@@ -116,7 +124,7 @@ public class CategoryController extends UnaBootController {
             categoryService.delete(id);
             return ok();
         }catch (UnaBootException e){
-            return bad();
+            return bad(e.getMessage());
         }
     }
 

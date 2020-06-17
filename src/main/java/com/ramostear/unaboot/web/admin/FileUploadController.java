@@ -31,7 +31,22 @@ public class FileUploadController extends UnaBootController {
         this.fileManager = fileManager;
     }
 
-
+    @PostMapping("/image")
+    public JSONObject image(@RequestParam(name = "img") CommonsMultipartFile file){
+        JSONObject json = new JSONObject();
+        if(file == null || file.isEmpty()){
+            return convert(json,0,"Upload file must not be null","");
+        }
+        if(StringUtils.isBlank(file.getOriginalFilename()) || !allowImag(file.getOriginalFilename())){
+            return convert(json,0,"The format of the upload file is incorrect","");
+        }
+        String url = fileManager.uploadFile(file);
+        if(StringUtils.isBlank(url)){
+            return convert(json,0,"File upload failed","");
+        }else{
+            return convert(json,1,"file uploaded successfully",url);
+        }
+    }
     @PostMapping("/editormd")
     public JSONObject editormd(@RequestParam(name = "editormd-image-file") CommonsMultipartFile file){
         JSONObject json = new JSONObject();
@@ -55,6 +70,13 @@ public class FileUploadController extends UnaBootController {
         json.put("message",msg);
         json.put("url",url);
         return json;
+    }
+
+    private boolean allowImag(String fileName){
+        String[] allowFiles = {".gif",".png",".jpg",".jpeg",".bpm",".svg"};
+        String suffix = fileName.substring(fileName.lastIndexOf("."));
+        List<String> suffixList = Arrays.stream(allowFiles).collect(Collectors.toList());
+        return suffixList.contains(suffix);
     }
 
     private boolean allow(String fileName){
