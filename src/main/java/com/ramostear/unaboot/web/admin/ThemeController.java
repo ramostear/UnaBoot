@@ -3,6 +3,7 @@ package com.ramostear.unaboot.web.admin;
 import com.ramostear.unaboot.common.Constants;
 import com.ramostear.unaboot.domain.entity.Theme;
 import com.ramostear.unaboot.domain.vo.ThemeFolder;
+import com.ramostear.unaboot.exception.UnaBootException;
 import com.ramostear.unaboot.service.ThemeService;
 import com.ramostear.unaboot.web.UnaBootController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -36,7 +39,9 @@ public class ThemeController extends UnaBootController {
     @GetMapping("/")
     public String themes(@RequestParam(name = "pid",defaultValue = "themes")String pid, Model model){
         List<ThemeFolder> list = themeService.findAllByParent(pid);
-        model.addAttribute("data",list);
+        pid = pid.replace("\\","/");
+        model.addAttribute("data",list)
+             .addAttribute("parentId",pid);
         return "/admin/theme/list";
     }
 
@@ -65,6 +70,7 @@ public class ThemeController extends UnaBootController {
     @GetMapping("/editor")
     public String editor(@RequestParam(value = "path")String path, Model model){
         model.addAttribute("path",path);
+        model.addAttribute("file",themeService.loadByUrl(path));
         return "/admin/theme/editor";
     }
 
@@ -93,15 +99,47 @@ public class ThemeController extends UnaBootController {
     }
 
     @ResponseBody
-    @DeleteMapping("/remove")
-    public ResponseEntity<Object> remove(@RequestParam("path")String path){
-        return themeService.remove(path)?ok():bad();
+    @PostMapping("/rename")
+    public ResponseEntity<Object> rename(@RequestParam("path")String path,
+                                         @RequestParam("newName")String newName){
+        try {
+            themeService.rename(path,newName);
+            return ok();
+        }catch (UnaBootException e){
+            return bad();
+        }
     }
 
-    private static boolean clear(String fileName){
+    @ResponseBody
+    @PostMapping("/remove")
+    public ResponseEntity<Object> remove(@RequestParam("paths")String paths){
+        try {
+            themeService.remove(paths);
+            return ok();
+        }catch (UnaBootException e){
+            return bad();
+        }
+    }
+
+    @GetMapping("/download")
+    public void download(@RequestParam("paths")String paths, HttpServletResponse response){
+        try {
+            String path = themeService.download(paths,response);
+            if(path.endsWith(".zip")){
+                File file = new File(path);
+                if(file.exists()){
+                    file.delete();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void clear(String fileName){
         System.gc();
         File destFile = new File(Constants.UNABOOT_STORAGE_DIR+"themes"+Constants.SEPARATOR+fileName);
-        return destFile.delete();
+        destFile.delete();
     }
 
 }

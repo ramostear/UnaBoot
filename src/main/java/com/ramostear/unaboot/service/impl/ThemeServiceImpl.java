@@ -3,22 +3,31 @@ package com.ramostear.unaboot.service.impl;
 import com.ramostear.unaboot.common.Constants;
 import com.ramostear.unaboot.domain.entity.Theme;
 import com.ramostear.unaboot.domain.vo.ThemeFolder;
+import com.ramostear.unaboot.exception.BadRequestException;
+import com.ramostear.unaboot.exception.NotFoundException;
 import com.ramostear.unaboot.repository.ThemeRepository;
 import com.ramostear.unaboot.service.ThemeService;
+import com.ramostear.unaboot.util.DateTimeUtils;
 import com.ramostear.unaboot.util.ThemeUtils;
 import com.ramostear.unaboot.util.UnaBootUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * @author :       ramostear/树下魅狐
@@ -102,7 +111,9 @@ public class ThemeServiceImpl extends BaseServiceImpl<Theme,Integer> implements 
                          ThemeFolder file = new ThemeFolder();
                          file.setName(item.getName());
                          file.setPid(pid);
-                         file.setId(pid+Constants.SEPARATOR+item.getName());
+                         String id = pid+Constants.SEPARATOR+item.getName();
+                         file.setId(id.replace("\\","/"));
+                         file.setFolder(item.isDirectory());
                          file.setSize(UnaBootUtils.fileSize(item.length()));
                          file.setModifyDate(new Date(item.lastModified()));
                          return file;
@@ -128,6 +139,24 @@ public class ThemeServiceImpl extends BaseServiceImpl<Theme,Integer> implements 
             return Collections.emptyList();
         }
 
+    }
+
+    @Override
+    public ThemeFolder loadByUrl(String url) {
+        String fullPath = Constants.UNABOOT_STORAGE_DIR+url;
+        fullPath = fullPath.replace("\\","/");
+        File file = new File(fullPath);
+        if(!file.exists() || !file.isFile()){
+            throw new BadRequestException("文件不存在或文件格式不正确");
+        }
+        ThemeFolder themeFolder = new ThemeFolder();
+        themeFolder.setPid(url.substring(0,url.lastIndexOf("/")));
+        themeFolder.setId(url);
+        themeFolder.setName(file.getName());
+        themeFolder.setFolder(false);
+        themeFolder.setSize(UnaBootUtils.fileSize(file.length()));
+        themeFolder.setModifyDate(new Date(file.lastModified()));
+        return themeFolder;
     }
 
     @Override
@@ -220,12 +249,21 @@ public class ThemeServiceImpl extends BaseServiceImpl<Theme,Integer> implements 
         if(StringUtils.isBlank(folderName)){
             return false;
         }
+        Theme theme = null;
         String[] paths = StringUtils.split(folderName,"/");
         if(paths.length==2 && paths[0].equals("themes")){
             String themeName = paths[1];
             if(!themeName.equals("default")){
-                themeRepository.deleteByName(themeName);
+                theme = themeRepository.findByName(themeName);
+                if(theme == null){
+                    theme = new Theme();
+                    theme.setName(themeName);
+                }
             }
+        }
+        if(theme != null){
+            theme.setUpdateTime(DateTimeUtils.now());
+            themeRepository.save(theme);
         }
         String fullName = Constants.UNABOOT_STORAGE_DIR+folderName;
         File file = new File(fullName);
@@ -237,9 +275,60 @@ public class ThemeServiceImpl extends BaseServiceImpl<Theme,Integer> implements 
     }
 
     @Override
-    public boolean remove(String fileName) {
-        String fullPath = Constants.UNABOOT_STORAGE_DIR+fileName;
-        return ThemeUtils.remove(fullPath);
+    @Transactional
+    public void remove(String pathSequence) {
+        String paths[] = pathSequence.split(",");
+        if(paths != null && paths.length > 0){
+            for(int i=0;i<paths.length;i++){
+                String fullPath = Constants.UNABOOT_STORAGE_DIR+paths[i];
+                String checked = fullPath.replace("\\","/");
+                if(checked.contains("themes/default")){
+                    continue;
+                }
+                File file = new File(fullPath);
+                if(!file.exists()){
+                    throw new NotFoundException("当前文件不存在");
+                }
+                String parentPath = file.getParent();
+                if(parentPath.endsWith("themes")){
+                    Theme theme = themeRepository.findByName(file.getName());
+                    boolean isOk = ThemeUtils.remove(fullPath);
+                    if(theme != null && isOk){
+                        themeRepository.delete(theme);
+                    }
+
+                }else{
+                    ThemeUtils.remove(fullPath);
+                }
+            }
+        }
+
+
+    }
+
+    @Override
+    @Transactional
+    public boolean rename(String url, String new_name) {
+        Theme theme = null;
+        String fullPath = Constants.UNABOOT_STORAGE_DIR+url;
+        fullPath = fullPath.replace("\\","/");
+        File oldFile = new File(fullPath);
+        if(!oldFile.exists()){
+            throw new NotFoundException("当前文件不存在");
+        }
+        String parentPath = oldFile.getParent();
+        if(parentPath.endsWith("themes")){
+            theme = themeRepository.findByName(oldFile.getName());
+        }
+        String newFullPath = parentPath+"/"+new_name;
+        File newFile = new File(newFullPath);
+        if(theme != null){
+            theme.setName(new_name);
+            return oldFile.renameTo(newFile) && themeRepository.save(theme)!= null;
+
+        }else{
+            return oldFile.renameTo(newFile);
+        }
     }
 
     @Override
@@ -267,5 +356,148 @@ public class ThemeServiceImpl extends BaseServiceImpl<Theme,Integer> implements 
             themes.add("default");
         }
         return themes;
+    }
+
+    @Override
+    public String download(String pathSequence, HttpServletResponse response) throws IOException {
+        String paths[] = pathSequence.split(",");
+        List<String> pathArray = Arrays.stream(paths)
+                .map(path->Constants.UNABOOT_STORAGE_DIR+path)
+                .collect(Collectors.toList());
+        String path;
+        String name;
+        if(pathArray.size() == 1){
+            String filePath = pathArray.get(0);
+            String fileName = filePath.substring(filePath.lastIndexOf("/")+1);
+            File temp = new File(filePath);
+            if(temp.exists()){
+                if(temp.isFile()){
+                    path = filePath;
+                    name = fileName;
+                }else{
+                    name = "UnaBootDownload_"+new Date().getTime()+".zip";
+                    path = filesToZip(pathArray,name);
+                }
+            }else{
+                return "";
+            }
+        }else{
+            name = "UnaBootDownload_"+new Date().getTime()+".zip";
+            path = filesToZip(pathArray,name);
+        }
+        OutputStream out;
+        BufferedInputStream bi = null;
+        try {
+            String fileName = URLEncoder.encode(name,"UTF-8");
+            bi = new BufferedInputStream(new FileInputStream(path));
+            byte[] buf = new byte[1024];
+            int len;
+            response.reset();
+            response.setContentType("application/x-msdownload");
+            response.setHeader(HttpHeaders.CONTENT_DISPOSITION,"attachment;filename=\""+fileName+"\"");
+            out = response.getOutputStream();
+            while ((len = bi.read(buf)) > 0){
+                out.write(buf,0,len);
+            }
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            if(null != bi){
+                bi.close();
+            }
+
+        }
+        return path;
+    }
+
+    private static String filesToZip(List<String> paths,String fileName){
+        FileOutputStream fos = null;
+        ZipOutputStream zos = null;
+        String tempPath = System.getProperty("java.io.tmpdir")+fileName;
+        System.out.println(tempPath);
+        try {
+            File zipFile = new File(tempPath);
+            zipFile.deleteOnExit();
+            zipFile.createNewFile();
+            fos = new FileOutputStream(zipFile);
+            zos = new ZipOutputStream(new BufferedOutputStream(fos));
+            for(String path:paths){
+                File file = new File(path);
+                if(!file.exists()){
+                    continue;
+                }
+                compress(file,zos,"");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                if(null != zos){
+                    zos.close();
+                }
+                if(null != fos){
+                    fos.close();
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return tempPath;
+    }
+
+    private static void compress(File file,ZipOutputStream zos,String parentName) throws IOException {
+        if(file.exists()){
+            FileInputStream fis;
+            BufferedInputStream bis = null;
+            byte[] buf = new byte[1024];
+            try {
+                if(file.isFile()){
+                    ZipEntry zipEntry;
+                    if(parentName.equals("")){
+                      zipEntry = new ZipEntry(file.getName());
+                    }else{
+                        zipEntry = new ZipEntry(parentName+"/"+file.getName());
+                    }
+
+                    zos.putNextEntry(zipEntry);
+                    fis = new FileInputStream(file);
+                    bis = new BufferedInputStream(fis,1024*10);
+                    int len;
+                    while ((len = bis.read(buf)) != -1){
+                        zos.write(buf,0,len);
+                    }
+                    zos.closeEntry();
+                    fis.close();
+                }else{
+                    File[] subFiles = file.listFiles();
+                    if(subFiles == null || subFiles.length == 0){
+                        if(parentName.equals("")){
+                            zos.putNextEntry(new ZipEntry(file.getName()+"/"));
+                        }else{
+                            zos.putNextEntry(new ZipEntry(parentName+"/"+file.getName()+"/"));
+                        }
+                        zos.closeEntry();
+                    }else{
+                        /*zos.putNextEntry(new ZipEntry(file.getName()+"/"));
+                        zos.closeEntry();*/
+                        for(File f: subFiles){
+                            if(parentName.equals("")){
+                                compress(f,zos,file.getName());
+                            }else{
+                                compress(f,zos,parentName+"/"+file.getName());
+                            }
+                        }
+                    }
+                }
+            }catch (Exception e){
+                throw new RuntimeException(e);
+            }finally {
+                if(null != bis){
+                    bis.close();
+                }
+            }
+        }
     }
 }

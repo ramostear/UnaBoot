@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" href="${una}/ub-admin/img/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="${una}/ub-admin/img/favicon.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>编辑模板 - UnaBoot</title>
+    <link rel="stylesheet" href="${una}/ub-admin/plugin/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="${una}/ub-admin/css/font-awesome.css">
+    <link rel="stylesheet" href="${una}/ub-admin/css/ionicons.css">
+    <link rel="stylesheet" href="${una}/ub-admin/css/adminlte.min.css">
+    <link rel="stylesheet" href="${una}/ub-admin/plugin/layer/skin/default/layer.css"/>
+    <link rel="stylesheet" href="${una}/ub-admin/css/unaboot-admin.css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <style>
+        #editor_area{
+            height: calc(100vh - 50px);
+            margin-bottom: 50px;
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 p-0">
+                    <div id="editor_area"></div>
+                </div>
+                <div class="fixed-bottom pl-4 pt-2 pr-4 pb-2 bg-gray-light text-right">
+                    <span class="pull-left text-danger"><small><i class="fa fa-info-circle"></i> 修改模板后视图将受影响,请谨慎操作。</small></span>
+                    <button class="btn btn-sm btn-primary" id="save-file"><i class="fa fa-save"></i> 保存</button>
+                    <button class="btn btn-sm btn-default" id="close"><i class="fa fa-times-circle-o"></i> 取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${una}/ub-admin/plugin/jquery/jquery.min.js"></script>
+<script src="${una}/ub-admin/plugin/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="${una}/ub-admin/js/adminlte.js"></script>
+<script type="text/javascript" src="${una}/ub-admin/plugin/layer/layer.js"></script>
+<script type="text/javascript" src="${una}/ub-admin/plugin/ace-1.4.8/ace.js"></script>
+<script type="text/javascript" src="${una}/ub-admin/plugin/ace-1.4.8/ext-language_tools.js"></script>
+<script type="text/javascript">
+    var editor;
+    $(function(){
+        ace.require("ace/ext/language_tools");
+        ace.require("ace/ext/spellcheck");
+        ace.require("ace/ext/static_highlight");
+        ace.require("ace/ext/searchbox");
+        editor = ace.edit("editor_area");
+        editor.setFontSize(16);
+        editor.session.setUseWrapMode(true);
+        editor.setHighlightActiveLine(true);
+        editor.setTheme("ace/theme/dracula");
+        editor.setOptions({
+            enableBasicAutocompletion: true,
+            enableSnippets: true,
+            enableLiveAutocompletion: true
+        });
+        //editor.session.setMode("ace/mode/html");
+        initLanguage();
+        $.ajax({
+            type:'GET',
+            url:'${una}/admin/themes/read',
+            data:{path:"${path}"},
+            success:function(content){
+                editor.setValue(content);
+            },
+            error:function(){
+                layer.alert("加载文件失败",{title:'系统提示信息',icon:1});
+            }
+        });
+        $("#save-file").on("click",function(){
+            var content = editor.getValue();
+            var path = "${path}";
+            var load = layer.load(2,{shade:[0.4,'#f0f0f0']});
+            $.ajax({
+                type:'POST',
+                url:'${una}/admin/themes/write',
+                cache:false,
+                contentType:'application/x-www-form-urlencoded;charset=utf-8',
+                data:{
+                    path:path,
+                    content:content
+                },
+                success:function(){
+                    layer.alert("当前操作已成功执行!",{
+                        title:"<i class='fa fa-info'></i> 提示",
+                        icon:1,
+                        shade:[0.4,"#fff"],
+                        shadeClose:false,
+                        time:0,
+                        btn:['OK'],
+                        yes:function(newIndex){
+                            layer.close(load);
+                            layer.close(newIndex);
+                            window.location.href = "${una}/admin/themes/?pid=${file.pid}"
+                        }
+                    });
+                },
+                error:function(){
+                    layer.alert("当前操作执行失败!",{
+                        title:"<i class='fa fa-info'></i> 提示",
+                        icon:0,
+                        shade:[0.4,"#fff"],
+                        shadeClose:false,
+                        time:0,
+                        btn:['OK'],
+                        yes:function(newIndex){
+                            layer.close(load);
+                            layer.close(newIndex);
+                        }
+                    });
+                }
+            });
+        });
+        $("#close").on("click",function(){
+           window.location.href = "${una}/admin/themes/?pid=${file.pid}"
+        });
+    });
+    function initLanguage(){
+        var path = "${path}";
+        var suffixIndex = path.lastIndexOf(".");
+        var pathLength = path.length;
+        var suffix = path.substring(suffixIndex,pathLength);
+        if (suffix === ".js") {
+            editor.session.setMode("ace/mode/javascript");
+        }else if(suffix === ".css"){
+            editor.session.setMode("ace/mode/css");
+        }else if(suffix === ".html"){
+            editor.session.setMode("ace/mode/html");
+        }else if(suffix === ".json"){
+            editor.session.setMode("ace/mode/json");
+        }else if(suffix === ".yaml"){
+            editor.session.setMode("ace/mode/yaml");
+        }else if(suffix === ".java"){
+            editor.session.setMode("ace/mode/java");
+        }else if(suffix === ".md"){
+            editor.session.setMode("ace/mode/markdown");
+        }else if(suffix === ".ftl"){
+            editor.session.setMode("ace/mode/ftl");
+        }else if(suffix === ".xml"){
+            editor.session.setMode("ace/mode/xml");
+        }else{
+            editor.session.setMode("ace/mode/text");
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户可用栏目 - UnaBoot</title>
+    <link rel="icon" href="${una}/ub-admin/img/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="${una}/ub-admin/img/favicon.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <link rel="stylesheet" href="${una}/ub-admin/plugin/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="${una}/ub-admin/css/font-awesome.css">
+    <link rel="stylesheet" href="${una}/ub-admin/css/ionicons.css">
+    <link rel="stylesheet" href="${una}/ub-admin/css/adminlte.css">
+    <link rel="stylesheet" href="${una}/ub-admin/plugin/zTree_v3/css/zTreeStyle/zTreeStyle.css">
+    <link rel="stylesheet" href="${una}/ub-admin/plugin/layer/skin/default/layer.css">
+    <link rel="stylesheet" href="${una}/ub-admin/css/unaboot-admin.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700">
+    <style>
+        #category-tree{
+            height: 450px;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 text-sm  mt-2">
+                <ul id="category-tree" class="ztree"></ul>
+            </div>
+            <div class="fixed-bottom pl-4 pt-2 pr-4 pb-2 bg-gray-light text-right border-top">
+                <button type="button" class="btn btn-sm btn-primary" id="save-data"><i class="fa fa-save"></i> 保存</button>
+                <button type="button" class="btn btn-sm btn-default" id="close"><i class="fa fa-times-circle-o"></i> 取消</button>
+            </div>
+        </div>
+    </div>
+    <script src="${una}/ub-admin/plugin/jquery/jquery.min.js" type="text/javascript"></script>
+    <script src="${una}/ub-admin/plugin/bootstrap/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+    <script src="${una}/ub-admin/js/adminlte.js" type="text/javascript"></script>
+    <script src="${una}/ub-admin/js/unaboot-admin.core.js" type="text/javascript"></script>
+    <script src="${una}/ub-admin/plugin/zTree_v3/js/jquery.ztree.all.js" type="text/javascript"></script>
+    <script src="${una}/ub-admin/plugin/layer/layer.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var CategoryZTree;
+        var settings = {
+            async:{
+                enable:true,
+                autoParam:['id','name','pid'],
+                type:'get',
+                url:'${una}/admin/users/${userId}/categoryNodes'
+            },
+            callback:{
+                onAsyncSuccess:expandAll,
+                onClick:onClick,
+            },
+            data:{
+                simpleData:{
+                    enable:true,
+                    idKey:'id',
+                    pIdKey:'pid',
+                    rootPid:0
+                },
+                key:{
+                    checked:'checked',
+                    children:'children',
+                    name:'name',
+                    title:'name'
+                }
+            },
+            check:{
+                enable:true,
+                chkStyle:'checkbox',
+                chkboxType:{"Y":"ps","N":"ps"}
+            },
+            view:{
+                showIcon:true
+            }
+        };
+        CategoryZTree = $.fn.zTree.init($("#category-tree"),settings,[]);
+        function expandAll(){
+            CategoryZTree.expandAll(true);
+        }
+        function onClick(event,treeId,treeNode){
+            var id = treeNode.id;
+            var name = treeNode.name;
+            $("#parentId").val(id);
+            $("#parent-name").val(name);
+            $.ajax({
+                type:'GET',
+                url:"${una}/admin/categories/"+id+"/children",
+                success:function(view){
+                    $("#data-table").html(view);
+                }
+            });
+        }
+        $("#close").on("click",function(){
+            var index = parent.layer.getFrameIndex(window.name);
+            parent.layer.close(index);
+        });
+        $("#save-data").on("click",function(){
+            var nodes = CategoryZTree.getCheckedNodes(true);
+            var ids = "";
+            if(nodes.length > 0){
+                for(var i=0;i<nodes.length;i++){
+                    ids+=nodes[i].id;
+                    if(i< nodes.length-1){
+                        ids+=",";
+                    }
+                }
+            }
+            var load = layer.load(2,{shade:[0.4,'#f0f0f0']});
+            $.ajax({
+                type:'POST',
+                url:"${una}/admin/users/${userId}/categoryNodes",
+                data:{
+                    categoryIds:ids
+                },
+                success:function(){
+                    layer.close(load);
+                    var index = parent.layer.getFrameIndex(window.name);
+                    layer.alert("当前操作已成功执行!",{
+                        title:"<i class='fa fa-info'></i> 提示",
+                        icon:1,
+                        shade:[0.4,"#fff"],
+                        shadeClose:false,
+                        time:0,
+                        btn:['OK'],
+                        yes:function(newIndex){
+                            parent.layer.close(index);
+                            parent.layer.close(newIndex);
+                            parent.location.reload();
+                        }
+                    });
+                },
+                error:function(){
+                    layer.close(load);
+                    var index = parent.layer.getFrameIndex(window.name);
+                    parent.layer.alert("当前操作失败!请稍后再试。",{
+                        title:"<i class='fa fa-info'></i> 提示",
+                        icon:1,
+                        shade:[0.4,"#fff"],
+                        shadeClose:false,
+                        time:0,
+                        btn:['OK'],
+                        yes:function(newIndex){
+                            parent.layer.close(index);
+                            parent.layer.close(newIndex);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

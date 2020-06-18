@@ -36,7 +36,8 @@ public class ArchiveUtils {
             ZipEntry zipEntry = (ZipEntry) entries.nextElement();
             String entryName = zipEntry.getName();
             input = zipFile.getInputStream(zipEntry);
-            String outPath = (target+ Constants.SEPARATOR+entryName).replaceAll("\\*","/");
+            String outPath = (target+"/"+entryName);
+            outPath = outPath.replace("\\","/");
             File file = new File(outPath.substring(0,outPath.lastIndexOf("/")));
             if(!file.exists()){
                 file.mkdirs();

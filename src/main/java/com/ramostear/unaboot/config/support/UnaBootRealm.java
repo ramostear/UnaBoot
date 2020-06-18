@@ -51,7 +51,7 @@ public class UnaBootRealm extends AuthorizingRealm {
      * Retrieves authentication data from an implementation-specific datasource (RDBMS, LDAP, etc) for the given
      * authentication token.
      * <p/>
-     * For most datasources, this means just 'pulling' authentication data for an associated subject/user and nothing
+     * For most dataSource, this means just 'pulling' authentication data for an associated subject/user and nothing
      * more and letting Shiro do the rest.  But in some systems, this method could actually perform EIS specific
      * log-in logic in addition to just retrieving data - it is up to the Realm implementation.
      * <p/>

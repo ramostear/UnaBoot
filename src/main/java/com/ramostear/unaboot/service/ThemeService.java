@@ -5,6 +5,8 @@ import com.ramostear.unaboot.domain.vo.ThemeFolder;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -24,6 +26,8 @@ public interface ThemeService extends BaseService<Theme,Integer> {
 
     List<String> filter(String theme,String filter);
 
+    ThemeFolder loadByUrl(String url);
+
     String read(String file);
 
     boolean write(String file,String content);
@@ -32,9 +36,13 @@ public interface ThemeService extends BaseService<Theme,Integer> {
 
     boolean newFolder(String folderName);
 
-    boolean remove(String fileName);
+    void remove(String fileName);
+
+    boolean rename(String url,String new_name);
 
     boolean initialize();
 
     List<String> themes();
+
+    String download(String pathSequence, HttpServletResponse response) throws IOException;
 }

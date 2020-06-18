@@ -4,9 +4,12 @@ import com.ramostear.unaboot.common.Authorized;
 import com.ramostear.unaboot.common.SortType;
 import com.ramostear.unaboot.common.State;
 import com.ramostear.unaboot.domain.entity.User;
+import com.ramostear.unaboot.domain.vo.CategoryVo;
 import com.ramostear.unaboot.domain.vo.UserVo;
 import com.ramostear.unaboot.exception.BadRequestException;
 import com.ramostear.unaboot.exception.UnaBootException;
+import com.ramostear.unaboot.service.CategoryService;
+import com.ramostear.unaboot.service.UserCategoryService;
 import com.ramostear.unaboot.service.UserService;
 import com.ramostear.unaboot.util.AssertUtils;
 import com.ramostear.unaboot.util.UnaBootUtils;
@@ -15,10 +18,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author :       ramostear/树下魅狐
@@ -34,8 +45,15 @@ public class UserController extends UnaBootController {
 
     private final UserService userService;
 
-    public UserController(UserService userService) {
+    private final CategoryService categoryService;
+
+    private final UserCategoryService userCategoryService;
+
+    public UserController(UserService userService,CategoryService categoryService,
+                          UserCategoryService userCategoryService) {
         this.userService = userService;
+        this.categoryService = categoryService;
+        this.userCategoryService = userCategoryService;
     }
 
 
@@ -176,6 +194,54 @@ public class UserController extends UnaBootController {
             return false;
         }
     }
+
+    @GetMapping("/{id:\\d+}/categories")
+    public String categories(@PathVariable("id")Integer id,Model model){
+        model.addAttribute("userId",id);
+        return "/admin/user/categories";
+    }
+    @GetMapping("/{id:\\d+}/categoryNodes")
+    @ResponseBody
+    public CategoryVo categories(@PathVariable("id")Integer id){
+        CategoryVo node = categoryService.tree(Sort.by(Sort.Direction.ASC,"sortId"));
+        List<Integer> categoryIds = userCategoryService.findAllCategoryByUserId(id);
+        initializeTreeNodes(node,categoryIds);
+        return node;
+    }
+
+    @PostMapping("/{id:\\d+}/categoryNodes")
+    @ResponseBody
+    public ResponseEntity<Object> categories(@PathVariable("id")Integer id,@RequestParam("categoryIds") String categoryIds){
+        try {
+            if(StringUtils.isBlank(categoryIds)){
+                userCategoryService.mergeOrCreateIfAbsent(id,new ArrayList<>());
+            }else{
+                List<Integer> ids = Arrays.stream(categoryIds.split(","))
+                        .map(Integer::parseInt).collect(Collectors.toList());
+                userCategoryService.mergeOrCreateIfAbsent(id,ids);
+            }
+            return ok();
+        }catch (UnaBootException e){
+            return bad();
+        }
+    }
+
+    private void initializeTreeNodes(CategoryVo node, Collection<Integer> data){
+        if(!CollectionUtils.isEmpty(data)){
+            int checkedId = -1;
+            if(data.contains(node.getId())){
+                node.setChecked(true);
+                checkedId = node.getId();
+            }
+            if(checkedId > -1){
+                data.remove(checkedId);
+            }
+            if(!CollectionUtils.isEmpty(node.getChildren())){
+                node.getChildren().forEach(item->initializeTreeNodes(item,data));
+            }
+        }
+    }
+
     /**
      * Edit user`s state where user`s id equals target id.
      * @param id            target id

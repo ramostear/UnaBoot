@@ -57,6 +57,7 @@ public class ThemeUtils {
                 try {
                     ArchiveUtils.unzip(tempFile,folder);
                 }catch (Exception e){
+                    e.printStackTrace();
                     return null;
                 }
                 break;

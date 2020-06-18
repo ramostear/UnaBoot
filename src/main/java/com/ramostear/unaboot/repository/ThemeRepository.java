@@ -12,4 +12,6 @@ import com.ramostear.unaboot.domain.entity.Theme;
 public interface ThemeRepository extends BaseRepository<Theme,Integer> {
 
     void deleteByName(String name);
+
+    Theme findByName(String name);
 }

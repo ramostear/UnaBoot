@@ -390,3 +390,17 @@ table.theme-table tr td:nth-child(4){
 .no-resize{
     resize: none;
 }
+/*上传主题*/
+.upload-theme-box{
+    padding: 50px 15px 15px;
+    overflow: auto;
+}
+input.upload-file-input{
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    opacity: 0!important;
+    cursor: pointer;
+}
