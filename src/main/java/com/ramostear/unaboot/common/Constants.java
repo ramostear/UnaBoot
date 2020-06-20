@@ -55,6 +55,8 @@ public class Constants {
 
     public static final String INITIAL_SCHEMA_FILE = "initialize.sql";
 
+    public static final String TASK_BEAN_NAME =  "taskService";
+
     private static String rootPath(){
         try {
             Resource resource = new ClassPathResource("");

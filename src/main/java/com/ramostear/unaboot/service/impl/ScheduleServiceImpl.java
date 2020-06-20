@@ -1,8 +1,12 @@
 package com.ramostear.unaboot.service.impl;
 
+import com.ramostear.unaboot.common.PostStatus;
+import com.ramostear.unaboot.common.TaskMethods;
 import com.ramostear.unaboot.component.TaskRegister;
+import com.ramostear.unaboot.domain.entity.Post;
 import com.ramostear.unaboot.domain.entity.Schedule;
 import com.ramostear.unaboot.repository.ScheduleRepository;
+import com.ramostear.unaboot.service.PostService;
 import com.ramostear.unaboot.service.ScheduleService;
 import com.ramostear.unaboot.task.SchedulingRunner;
 import com.ramostear.unaboot.util.DateTimeUtils;
@@ -29,11 +33,14 @@ public class ScheduleServiceImpl extends BaseServiceImpl<Schedule,Integer> imple
     private static final String TASK_BEAN_NAME = "taskService";
     private final ScheduleRepository scheduleRepository;
     private final TaskRegister taskRegister;
+    private final PostService postService;
 
-    public ScheduleServiceImpl(ScheduleRepository scheduleRepository,TaskRegister taskRegister) {
+    public ScheduleServiceImpl(ScheduleRepository scheduleRepository,TaskRegister taskRegister,
+                               PostService postService) {
         super(scheduleRepository);
         this.scheduleRepository = scheduleRepository;
         this.taskRegister = taskRegister;
+        this.postService = postService;
     }
 
     @Override
@@ -78,8 +85,12 @@ public class ScheduleServiceImpl extends BaseServiceImpl<Schedule,Integer> imple
             SchedulingRunner runner = new SchedulingRunner(schedule.getBean(),schedule.getMethod(),schedule.getCronExp(),schedule.getParams());
             taskRegister.removeCronTask(runner);
             scheduleRepository.delete(schedule);
-            if(schedule.getMethod().equals("publishPost")){
-                //TODO 修改文章状态
+            if(schedule.getMethod().equals(TaskMethods.PUBLISH_POST.getName())){
+                Post post = postService.findById(Integer.parseInt(schedule.getParams()));
+                if(post != null){
+                    post.setStatus(PostStatus.DRAFT);
+                    postService.update(post);
+                }
             }
             return schedule;
         }

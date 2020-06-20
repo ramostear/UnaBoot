@@ -8,7 +8,8 @@ package com.ramostear.unaboot.common;
  * <p>description:</p>
  */
 public interface PostStatus {
-    public static final int DRAFT = -1;
-    public static final int WAIT = 0;
-    public  static final int ACTIVE = 1;
+    int DRAFT = -1; //草稿
+    int WAIT = 0;   //等待审核
+    int ACTIVE = 1;    //已发布
+    int SCHEDULE = 2;//发布中
 }

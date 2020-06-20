@@ -272,12 +272,6 @@ a.disabled,a.disabled:hover{
     display: block;
     margin: 13px 10px;
 }
-#markdown-editor-wrapper,#ck-editor-wrapper{
-    display: none;
-}
-#markdown-editor-wrapper.current,#ck-editor-wrapper.current{
-    display: block;
-}
 .control-sidebar{
     top: 1px!important;
 }

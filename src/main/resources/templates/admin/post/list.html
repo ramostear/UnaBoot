@@ -1,0 +1,166 @@
+<#include "/admin/inc/page.html">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文章 - UnaBoot</title>
+    <link rel="icon" href="${una}/ub-admin/img/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="${una}/ub-admin/img/favicon.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <link rel="stylesheet" href="${una}/ub-admin/plugin/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="${una}/ub-admin/css/font-awesome.css">
+    <link rel="stylesheet" href="${una}/ub-admin/css/ionicons.css">
+    <link rel="stylesheet" href="${una}/ub-admin/css/adminlte.css">
+    <link rel="stylesheet" href="${una}/ub-admin/css/unaboot-admin.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700">
+</head>
+<body class="sidebar-mini layout-fixed layout-navbar-fixed text-md <!--sidebar-collapse-->">
+    <div class="wrapper">
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+            <#include "/admin/inc/header.html">
+        </nav>
+        <aside class="main-sidebar sidebar-dark-primary ">
+            <#include "/admin/inc/aside.html">
+        </aside>
+        <div class="content-wrapper bg-gray-custom">
+            <div class="content-header pb-0">
+                <div class="row mb-2">
+                    <div class="col-12">
+                        <h4 class="ml-2 mb-0 text-dark">文章 <a href="${una}/admin/posts/create" class="btn btn-sm btn-outline-primary">写文章</a></h4>
+                    </div>
+                </div>
+            </div>
+            <div class="content">
+                <div class="container-fluid">
+                    <!--条件查找-->
+                    <div class="row text-sm">
+                        <div class="col-12">
+                            <div class="pull-left post-select">
+                                <a href="#" class="post-current">全部<span class="count">（2）</span></a> |
+                                <a href="#" >已发布<span class="count">（2）</span></a>
+                            </div>
+                        </div>
+                    </div>
+                    <!--过滤选项栏-->
+                    <div class="row text-sm mt-1">
+                        <div class="col-12">
+                            <form action="" class="form-inline form-row">
+                                <select class="form-control form-control-sm mb-2 mr-sm-2" id="author">
+                                    <option selected style="display: none">所有用户</option>
+                                    <#if users?? && users?size gt 0>
+                                        <#list users as user>
+                                            <option value="${user.id}">${user.nickname!user.username}</option>
+                                        </#list>
+                                    </#if>
+                                </select>
+                                <select class="form-control form-control-sm mb-2 mr-sm-2" id="category">
+                                    <option selected style="display: none;">所有分类栏目</option>
+                                    <#if categories?? && categories?size gt 0>
+                                        <#list categories as category>
+                                            <option value="${category.id}">${category.name}</option>
+                                        </#list>
+                                    </#if>
+                                </select>
+                                <button type="submit" class="btn btn-sm btn-primary ml-2 mb-2"> 筛选</button>
+                            </form>
+                        </div>
+                    </div>
+                    <!--数据列表-->
+                    <div class="row text-sm mt-1">
+                        <div class="col-12">
+                            <table class="table post-datatable table-striped table-hover" style="border: 1px solid #ddd">
+                                <thead>
+                                    <tr class="bg-white">
+                                        <td width="30%">标题</td><td width="10%">封面</td><td>作者</td><td>分类</td><td>标签</td><td>日期</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <#if data.content?? && data.content?size gt 0>
+                                        <#list data.content as post>
+                                            <tr>
+                                                <td>
+                                                    <a href="#">${post.title}</a>
+                                                    <div class="row-actions">
+                                                        <span class="edit">
+                                                            <a href="#"><i class="fa fa-edit"></i>编辑</a> |
+                                                        </span>
+                                                        <span class="trash">
+                                                            <a href=""><i class="fa fa-trash-o"></i>移至回收站</a> |
+                                                        </span>
+                                                        <span class="view">
+                                                            <a href="javascript:void(0);" class="disabled"><i class="fa fa-eye-slash"></i>查看</a>
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <#if post.thumb?? && post.thumb != "">
+                                                        <img src="${post.thumb}" class="img-fluid post-thumb">
+                                                    <#else>
+                                                        <img src="${una}/ub-admin/img/thumb.jpg" class="img-fluid post-thumb">
+                                                    </#if>
+
+                                                </td>
+                                                <td><a href="#">${post.author}</a></td>
+                                                <td>
+                                                    <#if post.category??>
+                                                        <span class="tag tag-red">${category.name}</span>
+                                                    <#else>
+                                                        <span class="tag tag-red">Uncategoried</span>
+                                                    </#if>
+                                                </td>
+                                                <td>
+                                                    <#if post.tags?? && post.tags?size gt 0>
+                                                        <#list post.tags as tag>
+                                                            <span class="tag tag-blue">${tag.name}</span>
+                                                        </#list>
+                                                    </#if>
+                                                </td>
+                                                <td>
+                                                    <#if post.status == -1>
+                                                        创建于<br>
+                                                    <#elseif post.status == 0>
+                                                        审核中<br>
+                                                    <#else>
+                                                        已发布<br>
+                                                    </#if>
+                                                    <span class="post-time"><i class="fa fa-calendar-o"></i> ${post.createTime?string("yyyy-MM-dd HH:ss")}</span>
+                                                </td>
+                                            </tr>
+                                        </#list>
+                                    <#else>
+                                        <tr><td colspan="6" class="text-center">暂无任何文章</td></tr>
+                                    </#if>
+                                </tbody>
+                                <tfoot>
+                                    <tr class="bg-white">
+                                        <td width="30%">标题</td><td width="10%">封面</td><td>作者</td><td>分类</td><td>标签</td><td>日期</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                    <!--分页按钮-->
+                    <div class="row text-sm mt-1">
+                        <#if data?? && data.content?size gt 0 && data.totalPages gt 1>
+                            <div class="col-12">
+                                <nav aria-label="..." class="pull-right">
+                                    <@pagination una+"/admin/posts/" data 9/>
+                                </nav>
+                            </div>
+                        </#if>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="main-footer">
+            <#include "/admin/inc/footer.html">
+        </footer>
+    </div>
+    <script src="${una}/ub-admin/plugin/jquery/jquery.min.js" type="text/javascript"></script>
+    <script src="${una}/ub-admin/plugin/bootstrap/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+    <script src="${una}/ub-admin/js/adminlte.js" type="text/javascript"></script>
+    <script src="${una}/ub-admin/js/unaboot-admin.core.js" type="text/javascript"></script>
+
+</body>
+</html>
