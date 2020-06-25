@@ -69,7 +69,7 @@ public class ApacheShiroConfiguration {
     @Bean
     public SimpleCookie simpleCookie(){
         SimpleCookie cookie = new SimpleCookie("rememberMe");
-        cookie.setMaxAge(604800);//记住七天
+        cookie.setMaxAge(30*60);
         return cookie;
     }
     @Bean
@@ -109,17 +109,16 @@ public class ApacheShiroConfiguration {
         ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
         shiroFilter.setSecurityManager(securityManager);
         Map<String,String> filterChain = new LinkedHashMap<>();
-        filterChain.put("/**","anon");
-        /*filterChain.put("/ub-admin/**","anon");
+        filterChain.put("/ub-admin/**","anon");
         filterChain.put("/admin/login","anon");
         filterChain.put("/admin/**","authc");
         filterChain.put("/swagger-ui.html","authc");
         filterChain.put("/v2/**","authc");
         filterChain.put("/swagger-resources/**","authc");
-        filterChain.put("/h2-console/**","authc");*/
-        shiroFilter.setFilterChainDefinitionMap(filterChain);
+        filterChain.put("/h2-console/**","authc");
         shiroFilter.setLoginUrl("/admin/login");
         shiroFilter.setSuccessUrl("/admin/index");
+        shiroFilter.setFilterChainDefinitionMap(filterChain);
         return shiroFilter;
     }
 

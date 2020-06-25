@@ -20,4 +20,6 @@ public class QueryParam {
 
     private Integer style = Integer.MIN_VALUE;
 
+    private Integer userId = Integer.MIN_VALUE;
+
 }

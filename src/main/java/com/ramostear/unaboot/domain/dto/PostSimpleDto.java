@@ -30,6 +30,8 @@ public class PostSimpleDto extends PostSmallDto {
 
     private String author;
 
+    private Integer userId;
+
     private String url;
 
     private String keywords;

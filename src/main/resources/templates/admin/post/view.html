@@ -38,7 +38,7 @@
                         <a href="${una}/admin/posts/"><img src="${una}/ub-admin/img/logo-gray.svg" class="img-fluid"></a>
                     </div>
                     <div class="post-title">
-                        <input class="form-control input-sm" name="title" autocomplete="off" placeholder="请在此处输入文章标题">
+                        <input class="form-control input-sm" name="title" value="${post.title}" autocomplete="off" placeholder="请在此处输入文章标题">
                     </div>
                     <div class="actions pull-right">
                         <button class="btn btn-sm btn-primary" data-widget="control-sidebar" data-slide="true"><i class="fa fa-cogs"></i> 参数配置</button>
@@ -50,8 +50,8 @@
                     <#if editor == "0">
                         <div id="markdown-editor-wrapper" style="width: 100%">
                             <div class="editormd current" id="content-markdown">
-                                <textarea class="editormd-markdown-textarea" name="markdown"></textarea>
-                                <textarea class="editormd-html-textarea" name="content" id="content"></textarea>
+                                <textarea class="editormd-markdown-textarea" name="markdown">${post.markdown!(post.content!'')}</textarea>
+                                <textarea class="editormd-html-textarea" name="content" id="content">${post.content!''}</textarea>
                             </div>
                         </div>
                     <#else>
@@ -66,7 +66,7 @@
                                         <div class="mark-line-right"></div>
                                         <div class="editor">
                                         </div>
-                                        <textarea style="display: none;" id="content" name="content"></textarea>
+                                        <textarea style="display: none;" id="content" name="content">${post.content!''}</textarea>
                                     </div>
                                 </div>
                             </main>
@@ -89,8 +89,13 @@
                         <div class="p-4">
                             <div class="form-group row">
                                 <div class="col-12 mt-2">
-                                    <img src="${una}/ub-admin/img/thumb.jpg" id="thumb-preview" style="box-shadow: none;border: none;border-radius: 4px;" class="img-thumbnail mb-2">
-                                    <input type="hidden" name="thumb" id="thumb">
+                                    <#if post.thumb?? && post.thumb !="">
+                                        <img src="${post.thumb}" id="thumb-preview" style="box-shadow: none;border: none;border-radius: 4px;" class="img-thumbnail mb-2">
+                                        <input type="hidden" name="thumb" id="thumb" value="${post.thumb}">
+                                    <#else>
+                                        <img src="${una}/ub-admin/img/thumb.jpg" id="thumb-preview" style="box-shadow: none;border: none;border-radius: 4px;" class="img-thumbnail mb-2">
+                                        <input type="hidden" name="thumb" id="thumb" value="">
+                                    </#if>
                                     <div class="btn-group">
                                         <button type="button" id="upload-thumb" class="btn btn-sm btn-primary"><i class="fa fa-upload"></i> 上传</button>
                                         <button type="button" id="undo-thumb" class="btn btn-default btn-sm"><i class="fa fa-undo"></i> 撤销</button>
@@ -100,7 +105,7 @@
                             <div class="form-group row">
                                 <label for="slug" class="col-3 col-form-label font-weight-normal">访问路径:</label>
                                 <div class="col-9">
-                                    <input type="text" name="slug" value="${slug}" class="form-control" id="slug" placeholder="请输入slug名称" autocomplete="off">
+                                    <input type="text" name="slug" value="${post.slug}" class="form-control" id="slug" placeholder="请输入slug名称" autocomplete="off">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -110,7 +115,11 @@
                                         <option style="display: none">请选择分类</option>
                                         <#if categories?? && categories?size gt 0>
                                             <#list categories as category>
-                                                <option value="${category.id}">${category.name}</option>
+                                                <#if post.category == category.id>
+                                                    <option value="${category.id}" selected>${category.name}</option>
+                                                <#else>
+                                                    <option value="${category.id}">${category.name}</option>
+                                                </#if>
                                             </#list>
                                         </#if>
                                     </select>
@@ -118,13 +127,13 @@
                             </div>
                             <div class="form-group row">
                                 <div class="col-12">
-                                    <input type="hidden" name="tagIds" id="tagIds">
+                                    <input type="hidden" name="tagIds" id="tagIds" value="${post.tagsToString()}">
                                     <input name="taginput" type="text" class="form-control" id="taginput" placeholder="请输入文章标签">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-12 mt-2">
-                                    <textarea class="form-control" name="summary" rows="2" placeholder="请在此输入文章摘要(选填)..."></textarea>
+                                    <textarea class="form-control" name="summary" rows="2" placeholder="请在此输入文章摘要(选填)...">${post.summary}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -133,39 +142,47 @@
                             <div class="form-group row">
                                 <div class="col-12">
                                     <div class="custom-control custom-radio custom-control-inline pr-4">
-                                        <input type="radio" id="style-article" name="style" checked value="0" class="custom-control-input">
+                                        <input type="radio" id="style-article" name="style" <#if post.style==0>checked</#if> value="0" class="custom-control-input">
                                         <label class="custom-control-label font-weight-normal" for="style-article">文章类型</label>
                                     </div>
                                     <div class="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" id="style-document" name="style" value="1" class="custom-control-input">
+                                        <input type="radio" id="style-document" name="style" value="1" <#if post.style==1>checked</#if> class="custom-control-input">
                                         <label class="custom-control-label font-weight-normal" for="style-document">文档类型</label>
                                     </div>
                                 </div>
                                 <div class="col-12 mt-2">
                                     <div class="custom-control custom-radio custom-control-inline pr-4">
-                                        <input type="radio" id="comment-on" name="comment" value="1" checked class="custom-control-input">
+                                        <input type="radio" id="comment-on" name="comment" value="1" <#if post.comment==true>checked</#if> class="custom-control-input">
                                         <label class="custom-control-label font-weight-normal" for="comment-on">允许评论</label>
                                     </div>
                                     <div class="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" id="comment-off" name="comment" value="0" class="custom-control-input">
+                                        <input type="radio" id="comment-off" name="comment" value="0" <#if post.comment==false>checked</#if> class="custom-control-input">
                                         <label class="custom-control-label font-weight-normal" for="comment-off">禁止评论</label>
                                     </div>
                                 </div>
                                 <@shiro.hasRole name="admin">
                                     <div class="col-12 mt-2">
                                         <div class="custom-control custom-checkbox custom-control-inline pr-2">
-                                            <input type="checkbox" class="custom-control-input" id="recommend"  name="recommend" value="1">
+                                            <input type="checkbox" class="custom-control-input" id="recommend" <#if post.recommend == true>checked</#if> name="recommend" value="1">
                                             <label class="custom-control-label font-weight-normal" for="recommend">推荐到首页</label>
                                         </div>
                                         <div class="custom-control custom-checkbox custom-control-inline">
-                                            <input type="checkbox" class="custom-control-input" id="stick" name="stick" value="1">
+                                            <input type="checkbox" class="custom-control-input" id="stick" <#if post.stick == true>checked</#if> name="stick" value="1">
                                             <label class="custom-control-label font-weight-normal" for="stick">置顶为轮播</label>
                                         </div>
                                     </div>
                                 </@shiro.hasRole>
                                 <@shiro.hasRole name="editor">
-                                    <input type="hidden" name="recommend" id="recommend" value="0">
-                                    <input type="hidden" name="stick" id="stick" value="0">
+                                    <#if post.recommend == true>
+                                        <input type="hidden" name="recommend" id="recommend" value="1">
+                                    <#else>
+                                        <input type="hidden" name="recommend" id="recommend" value="0">
+                                    </#if>
+                                    <#if post.stick == true>
+                                        <input type="hidden" name="stick" id="stick" value="1">
+                                    <#else>
+                                        <input type="hidden" name="stick" id="stick" value="0">
+                                    </#if>
                                 </@shiro.hasRole>
                             </div>
                         </div>
@@ -173,37 +190,44 @@
                         <div class="p-4">
                             <div class="col-12 mt-2">
                                 <div class="custom-control custom-radio custom-control-inline pr-4">
-                                    <input type="radio" id="original-on" name="source" value="0" checked class="custom-control-input">
+                                    <input type="radio" id="original-on" name="source" value="0" <#if post.source == 0>checked</#if>  class="custom-control-input">
                                     <label class="custom-control-label font-weight-normal" for="original-on">原创文章</label>
                                 </div>
                                 <div class="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" id="original-off" name="source" value="1" class="custom-control-input">
+                                    <input type="radio" id="original-off" name="source" value="1" <#if post.source == 1>checked</#if> class="custom-control-input">
                                     <label class="custom-control-label font-weight-normal" for="original-off">转载文章</label>
                                 </div>
                             </div>
                             <div class="form-group row mt-2">
                                 <label for="author" class="col-3 col-form-label font-weight-normal">作者:</label>
                                 <div class="col-9">
-                                    <input type="text" name="author" value="${profile.nickname!(profile.username)}" class="form-control" id="author" placeholder="请在此输入原文作者(选填)" autocomplete="off">
+                                    <input type="text" name="author" class="form-control" id="author" value="${post.author}" placeholder="请在此输入原文作者(选填)" autocomplete="off">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="original-url" class="col-3 col-form-label font-weight-normal">原文链接:</label>
                                 <div class="col-9">
-                                    <input type="text" name="url" class="form-control" id="url" placeholder="请在此输入原文链接(选填)" autocomplete="off">
+                                    <input type="text" name="url" class="form-control" id="url" value="${post.url!''}" placeholder="请在此输入原文链接(选填)" autocomplete="off">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-12">
-                                    <textarea name="keywords" class="form-control" id="keywords" rows="2" placeholder="请在此输入文章关键词(选填)" autocomplete="off"></textarea>
+                                    <textarea name="keywords" class="form-control" id="keywords" rows="2" placeholder="请在此输入文章关键词(选填)" autocomplete="off">${post.keywords!''}</textarea>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="card-footer scf bg-white border-top text-center">
                         <input type="hidden" name="status" id="status" value="-1">
-                        <button type="button" aria-status="-1" class="submit btn btn-sm btn-default pl-4 pr-4 mr-2">草稿</button>
-                        <button type="button" aria-status="0" class="submit btn btn-sm btn-primary pl-4 pr-4" >发布</button>
+                        <input type="hidden" name="userId" id="userId" value="${post.userId}">
+                        <@shiro.hasRole name="admin">
+                            <button type="button" aria-status="${post.status}" class="submit btn btn-sm btn-default pl-4 pr-4 mr-2">保存</button>
+                            <button type="button" aria-status="1" class="submit btn btn-sm btn-primary pl-4 pr-4" >发布</button>
+                        </@shiro.hasRole>
+                        <@shiro.hasRole name="editor">
+                            <button type="button" aria-status="-1" class="submit btn btn-sm btn-default pl-4 pr-4 mr-2">草稿</button>
+                            <button type="button" aria-status="0" class="submit btn btn-sm btn-primary pl-4 pr-4" >发布</button>
+                        </@shiro.hasRole>
                     </div>
                 </div>
             </div>
@@ -403,11 +427,11 @@
                 // Set a custom container for the toolbar.
                 document.querySelector( '.document-editor__toolbar' ).appendChild( editor.ui.view.toolbar.element );
                 document.querySelector( '.ck-toolbar' ).classList.add( 'ck-reset_all' );
+                CKEditor.setData('${post.content}');
             } )
             .catch( error => {
                 console.error( error );
             } );
-
         initialCKEditorHeight();
         function initialCKEditorHeight(){
             scale();
@@ -435,6 +459,15 @@
         },
         freeInput:false
     });
+    $.ajax({
+        type:'get',
+        url:'${una}/admin/tags/post/${post.id}',
+        success:function(data){
+            for(var i=0;i<data.length;i++){
+                $("input[name=taginput]").tagsinput("add",data[i]);
+            }
+        }
+    })
     $("#upload-thumb").on("click",function(){
         layer.open({
             type:2,
@@ -485,7 +518,7 @@
             var load = layer.load(2,{shade:[0.4,'#f0f0f0']});
             $.ajax({
                 type:'POST',
-                url:'${una}/admin/posts/create',
+                url:'${una}/admin/posts/${post.id}',
                 data:data,
                 contentType:'application/json;charset=utf-8',
                 success:function(){

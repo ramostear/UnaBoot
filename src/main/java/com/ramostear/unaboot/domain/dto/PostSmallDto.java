@@ -38,4 +38,6 @@ public class PostSmallDto implements ExportConvert<PostSmallDto, Post> {
 
     private Integer style;
 
+    private Integer userId;
+
 }

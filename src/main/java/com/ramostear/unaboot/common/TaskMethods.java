@@ -10,8 +10,8 @@ package com.ramostear.unaboot.common;
 public enum TaskMethods {
 
     PUBLISH_POST("publishPost","发文计划"),
-    REFRESH_INDEX("refreshIndex","刷新索引"),
-    REMOVE_CACHE("removeCache","清理缓存");
+    REFRESH_INDEX("refreshIndex","索引计划"),
+    REMOVE_CACHE("removeCache","缓存计划");
 
     private String name;
     private String alias;

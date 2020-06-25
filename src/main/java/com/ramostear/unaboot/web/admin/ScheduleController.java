@@ -39,6 +39,7 @@ public class ScheduleController extends UnaBootController {
     public String schedules(Model model){
         Page<Schedule> data = scheduleService.findAll(pageable("createTime", SortType.DESC));
         model.addAttribute("data",data);
+        model.addAttribute("methods",TaskMethods.values());
         return "/admin/schedule/list";
     }
 

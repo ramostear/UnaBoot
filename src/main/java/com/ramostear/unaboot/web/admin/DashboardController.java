@@ -1,5 +1,6 @@
 package com.ramostear.unaboot.web.admin;
 
+import com.ramostear.unaboot.domain.entity.User;
 import com.ramostear.unaboot.web.UnaBootController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +18,10 @@ public class DashboardController extends UnaBootController {
 
     @GetMapping("/admin/index")
     public String dashboard(Model model){
+        User user = currentUser();
+        if(user == null){
+            return sendRedirect("/admin/login");
+        }
         return "/admin/index";
     }
 

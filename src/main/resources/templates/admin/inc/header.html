@@ -3,14 +3,14 @@
         <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
     </li>
     <li class="nav-item d-none d-sm-inline-block">
-        <a href="javascript:void(0);" class="nav-link">欢迎您，管理员!</a>
+        <a href="javascript:void(0);" class="nav-link">欢迎您，${profile.nickname}!</a>
     </li>
 </ul>
 <form class="form-inline ml-3">
     <div class="input-group input-group-sm">
-        <input class="form-control form-control-navbar" type="search" placeholder="搜索文章、指南、随笔..." aria-label="Search" style="border-top-left-radius: 15px;border-bottom-left-radius: 15px;">
+        <input class="form-control form-control-navbar" type="search" disabled placeholder="搜索文章、指南、随笔..." aria-label="Search" style="border-top-left-radius: 15px;border-bottom-left-radius: 15px;">
         <div class="input-group-append">
-            <button class="btn btn-navbar" type="submit" style="border-top-right-radius: 15px;border-bottom-right-radius: 15px;">
+            <button class="btn btn-navbar" disabled type="submit" style="border-top-right-radius: 15px;border-bottom-right-radius: 15px;">
                 <i class="fas fa-search"></i>
             </button>
         </div>
@@ -20,21 +20,30 @@
     <ul class="nav navbar-nav">
         <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-                <img src="${una}/ub-admin/img/avatar-32x32.png" class="user-image">
-                <span class="hidden-xs">树下魅狐</span>
+                <#if profile.avatar?? && profile.avatar !="">
+                    <img src="${profile.avatar}" class="user-image">
+                <#else>
+                    <img src="${una}/ub-admin/img/avatar-32x32.png" class="user-image">
+                </#if>
+                <span class="hidden-xs">${profile.username}</span>
             </a>
             <ul class="dropdown-menu profile-wrapper">
                 <li class="user-info">
-                    <a href="" class="ab-item">
-                        <img src="${una}/ub-admin/img/avatar-64x64.png" class="avatar">
-                        <span class="display-name">ramostear.com</span>
+                    <a href="${una}/admin/users/profile" class="ab-item">
+                        <#if profile.avatar?? && profile.avatar != "">
+                            <img src="${profile.avatar}" class="avatar">
+                        <#else>
+                            <img src="${una}/ub-admin/img/avatar-64x64.png" class="avatar">
+                        </#if>
+
+                        <span class="display-name">${profile.email}</span>
                     </a>
                 </li>
                 <li class="edit-profile">
-                    <a href="#">编辑我的个人资料</a>
+                    <a href="${una}/admin/users/profile">编辑我的个人资料</a>
                 </li>
                 <li class="logout">
-                    <a href="">注销 <i class="fa fa-sign-out"></i></a>
+                    <a href="${una}/admin/logout">注销 <i class="fa fa-sign-out"></i></a>
                 </li>
             </ul>
         </li>

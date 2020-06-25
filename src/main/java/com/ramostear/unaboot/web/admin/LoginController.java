@@ -58,13 +58,13 @@ public class LoginController extends UnaBootController {
         }
         HappyCaptcha.remove(request);
        try {
-           UsernamePasswordToken token = new UsernamePasswordToken(param.getAccount(),param.getPassword(),param.isRememberMe());
+           UsernamePasswordToken token = new UsernamePasswordToken(param.getAccount(),param.getPassword());
            Subject subject = SecurityUtils.getSubject();
            subject.login(token);
            if(subject.isAuthenticated()){
                SavedRequest savedRequest = WebUtils.getSavedRequest(request);
                if(savedRequest == null || savedRequest.getRequestUrl() == null){
-                   return ok();
+                   return ok("/admin/index");
                }else{
                    return ok(savedRequest.getRequestUrl());
                }

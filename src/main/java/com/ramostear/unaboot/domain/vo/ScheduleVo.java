@@ -16,5 +16,5 @@ import java.util.concurrent.TimeUnit;
 @Data
 public class ScheduleVo {
     private Integer type = 1;
-    private Date publishDate = DateTimeUtils.append(new Date(),1, TimeUnit.DAYS);
+    private Date publishDate = DateTimeUtils.append(new Date(),1, TimeUnit.HOURS);
 }

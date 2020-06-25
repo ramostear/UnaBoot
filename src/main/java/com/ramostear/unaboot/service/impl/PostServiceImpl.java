@@ -60,6 +60,21 @@ public class PostServiceImpl extends BaseServiceImpl<Post,Integer> implements Po
     }
 
     @Override
+    public Page<Post> pageByUser(Integer userId, Pageable pageable) {
+        return postRepository.findAllByUserId(userId,pageable);
+    }
+
+    @Override
+    public Page<Post> pageByStatus(Integer status, Pageable pageable) {
+        return postRepository.findAllByStatus(status,pageable);
+    }
+
+    @Override
+    public Page<Post> pageByUserAndStatus(Integer userId, Integer status, Pageable pageable) {
+        return postRepository.findAllByUserIdAndStatus(userId,status,pageable);
+    }
+
+    @Override
     public Page<PostSimpleVo> page(int style, Pageable pageable) {
         Page<Post> data = postRepository.findAllByStatusAndStyle(PostStatus.ACTIVE,style,pageable);
         return  this.valueOf(data);
@@ -184,16 +199,34 @@ public class PostServiceImpl extends BaseServiceImpl<Post,Integer> implements Po
         return multiConvert(postRepository.findByCategory(categoryId,PostStatus.ACTIVE,size));
     }
 
+    @Override
+    public Long countByStatus(Integer status) {
+        return postRepository.countByStatus(status);
+    }
+
+    @Override
+    public Long countByUserId(Integer userId) {
+        return postRepository.countByUserId(userId);
+    }
+
+    @Override
+    public Long countByUserIdAndStatus(Integer userId, Integer status) {
+        return postRepository.countByUserIdAndStatus(userId,status);
+    }
+
     private Specification<Post> specificationQuery(QueryParam param){
         return (Specification<Post>)(root,query,builder)->{
             List<Predicate> predicates = new LinkedList<>();
-            if(param.getStatus() != null && param.getStatus() > Integer.MIN_VALUE){
+            if(param.getStatus() != null && param.getStatus() > -10){
                 predicates.add(builder.equal(root.get("status"),param.getStatus()));
             }
-            if(param.getStatus() != null && param.getStyle() > Integer.MIN_VALUE){
+            if(param.getStatus() != null && param.getStyle() > -1){
                 predicates.add(builder.equal(root.get("style"),param.getStyle()));
             }
-            if(param.getCategory() != null && param.getCategory() > Integer.MIN_VALUE){
+            if(param.getUserId() != null && param.getUserId() > 0){
+                predicates.add(builder.equal(root.get("userId"),param.getUserId()));
+            }
+            if(param.getCategory() != null && param.getCategory() > 0){
                 Subquery<Post> postSubQuery = query.subquery(Post.class);
                 Root<PostCategory> postCategoryRoot = postSubQuery.from(PostCategory.class);
                 postSubQuery.select(postCategoryRoot.get("postId"));
@@ -205,7 +238,7 @@ public class PostServiceImpl extends BaseServiceImpl<Post,Integer> implements Po
 
             }
             if(StringUtils.isNotEmpty(param.getKey())){
-                String condition = String.format("%%%s%%", (Object) StringUtils.split(param.getKey()));
+                String condition = "%"+param.getKey()+"%";
                 Predicate title = builder.like(root.get("title"),condition);
                 Predicate summary = builder.like(root.get("summary"),condition);
                 Predicate keywords = builder.like(root.get("keywords"),condition);
@@ -217,6 +250,7 @@ public class PostServiceImpl extends BaseServiceImpl<Post,Integer> implements Po
 
     private PostVo createOrUpdate(Post post,Set<Integer> tagIds,Integer categoryId){
         Category category = categoryService.findById(categoryId);
+        post.setTpl(category.getPostTheme());
         postRepository.save(post);
         List<Tag> tags = tagService.findAll(tagIds);
         List<PostTag> postTags = postTagService.mergeOrCreateIfAbsent(post.getId(), ComponentUtils.getIdentifiers(tags,Tag::getId));

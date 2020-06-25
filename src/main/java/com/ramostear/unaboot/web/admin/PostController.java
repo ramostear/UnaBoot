@@ -1,9 +1,6 @@
 package com.ramostear.unaboot.web.admin;
 
-import com.ramostear.unaboot.common.Constants;
-import com.ramostear.unaboot.common.PostStatus;
-import com.ramostear.unaboot.common.SortType;
-import com.ramostear.unaboot.common.TaskMethods;
+import com.ramostear.unaboot.common.*;
 import com.ramostear.unaboot.component.FileManager;
 import com.ramostear.unaboot.domain.entity.Post;
 import com.ramostear.unaboot.domain.entity.Schedule;
@@ -17,6 +14,9 @@ import com.ramostear.unaboot.util.HtmlUtils;
 import com.ramostear.unaboot.util.UnaBootUtils;
 import com.ramostear.unaboot.web.UnaBootController;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.apache.shiro.authz.annotation.RequiresUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -53,13 +52,15 @@ public class PostController extends UnaBootController {
     private final PostTagService postTagService;
     private final PostCategoryService postCategoryService;
     private final FileManager fileManager;
+    private final UserCategoryService userCategoryService;
+
 
 
     @Autowired
     public PostController(PostService postService,CategoryService categoryService,
                           UserService userService,ScheduleService scheduleService,
                           PostTagService postTagService,PostCategoryService postCategoryService,
-                          FileManager fileManager){
+                          FileManager fileManager,UserCategoryService userCategoryService){
         this.postService = postService;
         this.categoryService = categoryService;
         this.userService = userService;
@@ -67,27 +68,73 @@ public class PostController extends UnaBootController {
         this.postTagService = postTagService;
         this.postCategoryService = postCategoryService;
         this.fileManager = fileManager;
+        this.userCategoryService = userCategoryService;
     }
 
-
+    @RequiresRoles(value = {"admin","editor"},logical = Logical.OR)
     @GetMapping("/")
     public String posts(QueryParam param, Model model){
-        Page<Post> data = postService.page(param,pageable("createTime", SortType.DESC));
-        model.addAttribute("data",postService.valueOf(data))
-             .addAttribute("param",param)
-             .addAttribute("urlParam",urlParam(param))
-             .addAttribute("categories",categoryService.findAll())
-             .addAttribute("users",userService.findAll());
+        Page<Post> data;
+        if(currentUser().getRole().equals(Authorized.ADMIN.getName())){
+            data = postService.page(param,pageable("createTime", SortType.DESC));
+        }else{
+            data = postService.pageByUser(currentUser().getId(),pageable("createTime",SortType.DESC));
+        }
+        model.addAttribute("data",postService.valueOf(data));
+        if(currentUser().getRole().equals(Authorized.ADMIN.getName())){
+            model.addAttribute("param",param).addAttribute("urlParam",urlParam(param));
+            model.addAttribute("users",userService.findAll());
+            model.addAttribute("categories",categoryService.findAll());
+            model.addAttribute("total",postService.totalCount());
+            model.addAttribute("published",postService.countByStatus(PostStatus.ACTIVE));
+        }else{
+            List<Integer> categoryIds = userCategoryService.findAllCategoryByUserId(currentUser().getId());
+            model.addAttribute("categories",categoryService.findAll(categoryIds));
+            model.addAttribute("total",postService.countByUserId(currentUser().getId()));
+            model.addAttribute("published",postService.countByUserIdAndStatus(currentUser().getId(),PostStatus.ACTIVE));
+        }
         return "/admin/post/list";
     }
 
+    @RequiresRoles(value = {"admin","editor"},logical = Logical.OR)
+    @GetMapping("/actives")
+    public String actives(QueryParam param,Model model){
+        Page<Post> data;
+        if(currentUser().getRole().equals(Authorized.ADMIN.getName())){
+            data = postService.pageByStatus(PostStatus.ACTIVE,pageable("createTime",SortType.DESC));
+        }else{
+            data = postService.pageByUserAndStatus(currentUser().getId(),PostStatus.ACTIVE,pageable("createTime",SortType.DESC));
+        }
+        model.addAttribute("data",postService.valueOf(data));
+        if(currentUser().getRole().equals(Authorized.ADMIN.getName())){
+            model.addAttribute("param",param).addAttribute("urlParam",urlParam(param));
+            model.addAttribute("users",userService.findAll());
+            model.addAttribute("categories",categoryService.findAll());
+            model.addAttribute("total",postService.totalCount());
+            model.addAttribute("published",postService.countByStatus(PostStatus.ACTIVE));
+        }else{
+            List<Integer> categoryIds = userCategoryService.findAllCategoryByUserId(currentUser().getId());
+            model.addAttribute("categories",categoryService.findAll(categoryIds));
+            model.addAttribute("total",postService.countByUserId(currentUser().getId()));
+            model.addAttribute("published",postService.countByUserIdAndStatus(currentUser().getId(),PostStatus.ACTIVE));
+        }
+        return "/admin/post/actives";
+    }
+
+    @RequiresRoles(value = {"admin","editor"},logical = Logical.OR)
     @GetMapping("/create")
     public String create(Model model){
-        model.addAttribute("slug",initializeSlug())
-             .addAttribute("categories",categoryService.findAll());//TODO 需要区分人员
+        model.addAttribute("slug",initializeSlug());
+        if(currentUser().getRole().equals(Authorized.ADMIN.getName())){
+            model.addAttribute("categories",categoryService.findAll());
+        }else{
+            List<Integer> categoryIds = userCategoryService.findAllCategoryByUserId(currentUser().getId());
+            model.addAttribute("categories",categoryService.findAll(categoryIds));
+        }
         return "/admin/post/create";
     }
 
+    @RequiresRoles(value = {"admin","editor"},logical = Logical.OR)
     @ResponseBody
     @PostMapping("/create")
     public ResponseEntity<Object> create(@Valid @RequestBody PostParam param, BindingResult br){
@@ -95,7 +142,17 @@ public class PostController extends UnaBootController {
             return bad("数据未通过校验");
         }
         try {
+            if(StringUtils.isBlank(param.getAuthor())){
+                param.setAuthor(currentUser().getUsername());
+            }
+            if(!currentUser().getRole().equals(Authorized.ADMIN.getName())){
+                List<Integer> categoryIds = userCategoryService.findAllCategoryByUserId(currentUser().getId());
+                if(CollectionUtils.isEmpty(categoryIds) || !categoryIds.contains(param.getCategoryId())){
+                    return bad();
+                }
+            }
             Post post = param.convertTo();
+            post.setUserId(currentUser().getId());
             postService.createBy(post,param.tags(),param.getCategoryId(),param.getStatus());
             return ok();
         }catch (UnaBootException e){
@@ -103,13 +160,15 @@ public class PostController extends UnaBootController {
         }
     }
 
+    @RequiresRoles(value = {"admin","editor"},logical = Logical.OR)
     @GetMapping("/{id:\\d+}/publish")
     public String publish(@PathVariable("id")Integer id,Model model){
         model.addAttribute("postId",id)
-             .addAttribute("publishDate",DateTimeUtils.append(new Date(),1, TimeUnit.DAYS));
+             .addAttribute("publishDate",DateTimeUtils.append(new Date(),1, TimeUnit.HOURS));
         return "/admin/post/publish";
     }
 
+    @RequiresRoles(value = {"admin","editor"},logical = Logical.OR)
     @ResponseBody
     @PostMapping("/{id:\\d+}/publish")
     public ResponseEntity<Object> publish(@PathVariable("id")Integer id, ScheduleVo scheduleVo){
@@ -118,29 +177,50 @@ public class PostController extends UnaBootController {
             if(post == null || post.getStatus() == PostStatus.ACTIVE){
                 return bad();
             }
-            if(scheduleVo.getType() == 1){
-                post.setStatus(PostStatus.ACTIVE);
+            if(currentUser().getRole().equals(Authorized.EDITOR.getName())){
+                if(!post.getUserId().equals(currentUser().getId())){
+                    return bad();
+                }else{
+                    post.setStatus(PostStatus.WAIT);
+                    postService.update(post);
+                    return ok();
+                }
+
+            }else{
+                if(scheduleVo.getType() == 1){
+                    post.setStatus(PostStatus.ACTIVE);
+                    postService.update(post);
+                    return ok();
+                }
+                Schedule schedule = initializeSchedule(id,post.getTitle(),scheduleVo);
+                scheduleService.create(schedule);
+                post.setStatus(PostStatus.SCHEDULE);
                 postService.update(post);
                 return ok();
             }
-            Schedule schedule = initializeSchedule(id,scheduleVo);
-            scheduleService.create(schedule);
-            post.setStatus(PostStatus.SCHEDULE);
-            postService.update(post);
-            return ok();
         }catch (UnaBootException e){
             return bad();
         }
     }
 
+    @RequiresRoles(value = {"admin","editor"},logical = Logical.OR)
     @GetMapping("/{id:\\d+}")
     public String post(@PathVariable("id")Integer id,Model model){
         Post post = postService.findById(id);
-        model.addAttribute("post",postService.valueOf(post))
-             .addAttribute("categories",categoryService.findAll());
+        if(post.getStatus() == PostStatus.DRAFT && !post.getUserId().equals(currentUser().getId())){
+            return sendRedirect("/admin/posts/");
+        }
+        model.addAttribute("post",postService.valueOf(post));
+        if(currentUser().getRole().equals(Authorized.ADMIN.getName())){
+            model.addAttribute("categories",categoryService.findAll());
+        }else{
+            List<Integer> categoryIds = userCategoryService.findAllCategoryByUserId(currentUser().getId());
+            model.addAttribute("categories",categoryService.findAll(categoryIds));
+        }
         return "/admin/post/view";
     }
 
+    @RequiresRoles(value = {"admin","editor"},logical = Logical.OR)
     @PostMapping("/{id:\\d+}")
     @ResponseBody
     public ResponseEntity<Object> post(@PathVariable("id")Integer id,@Valid @RequestBody PostParam param,BindingResult br){
@@ -161,12 +241,18 @@ public class PostController extends UnaBootController {
         }
     }
 
+    @RequiresRoles(value = {"admin","editor"},logical = Logical.OR)
     @ResponseBody
     @DeleteMapping("/{id:\\d+}")
     public ResponseEntity<Object> delete(@PathVariable("id")Integer id){
         Post post = postService.findById(id);
         if(post == null || post.getStatus() == PostStatus.WAIT){
             return bad();
+        }
+        if(post.getStatus() == PostStatus.DRAFT){
+            if(!post.getUserId().equals(currentUser().getId())){
+                return bad();
+            }
         }
         try {
             List<String> imgUrls = HtmlUtils.getAllImgUrl(post.getContent());
@@ -183,14 +269,16 @@ public class PostController extends UnaBootController {
         }
     }
 
+    @RequiresUser
     @GetMapping("/thumb")
     public String thumb(){
         return "/admin/post/thumb";
     }
 
+    @RequiresUser
     @PostMapping("/thumb")
     @ResponseBody
-    public ResponseEntity<Object> removeThumb(@RequestParam("name=url")String url){
+    public ResponseEntity<Object> removeThumb(@RequestParam("url")String url){
         if(StringUtils.isBlank(url)){
             return bad();
         }else{
@@ -199,7 +287,7 @@ public class PostController extends UnaBootController {
         }
     }
 
-    private Schedule initializeSchedule(Integer postId,ScheduleVo scheduleVo){
+    private Schedule initializeSchedule(Integer postId,String title,ScheduleVo scheduleVo){
         Schedule schedule = scheduleService.findByParams(String.valueOf(postId));
         if(schedule != null){
             schedule.setState(true);
@@ -211,7 +299,8 @@ public class PostController extends UnaBootController {
             schedule.setCreateTime(DateTimeUtils.now());
             schedule.setUpdateTime(DateTimeUtils.now());
             schedule.setState(true);
-            schedule.setIntroduce("定时发布编号为"+postId+"的文章，Cron表达式为："+schedule.getCronExp());
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+            schedule.setIntroduce("于"+sdf.format(scheduleVo.getPublishDate())+"发布名为《"+title+"》的文章");
             schedule.setParams(String.valueOf(postId));
             schedule.setBean(Constants.TASK_BEAN_NAME);
             schedule.setMethod(TaskMethods.PUBLISH_POST.getName());
@@ -235,6 +324,9 @@ public class PostController extends UnaBootController {
         }
         if(param.getCategory() > 0){
             sb.append("&category=").append(param.getCategory());
+        }
+        if(param.getUserId() > 0){
+            sb.append("&userId=").append(param.getUserId());
         }
         String urlParam = sb.toString();
         if(urlParam.trim().length() <=1){

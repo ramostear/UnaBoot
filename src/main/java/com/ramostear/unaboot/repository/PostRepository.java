@@ -83,4 +83,16 @@ public interface PostRepository extends BaseRepository<Post,Integer>, JpaSpecifi
     List<Post> findAllByStatusAndStyle(int status,int style);
 
     Page<Post> findAllByStatusAndStyle(int status, int style, Pageable pageable);
+
+    Page<Post> findAllByUserId(int userId,Pageable pageable);
+
+    Page<Post> findAllByUserIdAndStatus(int userId,int status,Pageable pageable);
+
+    Page<Post> findAllByStatus(int status,Pageable pageable);
+
+    Long countByUserId(Integer userId);
+
+    Long countByUserIdAndStatus(Integer userId,Integer status);
+
+    Long countByStatus(Integer status);
 }

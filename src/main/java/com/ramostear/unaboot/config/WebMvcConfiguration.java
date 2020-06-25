@@ -5,11 +5,9 @@ import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.ramostear.unaboot.common.Constants;
 import com.ramostear.unaboot.config.support.CustomFreemarkerConfigurer;
-import com.ramostear.unaboot.web.handler.RememberMeHandler;
 import com.ramostear.unaboot.web.handler.UnaBootInitializeHandler;
 import com.ramostear.unaboot.web.handler.UnaBootServletContextHandler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -20,7 +18,6 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
-import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
@@ -41,8 +38,7 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
     private UnaBootServletContextHandler servletContextHandler;
     @Autowired
     private UnaBootInitializeHandler initializeHandler;
-    @Autowired
-    private RememberMeHandler rememberMeHandler;
+
 
     @Override
     protected void configurePathMatch(PathMatchConfigurer configurer) {
@@ -57,9 +53,6 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         registry.addInterceptor(initializeHandler)
                 .addPathPatterns("/**")
                 .excludePathPatterns("/install.html","/ub-admin/**");
-        registry.addInterceptor(rememberMeHandler)
-                .addPathPatterns("/admin/**")
-                .excludePathPatterns("/admin/login");
         super.addInterceptors(registry);
     }
 

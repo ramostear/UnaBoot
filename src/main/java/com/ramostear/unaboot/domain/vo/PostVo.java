@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -21,4 +22,16 @@ import java.util.Set;
 public class PostVo extends PostDto {
     private Set<Integer> tagIds;
     private Integer category;
+
+    public String tagsToString(){
+        if(CollectionUtils.isEmpty(tagIds)){
+            return "";
+        }
+        String ids = "";
+        Iterator<Integer> iterator = tagIds.iterator();
+        while (iterator.hasNext()){
+            ids += iterator.next()+",";
+        }
+        return ids.substring(0,ids.length()-1);
+    }
 }

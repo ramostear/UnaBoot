@@ -68,6 +68,9 @@ public class Post extends AbstractEntity implements Serializable {
     @Column(name = "author",columnDefinition = "varchar(64) default ''")
     private String author;  //文章作者，默认是当前登录用户
 
+    @Column(name = "user_id",columnDefinition = "int not null")
+    private Integer userId; //用户ID
+
     @Column(name = "source",columnDefinition = "int default 0")
     private Integer source; //文章来源，0：原创，1：转载
 

@@ -25,6 +25,12 @@ public interface PostService extends BaseService<Post,Integer> {
 
     Page<Post> page(@NonNull QueryParam param, Pageable pageable);
 
+    Page<Post> pageByUser(Integer userId,Pageable pageable);
+
+    Page<Post> pageByStatus(Integer status,Pageable pageable);
+
+    Page<Post> pageByUserAndStatus(Integer userId,Integer status,Pageable pageable);
+
     Page<PostSimpleVo> page(int style,Pageable pageable);
 
     Page<Post> page(@NonNull String key, Pageable pageable);
@@ -59,4 +65,10 @@ public interface PostService extends BaseService<Post,Integer> {
     List<Post> findAllByStatusIsPublished();
 
     List<PostSmallDto> findAllByCategory(Integer categoryId,int size);
+
+    Long countByStatus(Integer status);
+
+    Long countByUserId(Integer userId);
+
+    Long countByUserIdAndStatus(Integer userId,Integer status);
 }

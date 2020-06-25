@@ -3,6 +3,7 @@ package com.ramostear.unaboot.web.admin;
 import com.ramostear.unaboot.common.SortType;
 import com.ramostear.unaboot.domain.entity.Tag;
 import com.ramostear.unaboot.exception.UnaBootException;
+import com.ramostear.unaboot.service.PostTagService;
 import com.ramostear.unaboot.service.TagService;
 import com.ramostear.unaboot.web.UnaBootController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +27,12 @@ import java.util.List;
 public class TagController extends UnaBootController {
 
     private final TagService tagService;
+    private final PostTagService postTagService;
 
     @Autowired
-    TagController(TagService tagService){
+    TagController(TagService tagService,PostTagService postTagService){
         this.tagService = tagService;
+        this.postTagService = postTagService;
     }
 
     @GetMapping("/")
@@ -44,6 +47,12 @@ public class TagController extends UnaBootController {
     public List<Tag> tags(){
         List<Tag> tags = tagService.findAll();
         return tags;
+    }
+
+    @ResponseBody
+    @GetMapping("/post/{postId:\\d+}")
+    public List<Tag> getByPost(@PathVariable("postId")Integer postId){
+        return  postTagService.findAllTagByPostId(postId);
     }
 
     @GetMapping("/create")

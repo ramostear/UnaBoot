@@ -40,14 +40,12 @@ public class PostParam implements ImportConvert<Post> {
     @Size(max = 128,message = "摘要长度不能超过{max}")
     private String summary;     //文章概要信息
 
-    @NotBlank(message = "请填写文章关键词")
     private String keywords;    //文章的关键词，如果有多个，使用","分割
 
     private String thumb;       //文章封面图
 
     private Long visits = 0L;        //文章浏览量
 
-    @NotBlank(message = "渲染模板不能为空")
     private String tpl;     //文章显示的模板，默认是所属栏目设定的文章模板
 
     private Boolean stick  = false;  //置顶
@@ -73,7 +71,7 @@ public class PostParam implements ImportConvert<Post> {
 
     private Integer categoryId;
 
-    private Date createTime;
+    private Date updateTime;
 
     public Set<Integer> tags(){
         if(StringUtils.isBlank(tagIds)){
@@ -87,7 +85,7 @@ public class PostParam implements ImportConvert<Post> {
 
     @Override
     public Post convertTo(){
-        createTime = DateTimeUtils.now();
+        updateTime = DateTimeUtils.now();
         return ImportConvert.super.convertTo();
     }
 }

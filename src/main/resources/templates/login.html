@@ -117,7 +117,7 @@
                 captcha:{
                     required:'请输入验证码',
                     maxlength:'验证码不正确',
-                    minlenght:'验证码不正确'
+                    minlength:'验证码不正确'
                 }
             }
         });
@@ -136,8 +136,8 @@
                    contentType:'application/json;charset=utf-8',
                    success:function(res){
                        layer.close(load);
-                       if(res.responseText != null || res.responseText !== ""){
-                           window.location.href = res.responseText;
+                       if(res != null || res !== ""){
+                           window.location.href = res;
                        }else{
                            window.location.href = "${una}/admin/index";
                        }

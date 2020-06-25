@@ -51,23 +51,24 @@
                                 <div class="row">
                                     <div class="col-4">
                                         <h6 class="font-weight-bold mb-4">开始使用</h6>
-                                        <a href="#" class="btn btn-primary mb-2">自定义您的站点</a>
-                                        <p>或 <a href="#" class="text-decoration-under-line">更换主题</a></p>
+                                        <a href="${una}/admin/settings/general" class="btn btn-primary mb-2">自定义您的站点</a>
+                                        <p>或 <a href="${una}/admin/themes/" class="text-decoration-under-line">更换主题</a></p>
                                     </div>
                                     <div class="col-4">
                                         <h6 class="font-weight-bold mb-4">接下来</h6>
                                         <ul class="quick-menu pl-0">
                                             <li>
-                                                <i class="fa fa-edit"></i> <a href="">编辑主题</a>
+                                                <i class="fa fa-edit"></i>
+                                                <a href="${una}/admin/themes/?pid=themes/${theme}" <#if profile.role !="admin">class="disabled" </#if>>编辑主题</a>
                                             </li>
                                             <li>
-                                                <i class="fa fa-plus-circle"></i> <a href="">添加栏目</a>
+                                                <i class="fa fa-pencil"></i> <a href="${una}/admin/posts/create">撰写文章</a>
                                             </li>
                                             <li>
-                                                <i class="fa fa-pencil"></i> <a href="">撰写文章</a>
+                                                <i class="fa fa-plus-circle"></i> <a href="${una}/admin/categories/" <#if profile.role !="admin">class="disabled" </#if> >添加栏目</a>
                                             </li>
                                             <li>
-                                                <i class="fa fa-eye"></i> <a href="">浏览站点</a>
+                                                <i class="fa fa-eye"></i> <a href="${una}/index.html">浏览站点</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -75,16 +76,16 @@
                                         <h6 class="font-weight-bold mb-4">更多操作</h6>
                                         <ul class="quick-menu pl-0">
                                             <li>
-                                                <i class="fa fa-share-alt"></i> <a href="">设置友链</a>
+                                                <i class="fa fa-share-alt"></i> <a href="${una}/admin/links/">设置友链</a>
                                             </li>
                                             <li>
-                                                <i class="fa fa-tag"></i> <a href="">添加标签</a>
+                                                <i class="fa fa-tag"></i> <a href="${una}/admin/tags/">添加标签</a>
                                             </li>
                                             <li>
-                                                <i class="fa fa-comments-o"></i> <a href="">打开/关闭评论功能</a>
+                                                <i class="fa fa-comments-o"></i> <a href="${una}/admin/settings/gitalk">打开/关闭评论功能</a>
                                             </li>
                                             <li>
-                                                <i class="fa fa-mortar-board"></i> <a href="">了解更多新手上路知识</a>
+                                                <i class="fa fa-mortar-board"></i> <a href="${una}/admin/apis">了解更多新手上路知识</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -112,25 +113,25 @@
                                 <div class="form-group row mb-1">
                                     <lable class="col-3 col-form-label font-weight-normal">名称:</lable>
                                     <div class="col-9">
-                                        <input type="text" class="form-control input-sm" readonly value="UnaBoot官网">
+                                        <input type="text" class="form-control input-sm" readonly value="${title!'Untitled'}">
                                     </div>
                                 </div>
                                 <div class="form-group row mb-1">
                                     <lable class="col-3 col-form-label font-weight-normal">域名:</lable>
                                     <div class="col-9">
-                                        <input type="text" class="form-control input-sm" readonly value="https://www.ramostear.com">
+                                        <input type="text" class="form-control input-sm" readonly value="${domain!'Undefined'}">
                                     </div>
                                 </div>
                                 <div class="form-group row mb-1">
                                     <lable class="col-3 col-form-label font-weight-normal">ICP备:</lable>
                                     <div class="col-9">
-                                        <input type="text" class="form-control input-sm" readonly value="ICP备 15000250号">
+                                        <input type="text" class="form-control input-sm" readonly value="${icp!'Undefined'}">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <lable class="col-3 col-form-label font-weight-normal">公网安备:</lable>
                                     <div class="col-9">
-                                        <input type="text" class="form-control" readonly value="贵公网安备 52230102000133号">
+                                        <input type="text" class="form-control" readonly value="${isp!'Undefined'}">
                                     </div>
                                 </div>
                             </div>

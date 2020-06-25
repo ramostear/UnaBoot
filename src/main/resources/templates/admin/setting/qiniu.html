@@ -139,12 +139,12 @@
                 $("#showSwitch").find("input").each(function(){
                    $(this).attr("readonly","readonly");
                 });
-                $("select[name='zone']").attr("disabled","disabled");
+                $("select[name='zone']").attr("readonly","readonly");
             }else{
                 $("#showSwitch").find("input").each(function(){
                     $(this).removeAttr("readonly");
                 });
-                $("select[name='zone']").removeAttr("disabled");
+                $("select[name='zone']").removeAttr("readonly");
             }
         }
         var form = $("#qiniu-form");

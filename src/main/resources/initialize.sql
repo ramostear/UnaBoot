@@ -31,7 +31,7 @@ CREATE TABLE `category` (
   `theme` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `thumb` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 /*Table structure for table `link` */
 
@@ -58,7 +58,7 @@ CREATE TABLE `post_category` (
   `category_id` int(11) DEFAULT NULL,
   `post_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 /*Table structure for table `post_tag` */
 
@@ -71,7 +71,7 @@ CREATE TABLE `post_tag` (
   `post_id` int(11) DEFAULT NULL,
   `tag_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 /*Table structure for table `posts` */
 
@@ -98,19 +98,9 @@ CREATE TABLE `posts` (
   `tpl` varchar(127) COLLATE utf8_bin NOT NULL,
   `url` varchar(255) COLLATE utf8_bin DEFAULT '',
   `visits` int(11) DEFAULT '0',
+  `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
-/*Table structure for table `role_permit` */
-
-DROP TABLE IF EXISTS `role_permit`;
-
-CREATE TABLE `role_permit` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `permit_id` int(11) DEFAULT NULL,
-  `role_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 /*Table structure for table `schedule` */
 
@@ -128,7 +118,7 @@ CREATE TABLE `schedule` (
   `params` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `state` int(11) DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 /*Table structure for table `settings` */
 
@@ -155,7 +145,7 @@ CREATE TABLE `tag` (
   `name` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `slug` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 /*Table structure for table `theme` */
 
@@ -167,7 +157,7 @@ CREATE TABLE `theme` (
   `update_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `name` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 /*Table structure for table `user` */
 
@@ -177,7 +167,7 @@ CREATE TABLE `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `avatar` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `avatar` longtext COLLATE utf8_bin,
   `email` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `locked` int(11) DEFAULT NULL,
   `nickname` varchar(255) COLLATE utf8_bin DEFAULT NULL,
@@ -186,20 +176,20 @@ CREATE TABLE `user` (
   `state` int(11) DEFAULT NULL,
   `username` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-/*Table structure for table `user_post` */
+/*Table structure for table `user_category` */
 
-DROP TABLE IF EXISTS `user_post`;
+DROP TABLE IF EXISTS `user_category`;
 
-CREATE TABLE `user_post` (
+CREATE TABLE `user_category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `post_id` int(11) DEFAULT NULL,
+  `category_id` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

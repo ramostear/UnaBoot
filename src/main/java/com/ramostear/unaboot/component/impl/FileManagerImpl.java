@@ -65,7 +65,7 @@ public class FileManagerImpl implements FileManager {
         }
         try {
             multipartFile.transferTo(file);
-            path = Constants.SEPARATOR+fileName;
+            path = "/"+fileName;
         } catch (IOException e) {
             e.printStackTrace();
             path = "";

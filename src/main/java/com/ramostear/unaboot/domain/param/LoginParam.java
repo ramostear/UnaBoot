@@ -22,6 +22,4 @@ public class LoginParam {
 
     @NotBlank(message = "请填写验证码")
     private String captcha;
-
-    private boolean rememberMe = false;
 }

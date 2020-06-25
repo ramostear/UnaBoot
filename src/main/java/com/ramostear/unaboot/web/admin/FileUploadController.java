@@ -64,6 +64,34 @@ public class FileUploadController extends UnaBootController {
         }
     }
 
+    @PostMapping("/ckeditor")
+    public JSONObject ckEditor(@RequestParam(name = "upload")CommonsMultipartFile file){
+        if(file == null || file.isEmpty()){
+            JSONObject json = new JSONObject();
+            json.put("uploaded",false);
+            json.put("url","");
+            return json;
+        }
+        if(StringUtils.isBlank(file.getOriginalFilename()) || !allow(file.getOriginalFilename())){
+            JSONObject json = new JSONObject();
+            json.put("uploaded",false);
+            json.put("url","");
+            return json;
+        }
+        String url = fileManager.uploadFile(file);
+        if(StringUtils.isBlank(url)){
+            JSONObject json = new JSONObject();
+            json.put("uploaded",false);
+            json.put("url","");
+            return json;
+        }else{
+            JSONObject json = new JSONObject();
+            json.put("uploaded",true);
+            json.put("url",url);
+            return json;
+        }
+    }
+
 
     private JSONObject convert(JSONObject json,int status,String msg,String url){
         json.put("success",status);

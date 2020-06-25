@@ -88,7 +88,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl<Schedule,Integer> imple
             if(schedule.getMethod().equals(TaskMethods.PUBLISH_POST.getName())){
                 Post post = postService.findById(Integer.parseInt(schedule.getParams()));
                 if(post != null){
-                    post.setStatus(PostStatus.DRAFT);
+                    post.setStatus(PostStatus.WAIT);
                     postService.update(post);
                 }
             }

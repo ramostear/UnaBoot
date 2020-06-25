@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="${una}/ub-admin/css/ionicons.css">
     <link rel="stylesheet" href="${una}/ub-admin/css/adminlte.css">
     <link rel="stylesheet" href="${una}/ub-admin/css/unaboot-admin.css">
-    <link rel="stylesheet" href="${una}/ub-admin/plugin/layer/skin/default/layer.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700">
 </head>
 <body class="sidebar-mini layout-fixed layout-navbar-fixed text-md <!--sidebar-collapse-->">
@@ -47,19 +46,13 @@
                     <@shiro.hasRole name="admin">
                         <div class="row text-sm mt-1">
                             <div class="col-12">
-                                <form class="form-inline form-row">
+                                <form action="${una}/admin/posts/" method="get" class="form-inline form-row">
                                     <input name="key" id="key" placeholder="关键词" class="form-control form-control-sm mb-2 mr-sm-2">
                                     <select class="form-control form-control-sm mb-2 mr-sm-2" id="userId" name="userId">
                                         <option value="-10" style="display: none">所有用户</option>
                                         <#if users?? && users?size gt 0>
                                             <#list users as user>
-                                                <option value="${user.id}">
-                                                    <#if user.id == profile.id>
-                                                        我自己
-                                                    <#else>
-                                                        ${user.nickname!user.username}
-                                                    </#if>
-                                                </option>
+                                                <option value="${user.id}">${user.nickname!user.username}</option>
                                             </#list>
                                         </#if>
                                     </select>
@@ -83,7 +76,7 @@
                                         <option value="0">文章</option>
                                         <option value="1">文档</option>
                                     </select>
-                                    <button type="button" class="btn btn-sm btn-primary ml-2 mb-2 filter-btn"> 筛选</button>
+                                    <button type="submit" class="btn btn-sm btn-primary ml-2 mb-2"> 筛选</button>
                                 </form>
                             </div>
                         </div>
@@ -94,7 +87,7 @@
                             <table class="table post-datatable table-striped table-hover" style="border: 1px solid #ddd">
                                 <thead>
                                     <tr class="bg-white">
-                                        <td width="35%">标题</td><td width="10%">封面</td><td>作者</td><td>分类</td><td>标签</td><td>日期</td>
+                                        <td width="30%">标题</td><td width="10%">封面</td><td>作者</td><td>分类</td><td>标签</td><td>日期</td>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -107,14 +100,14 @@
                                                     <#elseif post.status == 0>
                                                         <span class="text-danger">[审核中]</span>
                                                     <#elseif post.status == 2>
-                                                        <span class="text-yellow">[发布中...]</span>
+                                                        <span class="text-yellow">[定时发布]</span>
                                                     <#else>
                                                         <span class="text-green">[已发布]</span>
                                                     </#if>
                                                     <#if post.source == 0>
                                                         <span class="tag tag-blue">原创</span>
                                                     </#if>
-                                                    <#if post.status == 1 || post.status == 2>
+                                                    <#if post.status == 1>
                                                         <#if post.stick == true>
                                                             <span class="tag tag-red">置顶</span>
                                                         </#if>
@@ -126,50 +119,9 @@
                                                         ${post.title}
                                                     </a>
                                                     <div class="row-actions">
-                                                        <#if post.status == -1>
-                                                            <#if post.userId == profile.id>
-                                                                <span class="edit">
-                                                                    <a href="${una}/admin/posts/${post.id}"><i class="fa fa-edit"></i>编辑</a> |
-                                                                </span>
-                                                                <span class="submit">
-                                                                    <a href="javascript:void(0);" aria-id="${post.id}"><i class="fa fa-send-o"></i>发布</a> |
-                                                                </span>
-                                                                <span class="trash">
-                                                                    <a href="javascript:void(0);" aria-id="${post.id}"><i class="fa fa-trash-o"></i>删除</a>
-                                                                </span>
-                                                            </#if>
-                                                        </#if>
-                                                        <#if post.status == 0>
-                                                            <#--等待审核-->
-                                                            <@shiro.hasRole name="admin">
-                                                                <span class="edit">
-                                                                    <a href="${una}/admin/posts/${post.id}"><i class="fa fa-edit"></i>编辑</a> |
-                                                                </span>
-                                                                <span class="submit">
-                                                                    <a href="javascript:void(0);" aria-id="${post.id}"><i class="fa fa-send-o"></i>发布</a> |
-                                                                </span>
-                                                                <#if post.userId != profile.id>
-                                                                    <span class="undo">
-                                                                        <a href="javascript:void(0);" aria-id="${post.id}"><i class="fa fa-undo"></i>驳回</a> |
-                                                                    </span>
-                                                                </#if>
-                                                            </@shiro.hasRole>
-                                                            <@shiro.hasRole name="editor">
-                                                                <#if post.userId == profile.id>
-                                                                    <span class="reset">
-                                                                        <a href="javascript:void(0);" aria-id="${post.id}"><i class="fa fa-undo"></i>撤回</a> |
-                                                                    </span>
-                                                                    <span class="trash">
-                                                                        <a href="javascript:void(0);" aria-id="${post.id}"><i class="fa fa-trash-o"></i>删除</a>
-                                                                    </span>
-                                                                </#if>
-                                                            </@shiro.hasRole>
-                                                        </#if>
-                                                        <#if post.status == 1>
-                                                            <span class="reset">
-                                                                <a href="javascript:void(0);" aria-id="${post.id}"><i class="fa fa-undo"></i>撤回</a>
-                                                            </span>
-                                                        </#if>
+                                                        <span class="reset">
+                                                            <a href="javascript:void(0);" aria-id="${post.id}"><i class="fa fa-undo"></i>撤回</a>
+                                                        </span>
                                                     </div>
                                                 </td>
                                                 <td>
@@ -221,7 +173,7 @@
                                 </tbody>
                                 <tfoot>
                                     <tr class="bg-white">
-                                        <td width="35%">标题</td><td width="10%">封面</td><td>作者</td><td>分类</td><td>标签</td><td>日期</td>
+                                        <td width="30%">标题</td><td width="10%">封面</td><td>作者</td><td>分类</td><td>标签</td><td>日期</td>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -232,7 +184,7 @@
                         <#if data?? && data.content?size gt 0 && data.totalPages gt 1>
                             <div class="col-12">
                                 <nav aria-label="..." class="pull-right">
-                                    <@pagination una+"/admin/posts/"+(urlParam!'') data 9/>
+                                    <@pagination una+"/admin/actives/"+(urlParam!'') data 9/>
                                 </nav>
                             </div>
                         </#if>
@@ -247,58 +199,7 @@
     <script src="${una}/ub-admin/plugin/jquery/jquery.min.js" type="text/javascript"></script>
     <script src="${una}/ub-admin/plugin/bootstrap/js/bootstrap.bundle.min.js" type="text/javascript"></script>
     <script src="${una}/ub-admin/js/adminlte.js" type="text/javascript"></script>
-    <script src="${una}/ub-admin/plugin/layer/layer.js" type="text/javascript"></script>
     <script src="${una}/ub-admin/js/unaboot-admin.core.js" type="text/javascript"></script>
-    <script type="text/javascript">
-        $(".filter-btn").on("click",function(){
-           var key = $("input[name=key]").val();
-           var userId =$("select[name=userId] option:selected").val();
-           var category = $("select[name=category] option:selected").val();
-           var status = $("select[name=status] option:selected").val();
-           var style = $("select[name=style] option:selected").val();
-           var param = "";
-           if(key != null && key != ""){
-               param+="&key="+key;
-           }
-           if(userId != null && userId > 0){
-               param+="&userId="+userId;
-           }
-           if(category != null && category > 0){
-               param+="&category="+category;
-           }
-           if(status != null && status > -10){
-               param+="&status="+status;
-           }
-           if(style != null && style > -1){
-               param+="&style="+style;
-           }
-           if(param.length >0){
-               param = param.substring(1,param.length);
-               window.location.href = "${una}/admin/posts/?"+param;
-           }else{
-               window.location.href = "${una}/admin/posts/";
-           }
-        });
-        $(".submit a").on("click",function(){
-            var id = $(this).attr("aria-id");
-            if(id == null || typeof(id) == 'undefined' ){
-                return false;
-            }else{
-                layer.open({
-                    type:2,
-                    title:"<i class=\"fa fa-send-o\"></i> 发布文章",
-                    shadeClose:false,
-                    shade:0.4,
-                    offset:['55px'],
-                    area:['550px','500px'],
-                    content:'${una}/admin/posts/'+id+'/publish',
-                    resize:false,
-                    anim:1
-                });
-            }
-
-        });
-    </script>
 
 </body>
 </html>
