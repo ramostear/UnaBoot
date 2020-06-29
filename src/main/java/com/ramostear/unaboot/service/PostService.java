@@ -35,6 +35,8 @@ public interface PostService extends BaseService<Post,Integer> {
 
     Page<Post> page(@NonNull String key, Pageable pageable);
 
+    Page<Post> draft(Integer userId,Pageable pageable);
+
     @Transactional
     PostVo createBy(Post post, Set<Integer> tagIds,Integer category,int status);
 

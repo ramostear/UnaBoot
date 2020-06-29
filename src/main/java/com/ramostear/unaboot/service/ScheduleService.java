@@ -16,4 +16,6 @@ public interface ScheduleService extends BaseService<Schedule,Integer>{
     Schedule findByParams(String params);
 
     void reloadAll();
+
+    Schedule createOrUpdate(Schedule schedule);
 }

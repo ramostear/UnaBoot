@@ -89,6 +89,11 @@ public class PostServiceImpl extends BaseServiceImpl<Post,Integer> implements Po
     }
 
     @Override
+    public Page<Post> draft(Integer userId, Pageable pageable) {
+        return postRepository.findAllByUserIdAndStatus(userId, PostStatus.DRAFT,pageable);
+    }
+
+    @Override
     @Transactional
     public PostVo createBy(Post post, Set<Integer> tagIds, Integer category, int status) {
         post.setStatus(status);

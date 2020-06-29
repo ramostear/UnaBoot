@@ -151,7 +151,7 @@ public class UserController extends UnaBootController {
 
     @GetMapping("/profile")
     public String profile(Model model){
-        model.addAttribute("user",currentUser());
+        model.addAttribute("user",userService.findById(currentUser().getId()));
         return "/admin/user/profile";
     }
     @ResponseBody
@@ -163,7 +163,7 @@ public class UserController extends UnaBootController {
     @GetMapping("/profile/pwd")
     public String profilePwd(Model model){
         model.addAttribute("user",currentUser());
-        return "/admin/user/pwd";
+        return "/admin/user/profile-pwd";
     }
 
     @ResponseBody

@@ -7,6 +7,7 @@ import com.ramostear.unaboot.domain.AbstractEntity;
 import com.ramostear.unaboot.util.DateTimeUtils;
 import lombok.*;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -46,7 +47,9 @@ public class User extends AbstractEntity implements Serializable {
     @Column(name = "nickname")
     private String nickname;
 
-    @Column(name = "avatar",columnDefinition = "longtext")
+    @Lob
+    @Type(type="text")
+    @Column(name = "avatar")
     private String avatar;
 
     @Column(name = "state")

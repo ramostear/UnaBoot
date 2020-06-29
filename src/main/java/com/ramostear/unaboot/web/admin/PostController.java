@@ -163,8 +163,19 @@ public class PostController extends UnaBootController {
     @RequiresRoles(value = {"admin","editor"},logical = Logical.OR)
     @GetMapping("/{id:\\d+}/publish")
     public String publish(@PathVariable("id")Integer id,Model model){
-        model.addAttribute("postId",id)
-             .addAttribute("publishDate",DateTimeUtils.append(new Date(),1, TimeUnit.HOURS));
+        Schedule schedule = scheduleService.findByParams(String.valueOf(id));
+        if(schedule != null){
+            Date publishDate = UnaBootUtils.cronExpToDate(schedule.getCronExp());
+            long current = System.currentTimeMillis();
+            if(publishDate.getTime() < current){
+                model.addAttribute("publishDate",DateTimeUtils.append(new Date(),1, TimeUnit.HOURS));
+            }else{
+                model.addAttribute("publishDate",publishDate);
+            }
+        }else{
+            model.addAttribute("publishDate",DateTimeUtils.append(new Date(),1, TimeUnit.HOURS));
+        }
+        model.addAttribute("postId",id);
         return "/admin/post/publish";
     }
 
@@ -178,13 +189,17 @@ public class PostController extends UnaBootController {
                 return bad();
             }
             if(currentUser().getRole().equals(Authorized.EDITOR.getName())){
-                if(!post.getUserId().equals(currentUser().getId())){
-                    return bad();
-                }else{
+                if(scheduleVo.getType() == 1){
                     post.setStatus(PostStatus.WAIT);
                     postService.update(post);
                     return ok();
                 }
+                Schedule schedule = initializeSchedule(id,post.getTitle(),scheduleVo);
+                schedule.setState(false);
+                scheduleService.createOrUpdate(schedule);
+                post.setStatus(PostStatus.WAIT);
+                postService.update(post);
+                return ok();
 
             }else{
                 if(scheduleVo.getType() == 1){
@@ -193,7 +208,7 @@ public class PostController extends UnaBootController {
                     return ok();
                 }
                 Schedule schedule = initializeSchedule(id,post.getTitle(),scheduleVo);
-                scheduleService.create(schedule);
+                scheduleService.createOrUpdate(schedule);
                 post.setStatus(PostStatus.SCHEDULE);
                 postService.update(post);
                 return ok();
@@ -287,8 +302,56 @@ public class PostController extends UnaBootController {
         }
     }
 
+    @RequiresRoles(value = "admin")
+    @ResponseBody
+    @PutMapping("/reject/{id:\\d+}")
+    public ResponseEntity<Object> reject(@PathVariable("id")Integer id){
+        Post post = postService.findById(id);
+        if(post == null || post.getStatus() != PostStatus.WAIT){
+            return bad();
+        }
+        post.setStatus(PostStatus.DRAFT);
+        postService.update(post);
+        return ok();
+    }
+    @RequiresRoles(value = "editor")
+    @ResponseBody
+    @PutMapping("/revoke/{id:\\d+}")
+    public ResponseEntity<Object> revoke(@PathVariable("id")Integer id){
+        Post post = postService.findById(id);
+        if(post == null || post.getStatus() != PostStatus.WAIT || post.getUserId() != currentUser().getId()){
+            return bad();
+        }
+        post.setStatus(PostStatus.DRAFT);
+        postService.update(post);
+        return ok();
+    }
+
+    @RequiresRoles(value = {"admin","editor"},logical = Logical.OR)
+    @ResponseBody
+    @PutMapping("/undo/{id:\\d+}")
+    public ResponseEntity<Object> undo(@PathVariable("id")Integer id){
+        Post post = postService.findById(id);
+        if(post == null || post.getStatus() != PostStatus.ACTIVE){
+            return bad();
+        }
+        post.setStatus(PostStatus.DRAFT);
+        postService.update(post);
+        return ok();
+    }
+
+    @GetMapping("/draft")
+    public String draft(Model model){
+        Page<Post> posts = postService.draft(currentUser().getId(),pageable("createTime",SortType.DESC));
+        model.addAttribute("data",postService.valueOf(posts));
+        return "/admin/post/draft";
+    }
+
     private Schedule initializeSchedule(Integer postId,String title,ScheduleVo scheduleVo){
         Schedule schedule = scheduleService.findByParams(String.valueOf(postId));
+        if(scheduleVo.getPublishDate().getTime() < DateTimeUtils.now().getTime()){
+            scheduleVo.setPublishDate(DateTimeUtils.append(scheduleVo.getPublishDate(),1, TimeUnit.HOURS));
+        }
         if(schedule != null){
             schedule.setState(true);
             schedule.setCronExp(UnaBootUtils.toCronExp(scheduleVo.getPublishDate()));
@@ -299,6 +362,7 @@ public class PostController extends UnaBootController {
             schedule.setCreateTime(DateTimeUtils.now());
             schedule.setUpdateTime(DateTimeUtils.now());
             schedule.setState(true);
+            schedule.setCreator(currentUser().getUsername());
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
             schedule.setIntroduce("于"+sdf.format(scheduleVo.getPublishDate())+"发布名为《"+title+"》的文章");
             schedule.setParams(String.valueOf(postId));

@@ -10,6 +10,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -133,7 +134,9 @@ public class UnaBootUtils {
      */
     public static Date cronExpToDate(String expression){
         try {
-            return Constants.CRON_DATE_FORMAT.parse(expression);
+            SimpleDateFormat cron_format = new SimpleDateFormat("ss mm HH dd MM yyyy");
+            SimpleDateFormat year_format = new SimpleDateFormat("yyyy");
+            return cron_format.parse(expression.replace("?",year_format.format(DateTimeUtils.now())));
         } catch (ParseException e) {
             return DateTimeUtils.now();
         }

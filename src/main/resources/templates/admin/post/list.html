@@ -105,7 +105,12 @@
                                                     <#if post.status == -1>
                                                         <span class="text-secondary">[草稿]</span>
                                                     <#elseif post.status == 0>
-                                                        <span class="text-danger">[审核中]</span>
+                                                        <@shiro.hasRole name="admin">
+                                                            <span class="text-danger">[等待审核]</span>
+                                                        </@shiro.hasRole>
+                                                        <@shiro.hasRole name="editor">
+                                                            <span class="text-danger">[审核中]</span>
+                                                        </@shiro.hasRole>
                                                     <#elseif post.status == 2>
                                                         <span class="text-yellow">[发布中...]</span>
                                                     <#else>
@@ -149,25 +154,22 @@
                                                                     <a href="javascript:void(0);" aria-id="${post.id}"><i class="fa fa-send-o"></i>发布</a> |
                                                                 </span>
                                                                 <#if post.userId != profile.id>
-                                                                    <span class="undo">
+                                                                    <span class="reject">
                                                                         <a href="javascript:void(0);" aria-id="${post.id}"><i class="fa fa-undo"></i>驳回</a> |
                                                                     </span>
                                                                 </#if>
                                                             </@shiro.hasRole>
                                                             <@shiro.hasRole name="editor">
                                                                 <#if post.userId == profile.id>
-                                                                    <span class="reset">
-                                                                        <a href="javascript:void(0);" aria-id="${post.id}"><i class="fa fa-undo"></i>撤回</a> |
-                                                                    </span>
-                                                                    <span class="trash">
-                                                                        <a href="javascript:void(0);" aria-id="${post.id}"><i class="fa fa-trash-o"></i>删除</a>
+                                                                    <span class="revoke">
+                                                                        <a href="javascript:void(0);" aria-id="${post.id}"><i class="fa fa-undo"></i>撤回</a>
                                                                     </span>
                                                                 </#if>
                                                             </@shiro.hasRole>
                                                         </#if>
                                                         <#if post.status == 1>
-                                                            <span class="reset">
-                                                                <a href="javascript:void(0);" aria-id="${post.id}"><i class="fa fa-undo"></i>撤回</a>
+                                                            <span class="undo">
+                                                                <a href="javascript:void(0);" aria-id="${post.id}"><i class="fa fa-undo"></i>撤消</a>
                                                             </span>
                                                         </#if>
                                                     </div>
@@ -257,7 +259,7 @@
            var status = $("select[name=status] option:selected").val();
            var style = $("select[name=style] option:selected").val();
            var param = "";
-           if(key != null && key != ""){
+           if(key != null && key !== ""){
                param+="&key="+key;
            }
            if(userId != null && userId > 0){
@@ -298,7 +300,227 @@
             }
 
         });
+        /**
+         * 删除文章
+         */
+        $(".trash a").on("click",function(){
+            var id = $(this).attr("aria-id");
+            if(id == null || typeof(id) == 'undefined' ){
+                return false;
+            }else{
+                layer.alert("确定删除这篇文章吗？该操作不可逆",{
+                    title:"<i class='fa fa-info-circle'></i> 提示",
+                    icon:0,
+                    btn:['是(Y)','否(N)'],
+                    offset:['55px'],
+                    shadeClose: false,
+                    shade:[0.4,'#fff'],
+                    anim: 1
+                },function(){
+                    var load = layer.load(2,{shade:[0.4,'#f0f0f0']});
+                    $.ajax({
+                        type:'DELETE',
+                        url:"${una}/admin/posts/"+id,
+                        success:function(){
+                            layer.close(load);
+                            layer.alert("当前操作已成功执行!",{
+                                title:"<i class='fa fa-info'></i> 提示",
+                                icon:1,
+                                shade:[0.4,"#fff"],
+                                shadeClose:false,
+                                time:0,
+                                btn:['OK'],
+                                yes:function(index){
+                                    layer.close(index);
+                                    window.location.href="${una}/admin/posts/?offset=${data.number+1}";
+                                }
+                            });
+                        },
+                        error:function(){
+                            layer.close(load);
+                            layer.alert("当前操作失败!请稍后再试。",{
+                                title:"<i class='fa fa-info'></i> 提示",
+                                icon:1,
+                                shade:[0.4,"#fff"],
+                                shadeClose:false,
+                                time:0,
+                                btn:['Close'],
+                                yes:function(newIndex){
+                                    layer.close(newIndex);
+                                }
+                            });
+                        }
+                    });
+                },function(index){
+                    layer.close(index);
+                });
+            }
+        });
+        /**
+         * 驳回
+         */
+        $(".reject a").on("click",function(){
+            var id = $(this).attr("aria-id");
+            if(id == null || typeof(id) == 'undefined' ){
+                return false;
+            }else{
+                layer.alert("确定驳回该文章的发布请求吗？",{
+                    title:"<i class='fa fa-info-circle'></i> 提示",
+                    icon:0,
+                    btn:['是(Y)','否(N)'],
+                    offset:['55px'],
+                    shadeClose: false,
+                    shade:[0.4,'#fff'],
+                    anim: 1
+                },function(){
+                    var load = layer.load(2,{shade:[0.4,'#f0f0f0']});
+                    $.ajax({
+                        type:'PUT',
+                        url:"${una}/admin/posts/reject/"+id,
+                        success:function(){
+                            layer.close(load);
+                            layer.alert("当前操作已成功执行!",{
+                                title:"<i class='fa fa-info'></i> 提示",
+                                icon:1,
+                                shade:[0.4,"#fff"],
+                                shadeClose:false,
+                                time:0,
+                                btn:['OK'],
+                                yes:function(index){
+                                    layer.close(index);
+                                    window.location.href="${una}/admin/posts/?offset=${data.number+1}";
+                                }
+                            });
+                        },
+                        error:function(){
+                            layer.close(load);
+                            layer.alert("当前操作失败!请稍后再试。",{
+                                title:"<i class='fa fa-info'></i> 提示",
+                                icon:1,
+                                shade:[0.4,"#fff"],
+                                shadeClose:false,
+                                time:0,
+                                btn:['Close'],
+                                yes:function(newIndex){
+                                    layer.close(newIndex);
+                                }
+                            });
+                        }
+                    });
+                },function(index){
+                    layer.close(index);
+                });
+            }
+        });
+        /**
+         * 撤回
+         */
+        $(".revoke a").on("click",function(){
+            var id = $(this).attr("aria-id");
+            if(id == null || typeof(id) == 'undefined' ){
+                return false;
+            }else{
+                layer.alert("你是否确定撤回本次发布请求？",{
+                    title:"<i class='fa fa-info-circle'></i> 提示",
+                    icon:0,
+                    btn:['是(Y)','否(N)'],
+                    offset:['55px'],
+                    shadeClose: false,
+                    shade:[0.4,'#fff'],
+                    anim: 1
+                },function(){
+                    var load = layer.load(2,{shade:[0.4,'#f0f0f0']});
+                    $.ajax({
+                        type:'PUT',
+                        url:"${una}/admin/posts/revoke/"+id,
+                        success:function(){
+                            layer.close(load);
+                            layer.alert("当前操作已成功执行!",{
+                                title:"<i class='fa fa-info'></i> 提示",
+                                icon:1,
+                                shade:[0.4,"#fff"],
+                                shadeClose:false,
+                                time:0,
+                                btn:['OK'],
+                                yes:function(index){
+                                    layer.close(index);
+                                    window.location.href="${una}/admin/posts/?offset=${data.number+1}";
+                                }
+                            });
+                        },
+                        error:function(){
+                            layer.close(load);
+                            layer.alert("当前操作失败!请稍后再试。",{
+                                title:"<i class='fa fa-info'></i> 提示",
+                                icon:1,
+                                shade:[0.4,"#fff"],
+                                shadeClose:false,
+                                time:0,
+                                btn:['Close'],
+                                yes:function(newIndex){
+                                    layer.close(newIndex);
+                                }
+                            });
+                        }
+                    });
+                },function(index){
+                    layer.close(index);
+                });
+            }
+        });
+        $(".undo a").on("click",function(){
+            var id = $(this).attr("aria-id");
+            if(id == null || typeof(id) == 'undefined' ){
+                return false;
+            }else{
+                layer.alert("撤销后将取消发布状态，你可以在草稿箱中找到该文章,确定执行吗？",{
+                    title:"<i class='fa fa-info-circle'></i> 提示",
+                    icon:0,
+                    btn:['是(Y)','否(N)'],
+                    offset:['55px'],
+                    shadeClose: false,
+                    shade:[0.4,'#fff'],
+                    anim: 1
+                },function(){
+                    var load = layer.load(2,{shade:[0.4,'#f0f0f0']});
+                    $.ajax({
+                        type:'PUT',
+                        url:"${una}/admin/posts/undo/"+id,
+                        success:function(){
+                            layer.close(load);
+                            layer.alert("当前操作已成功执行!",{
+                                title:"<i class='fa fa-info'></i> 提示",
+                                icon:1,
+                                shade:[0.4,"#fff"],
+                                shadeClose:false,
+                                time:0,
+                                btn:['OK'],
+                                yes:function(index){
+                                    layer.close(index);
+                                    window.location.href="${una}/admin/posts/?offset=${data.number+1}";
+                                }
+                            });
+                        },
+                        error:function(){
+                            layer.close(load);
+                            layer.alert("当前操作失败!请稍后再试。",{
+                                title:"<i class='fa fa-info'></i> 提示",
+                                icon:1,
+                                shade:[0.4,"#fff"],
+                                shadeClose:false,
+                                time:0,
+                                btn:['Close'],
+                                yes:function(newIndex){
+                                    layer.close(newIndex);
+                                }
+                            });
+                        }
+                    });
+                },function(index){
+                    layer.close(index);
+                });
+            }
+        });
     </script>
-
 </body>
 </html>

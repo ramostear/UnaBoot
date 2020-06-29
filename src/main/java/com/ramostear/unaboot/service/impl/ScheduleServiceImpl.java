@@ -59,6 +59,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl<Schedule,Integer> imple
     }
 
     @Override
+    @Transactional
     public Schedule update(Schedule schedule) {
         Schedule original = scheduleRepository.findById(schedule.getId()).orElse(null);
         if(original != null){
@@ -87,7 +88,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl<Schedule,Integer> imple
             scheduleRepository.delete(schedule);
             if(schedule.getMethod().equals(TaskMethods.PUBLISH_POST.getName())){
                 Post post = postService.findById(Integer.parseInt(schedule.getParams()));
-                if(post != null){
+                if(post != null && post.getStatus() != PostStatus.ACTIVE){
                     post.setStatus(PostStatus.WAIT);
                     postService.update(post);
                 }
@@ -121,5 +122,16 @@ public class ScheduleServiceImpl extends BaseServiceImpl<Schedule,Integer> imple
                 taskRegister.addCronTask(runner,schedule.getCronExp());
             });
         }
+    }
+
+    @Override
+    @Transactional
+    public Schedule createOrUpdate(Schedule schedule) {
+        if(schedule.getId() != null && schedule.getId() > 0){
+            this.update(schedule);
+        }else{
+            this.create(schedule);
+        }
+        return schedule;
     }
 }
