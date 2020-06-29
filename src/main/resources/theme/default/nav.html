@@ -1,0 +1,11 @@
+<div class="nav">
+    <@u_navigation>
+        <#if results?? && results?size gt 0>
+            <#list results as nav>
+                <li>
+                    <a href="${una}/category/${nav.slug}">${nav.name}</a>
+                </li>
+            </#list>
+        </#if>
+    </@u_navigation>
+</div>

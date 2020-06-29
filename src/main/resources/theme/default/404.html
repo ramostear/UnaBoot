@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="${favicon!''}" type="image/x-icon">
+    <link rel="shortcut icon" href="${favicon!''}" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>404 - ${title!''}</title>
+    <link rel="stylesheet" href="${una}/${theme}/css/font-awesome.css">
+    <link rel="stylesheet" href="${una}/${theme}/css/ionicons.css">
+    <link rel="stylesheet" href="${una}/${theme}/css/adminlte.css">
+    <link rel="stylesheet" href="${una}/${theme}/css/unaboot.css">
+    <style>
+        .error-content{
+            width: 100%;
+            height: 200px;
+            position: fixed;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20% 0;
+        }
+        .error-content h4{
+            font-size: 120px;
+            font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            text-shadow: 5px 5px 5px #1eb4fb;
+            color: #fbfafa;
+            letter-spacing: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar animated fadeInDown">
+        <#include "./left.html"/>
+    </div>
+    <div class="main">
+        <div class="page-top animated fadeInDown">
+            <#include "./nav.html"/>
+        </div>
+        <div class="autopagerize_page_element">
+            <div class="content">
+                <div class="about animated fadeInDown">
+                    <div class="error-content">
+                        <h4>404!</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="${una}/${theme}/js/jquery/jquery.min.js"></script>
+    <script src="${una}/${theme}/js/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="${una}/${theme}/js/adminlte.min.js"></script>
+    <script type="text/javascript">
+
+    </script>
+</body>
+</html>
