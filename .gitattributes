@@ -1,0 +1,9 @@
+*.js linguist-language=java
+*.html linguist-language=java
+*.json linguist-language=java
+*.class linguist-language=java
+*.jar linguist-language=java
+*.htm linguist-language=java
+*.php linguist-language=java
+*.xml linguist-language=java
+*.md linguist-language=java
