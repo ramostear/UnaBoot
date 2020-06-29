@@ -4,7 +4,7 @@
 
 ----
 
-[![GitHub license](https://img.shields.io/github/license/ramostear/UnaBoot-Pro)](https://github.com/ramostear/UnaBoot-Pro/blob/master/LICENSE) ![](https://img.shields.io/badge/author-ramostear-brightgreen) ![](https://img.shields.io/badge/jdk-1.8-brightgreen) ![](https://img.shields.io/badge/maven-3.3.0-brightgreen) ![](https://img.shields.io/badge/version-1.3.0-brightgreen) [![](https://img.shields.io/badge/download-github-brightgreen)](https://github.com/ramostear/UnaBoot.git) [![](https://img.shields.io/badge/download-gitee-green)](https://gitee.com/ramostear/UnaBoot.git)
+[![GitHub license](https://img.shields.io/github/license/ramostear/UnaBoot)](https://github.com/ramostear/UnaBoot/blob/master/LICENSE) ![](https://img.shields.io/badge/author-ramostear-brightgreen) ![](https://img.shields.io/badge/jdk-1.8-brightgreen) ![](https://img.shields.io/badge/maven-3.3.0-brightgreen) ![](https://img.shields.io/badge/version-1.3.0-brightgreen) [![](https://img.shields.io/badge/download-github-brightgreen)](https://github.com/ramostear/UnaBoot.git) [![](https://img.shields.io/badge/download-gitee-green)](https://gitee.com/ramostear/UnaBoot.git)
 
 
 ----
