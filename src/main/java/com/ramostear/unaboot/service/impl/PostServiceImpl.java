@@ -122,21 +122,7 @@ public class PostServiceImpl extends BaseServiceImpl<Post,Integer> implements Po
         return source.map(post->{
             PostSimpleVo simpleVo = new PostSimpleVo().convertFrom(post);
             Optional.ofNullable(tagMap.get(post.getId())).orElseGet(LinkedList::new);
-            simpleVo.setTags(
-                    Optional.ofNullable(tagMap.get(post.getId()))
-                    .orElseGet(LinkedList::new)
-                    .stream()
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toList())
-            );
-            simpleVo.setCategory(
-                    Optional.ofNullable(categoryMap.get(post.getId()))
-                            .orElseGet(LinkedList::new)
-                            .stream()
-                            .filter(Objects::nonNull)
-                            .collect(Collectors.toList()).get(0)
-            );
-            return simpleVo;
+            return getPostSimpleVo(tagMap, categoryMap, post, simpleVo);
         });
     }
 
@@ -303,5 +289,19 @@ public class PostServiceImpl extends BaseServiceImpl<Post,Integer> implements Po
                     simpleVo.setCategory(categoryMap.get(post.getId()).get(0));
                     return simpleVo;
                 }).collect(Collectors.toList());
+    }
+
+    private static PostSimpleVo getPostSimpleVo(Map<Integer, List<Tag>> tags, Map<Integer, List<Category>> categories, Post post, PostSimpleVo vo) {
+        vo.setTags(Optional.ofNullable(tags.get(post.getId()))
+                .orElseGet(LinkedList::new)
+                .stream()
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList()));
+        vo.setCategory(Optional.ofNullable(categories.get(post.getId()))
+                .orElseGet(LinkedList::new)
+                .stream()
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList()).get(0));
+        return vo;
     }
 }

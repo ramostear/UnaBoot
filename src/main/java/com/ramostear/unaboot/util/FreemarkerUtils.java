@@ -29,7 +29,7 @@ public class FreemarkerUtils {
      * @return              string
      * @throws TemplateModelException       TemplateModelException
      */
-    public static String toString(TemplateModel model) throws TemplateModelException{
+    public static String toStr(TemplateModel model) throws TemplateModelException{
         if(null != model){
             if(model instanceof TemplateScalarModel){
                 return ((TemplateScalarModel)model).getAsString();
@@ -52,11 +52,11 @@ public class FreemarkerUtils {
                 TemplateSequenceModel sequenceModel = (TemplateSequenceModel)model;
                 String[] values = new String[sequenceModel.size()];
                 for(int i=0;i<sequenceModel.size();i++){
-                    values[i] = toString(sequenceModel.get(i));
+                    values[i] = toStr(sequenceModel.get(i));
                 }
                 return values;
             }else{
-                String str = toString(model);
+                String str = toStr(model);
                 if(StringUtils.isNotBlank(str)){
                     return StringUtils.split(str,",");
                 }

@@ -190,4 +190,18 @@ public class UnaBootUtils {
         BigInteger bigInteger = new BigInteger(code);
         return bigInteger.abs().toString(32).toUpperCase();
     }
+
+    public static int getWords(String content){
+        int count = 0;
+        String cn_words = content.replaceAll("[^(\\u4e00-\\u9fa5，。《》？；’‘：“”【】、）（……￥！·)]", "");
+        int cn_words_count = cn_words.length();
+        String non_cn_words = content.replaceAll("[^(a-zA-Z0-9`\\-=\';.,/~!@#$%^&*()_+|}{\":><?\\[\\])]", " ");
+        int non_cn_words_count = 0;
+        String[] temp = non_cn_words.split(" ");
+        for(String ch:temp){
+            if(ch.trim().length() != 0) non_cn_words_count++;
+        }
+        count = cn_words_count + non_cn_words_count;
+        return count;
+    }
 }

@@ -18,4 +18,6 @@ public interface CategoryService extends BaseService<Category,Integer> {
     CategoryVo tree(Sort sort);
 
     List<Category> findAllByPid(Integer pid);
+
+    List<Category> navigation();
 }

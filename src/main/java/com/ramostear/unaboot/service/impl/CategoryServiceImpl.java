@@ -68,6 +68,11 @@ public class CategoryServiceImpl extends BaseServiceImpl<Category,Integer> imple
         return categoryRepository.findAllByPidOrderBySortIdAsc(pid);
     }
 
+    @Override
+    public List<Category> navigation() {
+        return categoryRepository.findAllByNavShowOrderBySortIdAsc(1);
+    }
+
 
     @Override
     @Transactional

@@ -13,4 +13,6 @@ import java.util.List;
  */
 public interface CategoryRepository extends BaseRepository<Category,Integer> {
     List<Category> findAllByPidOrderBySortIdAsc(Integer pid);
+
+    List<Category> findAllByNavShowOrderBySortIdAsc(int show);
 }

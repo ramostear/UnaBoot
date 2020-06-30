@@ -1,12 +1,11 @@
 package com.ramostear.unaboot.config.support;
 
 import com.ramostear.sft.ShiroFreemarkerTags;
+import com.ramostear.unaboot.freemarker.UnaBootParser;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.TemplateException;
 import freemarker.template.Version;
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import java.io.IOException;
@@ -27,5 +26,6 @@ public class CustomFreemarkerConfigurer extends FreeMarkerConfigurer {
         Version version = Configuration.VERSION_2_3_29;
         DefaultObjectWrapper  defaultObjectWrapper  = new DefaultObjectWrapper(version);
         configuration.setSharedVariable("shiro",new ShiroFreemarkerTags(defaultObjectWrapper));
+        configuration.setSharedVariable("unaboot", UnaBootParser.getInstance());
     }
 }
