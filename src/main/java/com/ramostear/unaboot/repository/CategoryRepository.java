@@ -1,8 +1,10 @@
 package com.ramostear.unaboot.repository;
 
 import com.ramostear.unaboot.domain.entity.Category;
+import org.springframework.lang.NonNull;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author :     ramostear/树下魅狐
@@ -15,4 +17,6 @@ public interface CategoryRepository extends BaseRepository<Category,Integer> {
     List<Category> findAllByPidOrderBySortIdAsc(Integer pid);
 
     List<Category> findAllByNavShowOrderBySortIdAsc(int show);
+
+    Optional<Category> getBySlug(@NonNull String slug);
 }

@@ -10,4 +10,6 @@ import com.ramostear.unaboot.domain.entity.Tag;
  * <p>description:</p>
  */
 public interface TagService extends BaseService<Tag,Integer> {
+
+    Tag findBySlug(String slug);
 }

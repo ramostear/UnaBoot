@@ -58,4 +58,10 @@ public class TagServiceImpl extends BaseServiceImpl<Tag,Integer> implements TagS
         postTagService.removeByTagId(id);
         return super.delete(id);
     }
+
+    @Override
+    public Tag findBySlug(String slug) {
+        Assert.notNull(slug,"Tag slug must not be null.");
+        return tagRepository.findBySlug(slug);
+    }
 }

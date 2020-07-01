@@ -20,4 +20,6 @@ public interface CategoryService extends BaseService<Category,Integer> {
     List<Category> findAllByPid(Integer pid);
 
     List<Category> navigation();
+
+    Category findBySlug(String slug);
 }

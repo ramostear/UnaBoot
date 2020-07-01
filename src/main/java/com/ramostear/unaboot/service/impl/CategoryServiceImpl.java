@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
 import java.util.*;
@@ -71,6 +72,12 @@ public class CategoryServiceImpl extends BaseServiceImpl<Category,Integer> imple
     @Override
     public List<Category> navigation() {
         return categoryRepository.findAllByNavShowOrderBySortIdAsc(1);
+    }
+
+    @Override
+    public Category findBySlug(String slug) {
+        Assert.notNull(slug,"Category slug must not be null.");
+        return categoryRepository.getBySlug(slug).orElse(null);
     }
 
 
