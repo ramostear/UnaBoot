@@ -8,4 +8,9 @@
         timeToLiveSeconds="3600"
         overflowToDisk="false">
     </defaultCache>
+    <cache name="dayHits"
+           maxEntriesLocalHeap="500"
+           eternal="true"
+           overflowToDisk="true">
+    </cache>
 </ehcache>
