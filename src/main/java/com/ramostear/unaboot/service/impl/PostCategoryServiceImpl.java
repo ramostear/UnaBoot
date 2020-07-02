@@ -125,4 +125,13 @@ public class PostCategoryServiceImpl extends BaseServiceImpl<PostCategory,Intege
         }
         return null;
     }
+
+    @Override
+    public List<Post> findAllPostByCategoryId(Integer id) {
+        List<PostCategory> pcs = postCategoryRepository.findAllByCategoryId(id);
+        List<Integer> postIds = pcs.stream()
+                .map(PostCategory::getPostId)
+                .distinct().collect(Collectors.toList());
+        return postRepository.findAllById(postIds);
+    }
 }

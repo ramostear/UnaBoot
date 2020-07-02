@@ -30,7 +30,7 @@ public interface PostRepository extends BaseRepository<Post,Integer>, JpaSpecifi
     List<Object[]> findAllArchiveByStatus(Integer status);
 
     @Query(value = "SELECT P.* FROM POSTS AS P WHERE " +
-            "DATE_FOMAT(P.CREATE_TIME,'%Y-%m')=?1 AND P.STATUS=?2 AND P.STYLE=0 " +
+            "DATE_FORMAT(P.CREATE_TIME,'%Y-%m')=?1 AND P.STATUS=?2 AND P.STYLE=0 " +
             "ORDER BY P.CREATE_TIME DESC",nativeQuery = true)
     List<Post> findAllPostByArchiveAndStatus(String archive,Integer status);
 

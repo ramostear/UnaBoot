@@ -13,4 +13,43 @@
            eternal="true"
            overflowToDisk="true">
     </cache>
+    <cache name="category"
+           maxEntriesLocalHeap="100"
+           eternal="true"
+           overflowToDisk="true">
+    </cache>
+    <cache name="link"
+           maxEntriesLocalHeap="100"
+           eternal="true"
+           overflowToDisk="true">
+    </cache>
+    <cache name="tag"
+           maxEntriesLocalHeap="500"
+           eternal="true"
+           overflowToDisk="true">
+    </cache>
+
+    <cache name="tagPage"
+           maxEntriesLocalHeap="500"
+           eternal="true"
+           overflowToDisk="true">
+    </cache>
+
+    <cache name="archives"
+           maxEntriesLocalHeap="100"
+           eternal="true"
+           overflowToDisk="true">
+    </cache>
+
+    <cache name="posts"
+           maxEntriesLocalHeap="500"
+           eternal="true"
+           overflowToDisk="true">
+    </cache>
+
+    <cache name="search"
+           maxEntriesLocalHeap="500"
+           eternal="true"
+           overflowToDisk="true">
+    </cache>
 </ehcache>

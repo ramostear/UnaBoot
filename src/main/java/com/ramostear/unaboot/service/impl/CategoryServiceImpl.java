@@ -11,6 +11,7 @@ import com.ramostear.unaboot.service.PostCategoryService;
 import com.ramostear.unaboot.util.DateTimeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,11 +71,13 @@ public class CategoryServiceImpl extends BaseServiceImpl<Category,Integer> imple
     }
 
     @Override
+    @Cacheable(value = "category")
     public List<Category> navigation() {
         return categoryRepository.findAllByNavShowOrderBySortIdAsc(1);
     }
 
     @Override
+    @Cacheable(value = "category",key = "#slug")
     public Category findBySlug(String slug) {
         Assert.notNull(slug,"Category slug must not be null.");
         return categoryRepository.getBySlug(slug).orElse(null);

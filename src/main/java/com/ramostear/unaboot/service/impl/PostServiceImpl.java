@@ -13,6 +13,7 @@ import com.ramostear.unaboot.util.ComponentUtils;
 import com.ramostear.unaboot.util.DateTimeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -172,6 +173,7 @@ public class PostServiceImpl extends BaseServiceImpl<Post,Integer> implements Po
     }
 
     @Override
+    @Cacheable(value = "posts",key = "#slug")
     public Post findBySlug(String slug) {
         if(StringUtils.isBlank(slug)){
             return null;

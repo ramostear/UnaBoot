@@ -2,9 +2,12 @@ package com.ramostear.unaboot.web.admin;
 
 import com.ramostear.unaboot.component.FileManager;
 import com.ramostear.unaboot.domain.entity.Category;
+import com.ramostear.unaboot.domain.entity.Post;
 import com.ramostear.unaboot.domain.vo.CategoryVo;
 import com.ramostear.unaboot.exception.UnaBootException;
 import com.ramostear.unaboot.service.CategoryService;
+import com.ramostear.unaboot.service.PostCategoryService;
+import com.ramostear.unaboot.service.PostService;
 import com.ramostear.unaboot.service.ThemeService;
 import com.ramostear.unaboot.web.UnaBootController;
 import org.apache.commons.lang3.StringUtils;
@@ -14,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletContext;
@@ -32,19 +36,26 @@ public class CategoryController extends UnaBootController {
 
     private final CategoryService categoryService;
 
+    private final PostCategoryService postCategoryService;
+
     private final ServletContext servletContext;
 
     private final ThemeService themeService;
 
     private final FileManager fileManager;
 
+    private final PostService postService;
+
     @Autowired
     CategoryController(CategoryService categoryService,ServletContext servletContext,
-                       ThemeService themeService,FileManager fileManager){
+                       ThemeService themeService,FileManager fileManager,
+                       PostService postService,PostCategoryService postCategoryService){
+        this.postCategoryService = postCategoryService;
         this.categoryService = categoryService;
         this.servletContext = servletContext;
         this.themeService = themeService;
         this.fileManager = fileManager;
+        this.postService = postService;
     }
 
     @GetMapping("/")
@@ -108,10 +119,21 @@ public class CategoryController extends UnaBootController {
             return bad();
         }else{
             String thumb = original.getThumb();
+            String postTheme = original.getPostTheme();
             BeanUtils.copyProperties(category,original,"id","createTime","updateTime");
             categoryService.update(original);
             if(StringUtils.isNotBlank(thumb)){
                 fileManager.remove(thumb);
+            }
+            if(!postTheme.equals(original.getPostTheme())){
+                postTheme = original.getPostTheme();
+                List<Post> postList = postCategoryService.findAllPostByCategoryId(original.getId());
+                if(!CollectionUtils.isEmpty(postList)){
+                    for(Post post : postList){
+                        post.setTpl(postTheme);
+                    }
+                    postService.update(postList);
+                }
             }
             return ok();
         }

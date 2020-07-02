@@ -5,6 +5,7 @@ import com.ramostear.unaboot.repository.LinkRepository;
 import com.ramostear.unaboot.service.LinkService;
 import com.ramostear.unaboot.util.DateTimeUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +29,7 @@ public class LinkServiceImpl extends BaseServiceImpl<Link,Integer> implements Li
     }
 
     @Override
+    @Cacheable(value = "link")
     public List<Link> findAll() {
         return super.findAll();
     }

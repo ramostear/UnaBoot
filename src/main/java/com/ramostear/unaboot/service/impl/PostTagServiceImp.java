@@ -9,6 +9,7 @@ import com.ramostear.unaboot.repository.TagRepository;
 import com.ramostear.unaboot.service.PostTagService;
 import com.ramostear.unaboot.util.ComponentUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -60,6 +61,7 @@ public class PostTagServiceImp extends BaseServiceImpl<PostTag,Integer> implemen
     }
 
     @Override
+    @Cacheable(value = "tag",key = "#id")
     public List<Post> findAllPostByTagIdAndPostStatus(Integer id, int status) {
         Set<Integer> postIds = postTagRepository.findAllPostByTagIdAndPostStatus(id,status);
         if(CollectionUtils.isEmpty(postIds)){

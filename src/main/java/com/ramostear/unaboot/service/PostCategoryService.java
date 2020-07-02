@@ -49,4 +49,6 @@ public interface PostCategoryService extends BaseService<PostCategory,Integer> {
 
     @NonNull
     Post findTopPostByCategoryId(@NonNull Integer categoryId);
+
+    List<Post> findAllPostByCategoryId(Integer id);
 }

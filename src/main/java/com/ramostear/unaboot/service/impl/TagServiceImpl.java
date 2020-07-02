@@ -8,6 +8,7 @@ import com.ramostear.unaboot.util.DateTimeUtils;
 import org.apache.shiro.util.Assert;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,6 +61,7 @@ public class TagServiceImpl extends BaseServiceImpl<Tag,Integer> implements TagS
     }
 
     @Override
+    @Cacheable(value = "tag",key = "#slug")
     public Tag findBySlug(String slug) {
         Assert.notNull(slug,"Tag slug must not be null.");
         return tagRepository.findBySlug(slug);
