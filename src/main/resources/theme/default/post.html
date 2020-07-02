@@ -6,7 +6,7 @@
     <link rel="shortcut icon" href="${favicon!''}" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>${blog.title} - ${title!''}</title>
+    <title>${post.title} - ${title!''}</title>
     <link rel="stylesheet" href="${una}/${theme}/css/font-awesome.css">
     <link rel="stylesheet" href="${una}/${theme}/css/ionicons.css">
     <link rel="stylesheet" href="${una}/${theme}/css/adminlte.css">
@@ -27,37 +27,37 @@
                 <div class="post-page">
                     <div class="post animated fadeInDown">
                         <div class="post-title mb-4">
-                            <h3><a>${blog.title}</a></h3>
+                            <h3><a>${post.title}</a></h3>
                         </div>
                         <div class="post-meta">
                             <div class="meta">
                                 <div class="info">
                                     <i class="fa fa-calendar-o"></i>
-                                    <span class="date">${blog.createTime?string("yyyy-MM-dd HH:mm")}</span>
+                                    <span class="date">${post.createTime?string("yyyy-MM-dd HH:mm")}</span>
                                     <i class="fa fa-user-circle-o"></i>
-                                    <a href="#">${blog.author}</a>
+                                    <a href="#">${post.author}</a>
                                     <i class="fa fa-tags"></i>
-                                    <@u_post_tags id=blog.id>
+                                    <@unaboot.tags id=post.id>
                                         <#if results?? && results?size gt 0>
                                             <#list results as tag>
-                                                <a href="${una}/tag/${tag.name}" class="tag"> ${tag.name}</a>
+                                                <a href="${una}/tags/${tag.slug}" class="tag"> ${tag.name}</a>
                                             </#list>
                                         </#if>
-                                    </@u_post_tags>
-                                    <i class="fa fa-info-circle"> 本文共${u_wordNumber(blog.html)}个字，预计阅读需要${u_readTime(blog.html)}分钟。</i>
+                                    </@unaboot.tags>
+                                    <i class="fa fa-info-circle"> 本文共${unaboot.words(post.content)}个字，预计阅读需要${unaboot.readTime(post.content)}分钟。</i>
                                 </div>
                             </div>
                         </div>
                         <div class="post-content typo editormd-html-preview editormd-preview-theme-dark">
-                            ${blog.html!''}
+                            ${post.content!''}
                         </div>
                     </div>
                     <div class="pre-next">
                         <div class="row">
                             <div class="col-12">
-                                <@u_pre_or_next current=blog.id category=blog.category type="previous">
-                                    <#if (result.slug??)>
-                                        <a href="${una}/blog/${result.slug}" class="pull-left">
+                                <@unaboot.postInfo id=post.id type=1 category=post.category style=0>
+                                    <#if result.slug??>
+                                        <a href="${una}/posts/${result.slug}" class="pull-left">
                                             <i class="fa fa-angle-double-left"></i>上一篇 : ${result.title}
                                         </a>
                                     <#else>
@@ -65,10 +65,10 @@
                                             <i class="fa fa-angle-double-left"></i>上一篇 : 没有了
                                         </a>
                                     </#if>
-                                </@u_pre_or_next>
-                               <@u_pre_or_next current=blog.id category=blog.category type="next">
-                                    <#if (result.slug??)>
-                                        <a href="${una}/blog/${result.slug}" class="pull-right">
+                                </@unaboot.postInfo>
+                               <@unaboot.postInfo id=post.id type=2 category=post.category style=0>
+                                    <#if result.slug??>
+                                        <a href="${una}/posts/${result.slug}" class="pull-right">
                                             ${result.title} :下一篇<i class="fa fa-angle-double-right"></i>
                                         </a>
                                     <#else>
@@ -76,7 +76,7 @@
                                             没有了 :下一篇<i class="fa fa-angle-double-right"></i>
                                         </a>
                                     </#if>
-                                </@u_pre_or_next>
+                                </@unaboot.postInfo>
                             </div>
                         </div>
                     </div>
@@ -95,10 +95,10 @@
     <script src="https://cdn.bootcss.com/gitalk/1.5.0/gitalk.js"></script>
     <script type="text/javascript">
         hljs.initHighlightingOnLoad();
-        ${u_gitalkScript(blog.id "gitalk-container")}
         $(".post-content img").each(function(){
            $(this).addClass("img-fluid");
         });
     </script>
+    ${unaboot.gitalk(0 post.id "gitalk-container")}
 </body>
 </html>

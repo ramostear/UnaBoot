@@ -31,47 +31,47 @@
                                     <li class="tag-nav-item">
                                         <a href="${una}/category/tags">全部</a>
                                     </li>
-                                    <@u_tags>
+                                    <@unaboot.tags>
                                         <#if results?? && results?size gt 0>
                                             <#list results as t>
                                                 <#if t.id == tag.id>
                                                     <li class="tag-nav-item on">
-                                                        <a href="${una}/tag/${t.name}">${t.name}</a>
+                                                        <a href="${una}/tags/${t.slug}">${t.name}</a>
                                                     </li>
                                                 <#else>
                                                     <li class="tag-nav-item">
-                                                        <a href="${una}/tag/${t.name}">${t.name}</a>
+                                                        <a href="${una}/tags/${t.slug}">${t.name}</a>
                                                     </li>
                                                 </#if>
                                             </#list>
                                         </#if>
-                                    </@u_tags>
+                                    </@unaboot.tags>
                                 <#else>
                                     <li class="tag-nav-item on">
                                         <a href="${una}/category/tags">全部</a>
                                     </li>
-                                    <@u_tags>
+                                    <@unaboot.tags>
                                         <#if results?? && results?size gt 0>
                                             <#list results as t>
                                                 <li class="tag-nav-item">
-                                                    <a href="${una}/tag/${t.name}">${t.name}</a>
+                                                    <a href="${una}/tags/${t.slug}">${t.name}</a>
                                                 </li>
                                             </#list>
                                         </#if>
-                                    </@u_tags>
+                                    </@unaboot.tags>
                                 </#if>
                             </ul>
                         </div>
                     </div>
                 </div>
                 <#if tag?? && tag!=null>
-                    <@u_tag_page_detail id=tag.id offset=offset>
+                    <@unaboot.pages id=tag.id offset=offset type=2>
                         <#if results?? && results.content?size gt 0>
                             <#list results.content as post>
                                 <div class="post animated fadeInDown">
                                     <div class="post-title mb-2">
                                         <h3>
-                                            <a href="${una}/blog/${post.slug}">${post.title}</a>
+                                            <a href="${una}/posts/${post.slug}">${post.title}</a>
                                         </h3>
                                     </div>
                                     <div class="post-content">
@@ -87,31 +87,31 @@
                                                 <i class="fa fa-user-circle-o"></i>
                                                 <a href="#">${post.author}</a>
                                                 <i class="fa fa-tags"></i>
-                                                <@u_post_tags id=post.id>
+                                                <@unaboot.tags id=post.id>
                                                     <#if results?? && results?size gt 0>
                                                         <#list results as t>
-                                                            <a href="${una}/tag/${t.name}" class="tag"> ${t.name}</a>
+                                                            <a href="${una}/tags/${t.slug}" class="tag"> ${t.name}</a>
                                                         </#list>
                                                     </#if>
-                                                </@u_post_tags>
+                                                </@unaboot.tags>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </#list>
                         </#if>
-                    </@u_tag_page_detail>
+                    </@unaboot.pages>
                     <div class="pagination">
-                        ${u_tagPage(una+"/tag/"+tag.name tag.id offset 5 15)}
+                        ${unaboot.pageUrl(una+"/tags/"+tag.slug tag.id offset 5 15 2)}
                     </div>
                 <#else>
-                    <@u_post_page_detail type=0 offset=offset size=15>
+                    <@unaboot.pages id=0 offset=offset type=0>
                         <#if results?? && results.content?size gt 0>
                             <#list results.content as post>
                                 <div class="post animated fadeInDown">
                                     <div class="post-title mb-2">
                                         <h3>
-                                            <a href="${una}/blog/${post.slug}">${post.title}</a>
+                                            <a href="${una}/posts/${post.slug}">${post.title}</a>
                                         </h3>
                                     </div>
                                     <div class="post-content">
@@ -127,20 +127,22 @@
                                                 <i class="fa fa-user-circle-o"></i>
                                                 <a href="#">${post.author}</a>
                                                 <i class="fa fa-tags"></i>
-                                                <#if post.tags?? && post.tags?size gt 0>
-                                                    <#list post.tags as t>
-                                                        <a href="${una}/tag/${t.name}" class="tag"> ${t.name}</a>
-                                                    </#list>
-                                                </#if>
+                                                <@unaboot.tags id=post.id>
+                                                    <#if results?? && results?size gt 0>
+                                                        <#list results as t>
+                                                            <a href="${una}/tags/${t.slug}" class="tag"> ${t.name}</a>
+                                                        </#list>
+                                                    </#if>
+                                                </@unaboot.tags>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </#list>
                         </#if>
-                    </@u_post_page_detail>
+                    </@unaboot.pages>
                     <div class="pagination">
-                        ${u_postPage(una+"/tags" 0 offset 5 15)}
+                        ${unaboot.pageUrl(una+"/tags/" 0 offset 5 15 0)}
                     </div>
                 </#if>
                 

@@ -22,13 +22,13 @@
         </div>
         <div class="autopagerize_page_element">
             <div class="content">
-                <@u_category_page_detail id=category.id offset=offset size=15>
+                <@unaboot.pages type=1 id=category.id offset=offset size=15>
                     <#if results?? && results.content?size gt 0>
                         <#list results.content as post>
                             <div class="post animated fadeInDown">
                                 <div class="post-title mb-2">
                                     <h3>
-                                        <a href="${una}/blog/${post.slug}">${post.title}</a>
+                                        <a href="${una}/posts/${post.slug}">${post.title}</a>
                                     </h3>
                                 </div>
                                 <div class="post-content">
@@ -40,29 +40,29 @@
                                     <div class="meta">
                                         <div class="info">
                                             <i class="fa fa-sun-o"></i>
-                                            <span class="date">${u_timeAgo(post.createTime)}</span>
+                                            <span class="date">${unaboot.timeAgo(post.createTime)}</span>
                                             <i class="fa fa-user-circle-o"></i>
                                             <a href="#">${post.author}</a>
                                             <i class="fa fa-eye"> ${post.visits!'0'}</i>
                                             <i class="fa fa-list-ol"></i>
                                             <a href="${una}/category/${category.slug}">${category.name}</a>
                                             <i class="fa fa-tags"></i>
-                                            <@u_post_tags id=post.id>
+                                            <@unaboot.tags id=post.id>
                                                 <#if results?? && results?size gt 0>
                                                     <#list results as tag>
-                                                        <a href="${una}/tag/${tag.name}" class="tag"> ${tag.name}</a>
+                                                        <a href="${una}/tags/${tag.slug}" class="tag"> ${tag.name}</a>
                                                     </#list>
                                                 </#if>
-                                            </@u_post_tags>
+                                            </@unaboot.tags>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </#list>
                     </#if>
-                </@u_category_page_detail>
+                </@unaboot.pages>
                 <div class="pagination">
-                    ${u_categoryPage(una+"/category/"+category.slug category.id offset 5 15)}
+                    ${unaboot.pageUrl(una+"/category/"+category.slug category.id offset 5 15 1)}
                 </div>
             </div>
         </div>

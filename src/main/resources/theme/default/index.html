@@ -22,13 +22,13 @@
         </div>
         <div class="autopagerize_page_element">
             <div class="content">
-                <@u_post_page_detail type=0 offset=offset size=15>
+                <@unaboot.pages type=0 offset=offset size=15 style=0>
                     <#if results?? && results.content?size gt 0>
                         <#list results.content as post>
                             <div class="post animated fadeInDown">
                                 <div class="post-title mb-2">
                                     <h3>
-                                        <a href="${una}/blog/${post.slug}">${post.title}</a>
+                                        <a href="${una}/posts/${post.slug}">${post.title}</a>
                                     </h3>
                                 </div>
                                 <div class="post-content">
@@ -40,7 +40,7 @@
                                     <div class="meta">
                                         <div class="info">
                                             <i class="fa fa-sun-o"></i>
-                                            <span class="date">${u_timeAgo(post.createTime)}</span>
+                                            <span class="date">${unaboot.timeAgo(post.createTime)}</span>
                                             <i class="fa fa-user-circle-o"></i>
                                             <a href="#">${post.author}</a>
                                             <i class="fa fa-eye"> ${post.visits!'0'}</i>
@@ -49,7 +49,7 @@
                                             <i class="fa fa-tags"></i>
                                             <#if post.tags?? && post.tags?size gt 0>
                                                 <#list post.tags as tag>
-                                                    <a href="${una}/tag/${tag.name}" class="tag"> ${tag.name}</a>
+                                                    <a href="${una}/tags/${tag.slug}" class="tag"> ${tag.name}</a>
                                                 </#list>
                                             </#if>
                                         </div>
@@ -58,9 +58,9 @@
                             </div>
                         </#list>
                     </#if>
-                </@u_post_page_detail>
+                </@unaboot.pages>
                 <div class="pagination">
-                    ${u_postPage(una+"/index" 0 offset 5 15)}
+                    ${unaboot.pageUrl(una+"/index" 0 offset 5 15 0)}
                 </div>
             </div>
         </div>
