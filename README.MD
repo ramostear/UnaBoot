@@ -162,4 +162,4 @@ git clone https://gitee.com/ramostear/UnaBoot.git
 
 ### 更多详情
 
-你可以访问[https://www.ramostear.com](https://www.ramostear.com) 获取更多详细信息！
+你可以访问[https://www.ramostear.com/doc/unaboot](https://www.ramostear.com/doc/unaboot) 获取更多详细信息！
