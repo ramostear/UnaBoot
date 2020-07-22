@@ -1,6 +1,8 @@
 package com.ramostear.unaboot.web.front;
 
 import com.ramostear.unaboot.common.PostStatus;
+import com.ramostear.unaboot.common.aspect.lang.LogType;
+import com.ramostear.unaboot.common.aspect.lang.UnaLog;
 import com.ramostear.unaboot.domain.entity.Category;
 import com.ramostear.unaboot.domain.entity.Post;
 import com.ramostear.unaboot.domain.entity.Tag;
@@ -59,12 +61,14 @@ public class HomePageController extends UnaBootController {
     }
 
 
+    @UnaLog(title = "首页",type = LogType.VIEW)
     @GetMapping(value = {"/","/index","/index.html","/home","/home.html"})
     public String homePage(@RequestParam(name = "offset",defaultValue = "1")int offset, Model model){
         model.addAttribute("offset",offset);
         return themeView("/index.html");
     }
 
+    @UnaLog(title = "栏目列表页",type = LogType.LIST)
     @GetMapping("/category/{slug}")
     public String category(@PathVariable("slug")String slug,
                            @RequestParam(name = "offset",defaultValue = "1")int offset,
@@ -80,12 +84,14 @@ public class HomePageController extends UnaBootController {
         }
     }
 
+    @UnaLog(title = "标签列表页",type = LogType.LIST)
     @GetMapping("/tags")
     public String tags(@RequestParam(name = "offset",defaultValue = "1")int offset,Model model){
         model.addAttribute("offset",offset);
         return themeView("/tags.html");
     }
 
+    @UnaLog(title = "标签详情页",type = LogType.LIST)
     @GetMapping("/tags/{name}")
     public String tag(@PathVariable("name")String name,
                       @RequestParam(name = "offset",defaultValue = "1")int offset,
@@ -100,12 +106,14 @@ public class HomePageController extends UnaBootController {
         }
     }
 
+    @UnaLog(title = "归档列表页",type = LogType.LIST)
     @GetMapping("/archives")
     public String archives(@RequestParam(name = "offset",defaultValue = "1")int offset,Model model){
         model.addAttribute("offset",offset);
         return themeView("/archives.html");
     }
 
+    @UnaLog(title = "归档详情页",type = LogType.LIST)
     @GetMapping("/archives/{name}")
     public String archive(@PathVariable("name")String name,@RequestParam(name = "offset",defaultValue = "1")int offset,Model model){
         if(StringUtils.isBlank(name)){
@@ -117,6 +125,7 @@ public class HomePageController extends UnaBootController {
         }
     }
 
+    @UnaLog(title = "数据检索页",type = LogType.LIST)
     @GetMapping("/search")
     public String search(@RequestParam(name = "key",defaultValue = "",required = false)String key,
                          @RequestParam(name = "offset",defaultValue = "1")int offset,Model model){
@@ -138,16 +147,19 @@ public class HomePageController extends UnaBootController {
         return themeView("/search.html");
     }
 
+    @UnaLog(title = "About页",type = LogType.VIEW)
     @GetMapping(value = {"/about","/about.html","/me","/me.html"})
     public String about(){
         return themeView("/about.html");
     }
 
+    @UnaLog(title = "404页",type = LogType.VIEW)
     @GetMapping("/404.html")
     public String notFound(){
         return themeView("/404.html");
     }
 
+    @UnaLog(title = "文章详情页",type = LogType.VIEW)
     @GetMapping("/posts/**")
     public String post(HttpServletRequest request,Model model){
         String uri = request.getRequestURI();

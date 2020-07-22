@@ -1,6 +1,8 @@
 package com.ramostear.unaboot.web.admin;
 
 import com.ramostear.unaboot.common.SortType;
+import com.ramostear.unaboot.common.aspect.lang.LogType;
+import com.ramostear.unaboot.common.aspect.lang.UnaLog;
 import com.ramostear.unaboot.domain.entity.Link;
 import com.ramostear.unaboot.exception.UnaBootException;
 import com.ramostear.unaboot.service.LinkService;
@@ -30,6 +32,7 @@ public class LinkController extends UnaBootController {
         this.linkService = linkService;
     }
 
+    @UnaLog(title = "友链列表",type = LogType.LIST)
     @GetMapping("/")
     public String links(Model model){
         Page<Link> data = linkService.findAll(pageable("sortId", SortType.ASC,8));
@@ -37,10 +40,13 @@ public class LinkController extends UnaBootController {
         return "/admin/link/list";
     }
 
+    @UnaLog(title = "新增友链",type = LogType.VIEW)
     @GetMapping("/create")
     public String create(){
         return "/admin/link/create";
     }
+
+    @UnaLog(title = "新增友链",type = LogType.INSERT)
     @ResponseBody
     @PostMapping("/create")
     public ResponseEntity<Object> create(Link link){
@@ -52,6 +58,7 @@ public class LinkController extends UnaBootController {
         }
     }
 
+    @UnaLog(title = "查询友链",type = LogType.VIEW)
     @GetMapping("/{id:\\d+}")
     public String link(@PathVariable("id")Integer id,Model model){
         Link link = linkService.findByIdNullable(id);
@@ -59,6 +66,7 @@ public class LinkController extends UnaBootController {
         return "/admin/link/view";
     }
 
+    @UnaLog(title = "修改友链",type = LogType.UPDATE)
     @ResponseBody
     @PostMapping("/{id:\\d+}")
     public ResponseEntity<Object> link(@PathVariable("id")Integer id,Link link){
@@ -71,6 +79,7 @@ public class LinkController extends UnaBootController {
         }
     }
 
+    @UnaLog(title = "删除友链",type = LogType.DELETE)
     @DeleteMapping("/{id:\\d+}")
     public ResponseEntity<Object> delete(@PathVariable("id")Integer id){
         try {

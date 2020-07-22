@@ -3,6 +3,8 @@ package com.ramostear.unaboot.web.admin;
 import com.ramostear.unaboot.common.Authorized;
 import com.ramostear.unaboot.common.SortType;
 import com.ramostear.unaboot.common.State;
+import com.ramostear.unaboot.common.aspect.lang.LogType;
+import com.ramostear.unaboot.common.aspect.lang.UnaLog;
 import com.ramostear.unaboot.domain.entity.User;
 import com.ramostear.unaboot.domain.vo.CategoryVo;
 import com.ramostear.unaboot.domain.vo.UserVo;
@@ -57,6 +59,7 @@ public class UserController extends UnaBootController {
     }
 
 
+    @UnaLog(title = "用户列表",type = LogType.LIST)
     @GetMapping("/")
     public String users(Model model){
         Page<User> data = userService.findAll(pageable("updateTime", SortType.DESC));
@@ -67,6 +70,7 @@ public class UserController extends UnaBootController {
         return "/admin/user/list";
     }
 
+    @UnaLog(title = "用户角色",type = LogType.LIST)
     @GetMapping("/role/{role}")
     public String usersByRole(@PathVariable("role")String role, Model model){
         Page<User> data = userService.findAllByRole(role,pageable("updateTime", SortType.DESC));
@@ -78,12 +82,14 @@ public class UserController extends UnaBootController {
         return "/admin/user/list";
     }
 
+    @UnaLog(title = "新增用户",type = LogType.VIEW)
     @GetMapping("/create")
     public String create(Model model){
         model.addAttribute("roles", Authorized.values());
         return "/admin/user/create";
     }
 
+    @UnaLog(title = "新增用户",type = LogType.INSERT)
     @ResponseBody
     @PostMapping("/create")
     public ResponseEntity<Object> create(User user){
@@ -95,6 +101,7 @@ public class UserController extends UnaBootController {
        }
     }
 
+    @UnaLog(title = "用户详情",type = LogType.VIEW)
     @GetMapping("/{id:\\d+}")
     public String user(@PathVariable("id") Integer id,Model model){
         User user = userService.findById(id);
@@ -103,12 +110,14 @@ public class UserController extends UnaBootController {
         return "/admin/user/view";
     }
 
+    @UnaLog(title = "更新用户信息",type = LogType.UPDATE)
     @ResponseBody
     @PostMapping("/{id:\\d+}")
     public ResponseEntity<Object> user(@PathVariable("id")Integer id, UserVo userVo){
         return editUser(id,userVo);
     }
 
+    @UnaLog(title = "删除用户",type = LogType.DELETE)
     @ResponseBody
     @DeleteMapping("/{id:\\d+}")
     public ResponseEntity<Object> delete(@PathVariable("id")Integer id){
@@ -124,18 +133,22 @@ public class UserController extends UnaBootController {
         }
     }
 
+    @UnaLog(title = "激活用户",type = LogType.UPDATE)
     @ResponseBody
     @PutMapping("/{id:\\d+}/open")
     public ResponseEntity<Object> open(@PathVariable("id")Integer id){
         return editState(id,State.OPEN);
     }
 
+    @UnaLog(title = "锁定用户",type = LogType.UPDATE)
     @ResponseBody
     @PutMapping("/{id:\\d+}/close")
     public ResponseEntity<Object> close(@PathVariable("id")Integer id){
         return editState(id,State.CLOSE);
     }
 
+
+    @UnaLog(title = "修改密码",type = LogType.VIEW)
     @GetMapping("/{id:\\d+}/pwd")
     public String pwd(@PathVariable("id")Integer id,Model model){
         User user = userService.findById(id);
@@ -143,35 +156,45 @@ public class UserController extends UnaBootController {
         return "/admin/user/pwd";
     }
 
+
+    @UnaLog(title = "修改密码",type = LogType.UPDATE)
     @ResponseBody
     @PostMapping("/{id:\\d+}/pwd")
     public ResponseEntity<Object> pwd(@PathVariable("id")Integer id,UserVo userVo){
         return editPassword(id,userVo);
     }
 
+    @UnaLog(title = "个人信息",type = LogType.VIEW)
     @GetMapping("/profile")
     public String profile(Model model){
         model.addAttribute("user",userService.findById(currentUser().getId()));
         return "/admin/user/profile";
     }
+
+    @UnaLog(title = "更新个人信息",type = LogType.UPDATE)
     @ResponseBody
     @PostMapping("/profile")
     public ResponseEntity<Object> profile(UserVo userVo){
         return editUser(currentUser().getId(),userVo);
     }
 
+
+    @UnaLog(title = "个人密码",type = LogType.VIEW)
     @GetMapping("/profile/pwd")
     public String profilePwd(Model model){
         model.addAttribute("user",currentUser());
         return "/admin/user/profile-pwd";
     }
 
+    @UnaLog(title = "更新个人密码",type = LogType.UPDATE)
     @ResponseBody
     @PostMapping("/profile/pwd")
     public ResponseEntity<Object> profilePwd(UserVo userVo){
         return editPassword(currentUser().getId(),userVo);
     }
 
+
+    @UnaLog(title = "用户名校验",type = LogType.UPDATE)
     @ResponseBody
     @GetMapping(value = "/validate/username")
     public boolean notExist(@RequestParam("username") String username){
@@ -183,6 +206,7 @@ public class UserController extends UnaBootController {
             return false;
         }
     }
+    @UnaLog(title = "用户邮箱校验",type = LogType.UPDATE)
     @ResponseBody
     @GetMapping(value = "/validate/email")
     public boolean emailNotExist(@RequestParam("email")String email){
@@ -195,11 +219,14 @@ public class UserController extends UnaBootController {
         }
     }
 
+    @UnaLog(title = "用户栏目",type = LogType.VIEW)
     @GetMapping("/{id:\\d+}/categories")
     public String categories(@PathVariable("id")Integer id,Model model){
         model.addAttribute("userId",id);
         return "/admin/user/categories";
     }
+
+    @UnaLog(title = "用户栏目数据",type = LogType.LIST)
     @GetMapping("/{id:\\d+}/categoryNodes")
     @ResponseBody
     public CategoryVo categories(@PathVariable("id")Integer id){
@@ -209,6 +236,7 @@ public class UserController extends UnaBootController {
         return node;
     }
 
+    @UnaLog(title = "更新用户栏目数据",type = LogType.UPDATE)
     @PostMapping("/{id:\\d+}/categoryNodes")
     @ResponseBody
     public ResponseEntity<Object> categories(@PathVariable("id")Integer id,@RequestParam("categoryIds") String categoryIds){

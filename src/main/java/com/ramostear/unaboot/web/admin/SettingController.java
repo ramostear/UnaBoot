@@ -1,6 +1,8 @@
 package com.ramostear.unaboot.web.admin;
 
 import com.ramostear.unaboot.common.QiniuZone;
+import com.ramostear.unaboot.common.aspect.lang.LogType;
+import com.ramostear.unaboot.common.aspect.lang.UnaLog;
 import com.ramostear.unaboot.domain.entity.Setting;
 import com.ramostear.unaboot.domain.vo.QiniuProperty;
 import com.ramostear.unaboot.service.SettingService;
@@ -47,6 +49,7 @@ public class SettingController extends UnaBootController {
         this.servletContext = servletContext;
     }
 
+    @UnaLog(title = "获取常规配置信息",type = LogType.LIST)
     @GetMapping("/general")
     public String general(Model model){
         model.addAttribute("general",settingService.toMap());
@@ -54,12 +57,14 @@ public class SettingController extends UnaBootController {
         return "/admin/setting/general";
     }
 
+    @UnaLog(title = "评论插件信息",type = LogType.VIEW)
     @GetMapping("/gitalk")
     public String gitalk(Model model){
         model.addAttribute("gitalk",settingService.gitalk());
         return "/admin/setting/gitalk";
     }
 
+    @UnaLog(title = "更新系统配置",type = LogType.UPDATE)
     @ResponseBody
     @PostMapping("/update")
     public ResponseEntity<Object> update(HttpServletRequest request){
@@ -78,12 +83,15 @@ public class SettingController extends UnaBootController {
         return ok();
     }
 
+    @UnaLog(title = "七牛云配置信息",type = LogType.VIEW)
     @GetMapping("/qiniu")
     public String qiniu(Model model){
         model.addAttribute("qiniu", QiniuUtils.getProperties());
         model.addAttribute("zones", QiniuZone.values());
         return "/admin/setting/qiniu";
     }
+
+    @UnaLog(title = "更新七牛云配置",type = LogType.UPDATE)
     @PostMapping("/qiniu")
     @ResponseBody
     public ResponseEntity<Object> qiniu(QiniuProperty qiniu){

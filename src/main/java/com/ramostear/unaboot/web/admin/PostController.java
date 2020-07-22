@@ -1,6 +1,8 @@
 package com.ramostear.unaboot.web.admin;
 
 import com.ramostear.unaboot.common.*;
+import com.ramostear.unaboot.common.aspect.lang.LogType;
+import com.ramostear.unaboot.common.aspect.lang.UnaLog;
 import com.ramostear.unaboot.component.FileManager;
 import com.ramostear.unaboot.domain.entity.Post;
 import com.ramostear.unaboot.domain.entity.Schedule;
@@ -71,6 +73,7 @@ public class PostController extends UnaBootController {
         this.userCategoryService = userCategoryService;
     }
 
+    @UnaLog(title = "文章列表",type = LogType.LIST)
     @RequiresRoles(value = {"admin","editor"},logical = Logical.OR)
     @GetMapping("/")
     public String posts(QueryParam param, Model model){
@@ -96,6 +99,7 @@ public class PostController extends UnaBootController {
         return "/admin/post/list";
     }
 
+    @UnaLog(title = "获取已发布文章",type = LogType.LIST)
     @RequiresRoles(value = {"admin","editor"},logical = Logical.OR)
     @GetMapping("/actives")
     public String actives(QueryParam param,Model model){
@@ -121,6 +125,7 @@ public class PostController extends UnaBootController {
         return "/admin/post/actives";
     }
 
+    @UnaLog(title = "新增文章",type = LogType.VIEW)
     @RequiresRoles(value = {"admin","editor"},logical = Logical.OR)
     @GetMapping("/create")
     public String create(Model model){
@@ -134,6 +139,7 @@ public class PostController extends UnaBootController {
         return "/admin/post/create";
     }
 
+    @UnaLog(title = "新增文章",type = LogType.INSERT)
     @RequiresRoles(value = {"admin","editor"},logical = Logical.OR)
     @ResponseBody
     @PostMapping("/create")
@@ -160,6 +166,7 @@ public class PostController extends UnaBootController {
         }
     }
 
+    @UnaLog(title = "发布文章",type = LogType.VIEW)
     @RequiresRoles(value = {"admin","editor"},logical = Logical.OR)
     @GetMapping("/{id:\\d+}/publish")
     public String publish(@PathVariable("id")Integer id,Model model){
@@ -179,6 +186,7 @@ public class PostController extends UnaBootController {
         return "/admin/post/publish";
     }
 
+    @UnaLog(title = "发布文章",type = LogType.UPDATE)
     @RequiresRoles(value = {"admin","editor"},logical = Logical.OR)
     @ResponseBody
     @PostMapping("/{id:\\d+}/publish")
@@ -218,6 +226,7 @@ public class PostController extends UnaBootController {
         }
     }
 
+    @UnaLog(title = "文章详情",type = LogType.VIEW)
     @RequiresRoles(value = {"admin","editor"},logical = Logical.OR)
     @GetMapping("/{id:\\d+}")
     public String post(@PathVariable("id")Integer id,Model model){
@@ -235,6 +244,7 @@ public class PostController extends UnaBootController {
         return "/admin/post/view";
     }
 
+    @UnaLog(title = "更新文章",type = LogType.UPDATE)
     @RequiresRoles(value = {"admin","editor"},logical = Logical.OR)
     @PostMapping("/{id:\\d+}")
     @ResponseBody
@@ -256,6 +266,7 @@ public class PostController extends UnaBootController {
         }
     }
 
+    @UnaLog(title = "删除文章",type = LogType.DELETE)
     @RequiresRoles(value = {"admin","editor"},logical = Logical.OR)
     @ResponseBody
     @DeleteMapping("/{id:\\d+}")
@@ -284,12 +295,15 @@ public class PostController extends UnaBootController {
         }
     }
 
+    @UnaLog(title = "上传图片",type = LogType.UPLOAD)
     @RequiresUser
     @GetMapping("/thumb")
     public String thumb(){
         return "/admin/post/thumb";
     }
 
+
+    @UnaLog(title = "删除图片",type = LogType.DELETE)
     @RequiresUser
     @PostMapping("/thumb")
     @ResponseBody
@@ -302,6 +316,7 @@ public class PostController extends UnaBootController {
         }
     }
 
+    @UnaLog(title = "驳回发文",type = LogType.UPDATE)
     @RequiresRoles(value = "admin")
     @ResponseBody
     @PutMapping("/reject/{id:\\d+}")
@@ -314,6 +329,8 @@ public class PostController extends UnaBootController {
         postService.update(post);
         return ok();
     }
+
+    @UnaLog(title = "撤回发文",type = LogType.UPDATE)
     @RequiresRoles(value = "editor")
     @ResponseBody
     @PutMapping("/revoke/{id:\\d+}")
@@ -327,6 +344,7 @@ public class PostController extends UnaBootController {
         return ok();
     }
 
+    @UnaLog(title = "取回发文",type = LogType.UPDATE)
     @RequiresRoles(value = {"admin","editor"},logical = Logical.OR)
     @ResponseBody
     @PutMapping("/undo/{id:\\d+}")
@@ -340,6 +358,7 @@ public class PostController extends UnaBootController {
         return ok();
     }
 
+    @UnaLog(title = "另存为草稿",type = LogType.UPDATE)
     @GetMapping("/draft")
     public String draft(Model model){
         Page<Post> posts = postService.draft(currentUser().getId(),pageable("createTime",SortType.DESC));

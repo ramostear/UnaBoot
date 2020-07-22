@@ -3,6 +3,8 @@ package com.ramostear.unaboot.web.admin;
 import com.ramostear.captcha.HappyCaptcha;
 import com.ramostear.captcha.support.CaptchaStyle;
 import com.ramostear.captcha.support.CaptchaType;
+import com.ramostear.unaboot.common.aspect.lang.LogType;
+import com.ramostear.unaboot.common.aspect.lang.UnaLog;
 import com.ramostear.unaboot.domain.param.LoginParam;
 import com.ramostear.unaboot.exception.UnaBootException;
 import com.ramostear.unaboot.web.UnaBootController;
@@ -38,6 +40,7 @@ import java.util.Objects;
 @ApiIgnore
 public class LoginController extends UnaBootController {
 
+    @UnaLog(title = "管理员登录",type = LogType.VIEW)
     @GetMapping("/admin/login")
     public String login(){
         if(currentUser() != null){
@@ -47,6 +50,7 @@ public class LoginController extends UnaBootController {
         }
     }
 
+    @UnaLog(title = "管理员登录",type = LogType.VIEW)
     @PostMapping("/admin/login")
     @ResponseBody
     public ResponseEntity<Object> login(@Valid @RequestBody LoginParam param,BindingResult bindingResult, HttpServletRequest request){
@@ -80,6 +84,7 @@ public class LoginController extends UnaBootController {
        }
     }
 
+    @UnaLog(title = "退出登录",type = LogType.VIEW)
     @RequiresUser
     @GetMapping("/admin/logout")
     public String logout(HttpServletResponse response, Model model){
@@ -91,6 +96,7 @@ public class LoginController extends UnaBootController {
         return sendRedirect("/admin/login");
     }
 
+    @UnaLog(title = "获取验证码",type = LogType.VIEW)
     @GetMapping("/captcha")
     public void captcha(HttpServletRequest request,HttpServletResponse response){
         HappyCaptcha.require(request, response)

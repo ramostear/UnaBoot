@@ -2,6 +2,8 @@ package com.ramostear.unaboot.web.admin;
 
 import com.ramostear.unaboot.common.SortType;
 import com.ramostear.unaboot.common.TaskMethods;
+import com.ramostear.unaboot.common.aspect.lang.LogType;
+import com.ramostear.unaboot.common.aspect.lang.UnaLog;
 import com.ramostear.unaboot.domain.entity.Schedule;
 import com.ramostear.unaboot.exception.UnaBootException;
 import com.ramostear.unaboot.service.ScheduleService;
@@ -35,6 +37,7 @@ public class ScheduleController extends UnaBootController {
         this.scheduleService = scheduleService;
     }
 
+    @UnaLog(title = "计划列表",type = LogType.LIST)
     @GetMapping("/")
     public String schedules(Model model){
         Page<Schedule> data = scheduleService.findAll(pageable("createTime", SortType.DESC));
@@ -43,12 +46,14 @@ public class ScheduleController extends UnaBootController {
         return "/admin/schedule/list";
     }
 
+    @UnaLog(title = "新增计划",type = LogType.VIEW)
     @GetMapping("/create")
     public String create(Model model){
         model.addAttribute("methods", TaskMethods.values());
         return "/admin/schedule/create";
     }
 
+    @UnaLog(title = "新增计划",type = LogType.UPDATE)
     @ResponseBody
     @PostMapping("/create")
     public ResponseEntity<Object> create(Schedule schedule){
@@ -63,6 +68,7 @@ public class ScheduleController extends UnaBootController {
         }
     }
 
+    @UnaLog(title = "计划详情",type = LogType.VIEW)
     @GetMapping("/{id:\\d+}")
     public String schedule(@PathVariable("id")Integer id,Model model){
         Schedule schedule = scheduleService.findByIdNullable(id);
@@ -71,6 +77,7 @@ public class ScheduleController extends UnaBootController {
         return "/admin/schedule/view";
     }
 
+    @UnaLog(title = "更新计划",type = LogType.UPDATE)
     @ResponseBody
     @PostMapping("/{id:\\d+}")
     public ResponseEntity<Object> schedule(@PathVariable("id")Integer id,Schedule schedule){
@@ -83,6 +90,7 @@ public class ScheduleController extends UnaBootController {
         }
     }
 
+    @UnaLog(title = "停用计划",type = LogType.UPDATE)
     @ResponseBody
     @PutMapping("/{id:\\d+}/stop")
     public ResponseEntity<Object> stop(@PathVariable("id")Integer id){
@@ -96,6 +104,7 @@ public class ScheduleController extends UnaBootController {
         }
     }
 
+    @UnaLog(title = "启动计划",type = LogType.UPDATE)
     @ResponseBody
     @PutMapping("/{id:\\d+}/start")
     public ResponseEntity<Object> start(@PathVariable("id")Integer id){
@@ -109,6 +118,7 @@ public class ScheduleController extends UnaBootController {
         }
     }
 
+    @UnaLog(title = "删除计划",type = LogType.DELETE)
     @ResponseBody
     @DeleteMapping("/{id:\\d+}")
     public ResponseEntity<Object> delete(@PathVariable("id")Integer id){

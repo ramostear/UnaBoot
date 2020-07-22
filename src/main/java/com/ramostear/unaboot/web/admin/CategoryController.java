@@ -1,5 +1,7 @@
 package com.ramostear.unaboot.web.admin;
 
+import com.ramostear.unaboot.common.aspect.lang.LogType;
+import com.ramostear.unaboot.common.aspect.lang.UnaLog;
 import com.ramostear.unaboot.component.FileManager;
 import com.ramostear.unaboot.domain.entity.Category;
 import com.ramostear.unaboot.domain.entity.Post;
@@ -58,17 +60,20 @@ public class CategoryController extends UnaBootController {
         this.postService = postService;
     }
 
+    @UnaLog(title = "栏目列表",type = LogType.LIST)
     @GetMapping("/")
     public String categories(){
         return "/admin/category/list";
     }
 
+    @UnaLog(title = "栏目树",type = LogType.VIEW)
     @GetMapping(value = "/",params = {"type=tree"})
     @ResponseBody
     public CategoryVo nodes(){
         return categoryService.tree(Sort.by(Sort.Direction.ASC,"sortId"));
     }
 
+    @UnaLog(title = "获取子栏目",type = LogType.LIST)
     @GetMapping("/{pid:\\d+}/children")
     public String children(@PathVariable("pid")Integer pid,Model model){
         List<Category> list = categoryService.findAllByPid(pid);
@@ -76,6 +81,7 @@ public class CategoryController extends UnaBootController {
         return "/admin/category/children";
     }
 
+    @UnaLog(title = "新增栏目",type = LogType.VIEW)
     @GetMapping("/{pid:\\d+}/create")
     public String create(@PathVariable("pid")Integer pid, Model model){
         String theme =currentTheme();
@@ -86,6 +92,7 @@ public class CategoryController extends UnaBootController {
         return "/admin/category/create";
     }
 
+    @UnaLog(title = "新增栏目",type = LogType.INSERT)
     @ResponseBody
     @PostMapping("/{pid:\\d+}/create")
     public ResponseEntity<Object> create(@PathVariable("pid")Integer pid,Category category){
@@ -101,6 +108,7 @@ public class CategoryController extends UnaBootController {
         }
     }
 
+    @UnaLog(title = "修改栏目",type = LogType.VIEW)
     @GetMapping("/{id:\\d+}/update")
     public String category(@PathVariable("id")Integer id,Model model){
        String theme = currentTheme();
@@ -111,6 +119,7 @@ public class CategoryController extends UnaBootController {
        return "/admin/category/view";
     }
 
+    @UnaLog(title = "修改栏目",type = LogType.UPDATE)
     @ResponseBody
     @PostMapping("/{id:\\d+}/update")
     public ResponseEntity<Object> category(@PathVariable("id")Integer id,Category category){
@@ -139,6 +148,7 @@ public class CategoryController extends UnaBootController {
         }
     }
 
+    @UnaLog(title = "删除栏目",type = LogType.DELETE)
     @ResponseBody
     @DeleteMapping("/{id:\\d+}")
     public ResponseEntity<Object> delete(@PathVariable("id")Integer id){
@@ -150,6 +160,7 @@ public class CategoryController extends UnaBootController {
         }
     }
 
+    @UnaLog(title = "上传缩略图",type = LogType.UPLOAD)
     @GetMapping("/thumb")
     public String thumb(){
         return "/admin/category/thumb";

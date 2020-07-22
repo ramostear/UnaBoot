@@ -1,6 +1,8 @@
 package com.ramostear.unaboot.web.admin;
 
 import com.alibaba.fastjson.JSONObject;
+import com.ramostear.unaboot.common.aspect.lang.LogType;
+import com.ramostear.unaboot.common.aspect.lang.UnaLog;
 import com.ramostear.unaboot.component.FileManager;
 import com.ramostear.unaboot.web.UnaBootController;
 import org.apache.commons.lang3.StringUtils;
@@ -31,6 +33,7 @@ public class FileUploadController extends UnaBootController {
         this.fileManager = fileManager;
     }
 
+    @UnaLog(title = "上传文件",type = LogType.UPLOAD)
     @PostMapping("/image")
     public JSONObject image(@RequestParam(name = "img") CommonsMultipartFile file){
         JSONObject json = new JSONObject();
@@ -47,6 +50,7 @@ public class FileUploadController extends UnaBootController {
             return convert(json,1,"file uploaded successfully",url);
         }
     }
+    @UnaLog(title = "Markdown文件上传",type = LogType.UPLOAD)
     @PostMapping("/editormd")
     public JSONObject editormd(@RequestParam(name = "editormd-image-file") CommonsMultipartFile file){
         JSONObject json = new JSONObject();
@@ -64,6 +68,7 @@ public class FileUploadController extends UnaBootController {
         }
     }
 
+    @UnaLog(title = "CKEditor上传文件",type = LogType.UPLOAD)
     @PostMapping("/ckeditor")
     public JSONObject ckEditor(@RequestParam(name = "upload")CommonsMultipartFile file){
         if(file == null || file.isEmpty()){
