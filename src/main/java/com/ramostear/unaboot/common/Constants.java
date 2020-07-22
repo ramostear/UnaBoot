@@ -57,6 +57,8 @@ public class Constants {
 
     public static final String TASK_BEAN_NAME =  "taskService";
 
+    public static final String UNKNOWN = "unknown";
+
     private static String rootPath(){
         try {
             Resource resource = new ClassPathResource("");
